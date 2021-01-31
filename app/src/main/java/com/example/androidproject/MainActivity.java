@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
+import com.example.androidproject.databinding.ActivityMainBinding;
+
 //import com.example.androidproject.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,8 +16,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
-        //ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setContentView(R.layout.activity_main);
+        binding.getRoot();
+        //setContentView(R.layout.activity_main);
     }
 }
