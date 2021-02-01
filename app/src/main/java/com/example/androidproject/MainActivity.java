@@ -16,7 +16,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.androidproject.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -36,6 +35,27 @@ public class MainActivity extends AppCompatActivity  {
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+
+        binding.messageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navHostFragment.getNavController().navigate(R.id.action_titleFragment2_to_messagesFragment);
+            }
+        });
+
+        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navHostFragment.getNavController().navigate(R.id.);
+            }
+        });
+
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navHostFragment.getNavController().navigate();
+            }
+        });
 
         binding.getRoot();
         //setContentView(R.layout.activity_main);
