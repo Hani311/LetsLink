@@ -32,4 +32,3 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 }
-//test test
