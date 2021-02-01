@@ -1,24 +1,22 @@
 package com.example.androidproject
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-//import com.example.socialproject.databinding.FragmentTitleBinding
+import androidx.navigation.Navigation
+import com.example.androidproject.databinding.FragmentTitleBinding
+import java.lang.Exception
+import java.lang.Math.abs
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TitleFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TitleFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
+
+    lateinit var gestureDetector: GestureDetector
+    private val swipeThreshold = 100
+    private val swipeVelocityThreshold = 100
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +26,20 @@ class TitleFragment : Fragment() {
         }
     }
 
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_title, container, false)
+       // return inflater.inflate(R.layout.fragment_title, container, false)
 
 
-        //val binding:FragmentTitleBinding=DataBindingUtil.inflate(inflater, R.layout.fragment_title, container, false)
+        val binding: FragmentTitleBinding =DataBindingUtil.inflate(inflater, R.layout.fragment_title, container, false)
 
-        //return binding.root
+        return binding.root
     }
+
+
 
 
 }
