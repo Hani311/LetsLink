@@ -8,7 +8,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -20,6 +19,8 @@ import android.widget.Toast;
 import com.example.androidproject.databinding.ActivityMainBinding;
 
 import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 //import com.example.androidproject.databinding.ActivityMainBinding;
 
