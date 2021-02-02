@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_titleFragment2_to_notificationFragment"
             app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_titleFragment2_to_userProfile"
+            app:destination="@id/userProfile" />
     </fragment>
     <fragment
         android:id="@+id/messagesFragment"
@@ -24,5 +27,21 @@
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.example.androidproject.NotificationFragment"
-        android:label="NotificationFragment" />
+        android:label="NotificationFragment" >
+        <action
+            android:id="@+id/action_notificationFragment_to_userProfile"
+            app:destination="@id/userProfile" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="com.example.androidproject.userProfileSettingsFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfile_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_userProfile_to_titleFragment2"
+            app:destination="@id/titleFragment2" />
+    </fragment>
 </navigation>
