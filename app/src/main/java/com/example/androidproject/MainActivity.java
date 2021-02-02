@@ -29,14 +29,24 @@ public class MainActivity extends AppCompatActivity  {
     OnSwipeTouchListener onSwipeTouchListener;
     static NavHostFragment navHostFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               navController.navigate(R.id.action_titleFragment2_to_userProfile);
+            }
+        });
 
         binding.getRoot();
         //setContentView(R.layout.activity_main);
