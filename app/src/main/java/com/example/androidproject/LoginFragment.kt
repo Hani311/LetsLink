@@ -47,6 +47,7 @@ class LoginFragment : Fragment() {
 
     private fun signUp() {
 
+        
     }
 
     private fun logIn(usernameText: TextInputLayout, userPassword: TextInputLayout) {
