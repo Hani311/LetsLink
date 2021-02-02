@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity  {
         navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
 
         binding.messageBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +53,18 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(View v) {
+                                                      //navHostFragment.getNavController().navigate();
+                                                  }
+                                              });
+
+
+
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //navHostFragment.getNavController().navigate();
+               navController.navigate(R.id.action_titleFragment2_to_userProfile);
             }
         });
 
@@ -166,5 +176,5 @@ public class MainActivity extends AppCompatActivity  {
             void swipeLeft();
         }
         onSwipeListener onSwipe;
+        }
     }
-}

@@ -2,4 +2,14 @@
     <string name="app_name">Android project</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+<<<<<<< HEAD
 </resources>
+=======
+    <string name="username">Username</string>
+    <string name="email_something_com">email@something.com</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="logout">Logout</string>
+</resources>
+>>>>>>> 6a1e2651c650e7b4e87eec9969f511be549a1ad5

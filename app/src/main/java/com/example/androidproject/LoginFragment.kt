@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.androidproject.databinding.FragmentLoginBinding
 import com.google.android.material.textfield.TextInputLayout
+import com.example.androidproject.databinding.FragmentTitleBinding
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 
 class LoginFragment : Fragment() {
