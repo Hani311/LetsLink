@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity  {
         NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
 
+
         binding.messageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,11 +55,12 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         binding.profileBtn.setOnClickListener(new View.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(View v) {
-                                                      //navHostFragment.getNavController().navigate();
-                                                  }
-                                              });
+          @Override
+          public void onClick(View v) {
+
+              //navHostFragment.getNavController().navigate();
+          }
+      });
 
 
 
