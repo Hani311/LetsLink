@@ -65,11 +65,11 @@ class SignUpActivity : AppCompatActivity() {
     private fun createNewUser( username: String,email: String, pass: String) {
 
 
+        //create instance of firebase and add user info
         this.auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful) {
 
-                //this.auth.signInWithEmailAndPassword(email,pass)
-                //this.auth.currentUser.
+
                 val user=User(username, email, pass)
                 val reff: DatabaseReference
                 reff = FirebaseDatabase.getInstance().reference.child("User")
