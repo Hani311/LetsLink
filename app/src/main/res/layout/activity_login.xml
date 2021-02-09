@@ -26,22 +26,24 @@
                 android:layout_marginTop="12dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="250dp"
-                android:layout_height="50dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
                 app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_input"
                     android:layout_width="250dp"
-                    android:layout_height="30dp"
-                    android:inputType="text" />
+                    android:layout_height="50dp"
+                    android:inputType="textEmailAddress"
+                    android:hint="Enter your email-address"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="250dp"
-                android:layout_height="50dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_baseline_vpn_key_24">
@@ -49,7 +51,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_input"
                     android:layout_width="250dp"
-                    android:layout_height="30dp"
+                    android:layout_height="50dp"
                     android:inputType="textPassword"
                     android:hint="Enter your password"/>
 

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.ToolbarBindingAdapter
 import androidx.fragment.app.FragmentTransaction
 import com.example.androidproject.databinding.ActivityLoginBinding
 import com.google.android.gms.tasks.Task
@@ -71,6 +73,7 @@ class LoginActivity : AppCompatActivity() {
         loading.visibility=View.VISIBLE
         auth.signInWithEmailAndPassword(usernameText.text.toString(), userPassword.text.toString()).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful){
+                
                 var currentUser=auth.currentUser
 
                 val i:Intent=Intent(this@LoginActivity, MainActivity::class.java)
@@ -79,6 +82,9 @@ class LoginActivity : AppCompatActivity() {
                 //i.putExtra("Username", "$username")
                 //i.putExtra("Password", "$password")
                 startActivity(i)
+            }
+            else{
+                Toast.makeText(this@LoginActivity, "Log in failed, please try again", Toast.LENGTH_SHORT).show()
             }
         }
 
