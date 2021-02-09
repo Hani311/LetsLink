@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         loading.visibility=View.VISIBLE
         auth.signInWithEmailAndPassword(usernameText.text.toString(), userPassword.text.toString()).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful){
-                
+
                 var currentUser=auth.currentUser
 
                 val i:Intent=Intent(this@LoginActivity, MainActivity::class.java)
