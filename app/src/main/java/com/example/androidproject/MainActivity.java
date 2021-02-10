@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -12,15 +14,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.androidproject.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.ui.NavigationUI;
 
 //import com.example.androidproject.databinding.ActivityMainBinding;
 
@@ -29,18 +33,88 @@ public class MainActivity extends AppCompatActivity  {
     OnSwipeTouchListener onSwipeTouchListener;
     static NavHostFragment navHostFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-        navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
+        //navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
-        onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+        //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
+        //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+
+        BottomNavigationView navView = binding.navView;
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
+        }
+
+        /*
+        BottomNavigationView.OnNavigationItemSelectedListener navListener=
+                new BottomNavigationView.OnNavigationItemSelectedListener(){
+
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment selectedFragment=null;
+
+                        switch(item.getItemId()){
+
+                            case R.id.home:
+                                selectedFragment=new TitleFragment();
+                                break;
+
+                            case R.id.messages:
+                                selectedFragment=new MessagesFragment();
+                                break;
+
+                            case R.id.notifications:
+                                selectedFragment=new NotificationFragment();
+                                break;
+
+                            case R.id.maps:
+                                selectedFragment=new MessagesFragment();
+                                break;
+
+                            case R.id.userProfile:
+                                selectedFragment=new userProfileSettingsFragment();
+                                break;
+
+                        }
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_container, selectedFragment).commit();
+                        return true;
+                    }
+                };
+
+         */
+        //binding.navigationView.setOnNavigationItemSelectedListener(navListener);
+
+        /*
+        binding.messageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navHostFragment.getNavController().navigate(R.id.action_titleFragment2_to_messagesFragment);
+            }
+        });
+
+        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navHostFragment.getNavController().navigate(R.id.);
+            }
+        });
+
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+
+              //navHostFragment.getNavController().navigate();
+          }
+
+      });
+
+
+
         binding.profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +122,8 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+
+         */
         binding.getRoot();
         //setContentView(R.layout.activity_main);
     }
@@ -125,7 +201,7 @@ public class MainActivity extends AppCompatActivity  {
 
         private void navigatToMessages(View view) {
 
-            Navigation.findNavController(view).navigate(R.id.action_titleFragment2_to_messagesFragment);
+            //Navigation.findNavController(view).navigate(R.id.action_titleFragment2_to_messagesFragment);
 
             /*
             NavDirections action =
@@ -156,5 +232,7 @@ public class MainActivity extends AppCompatActivity  {
             void swipeLeft();
         }
         onSwipeListener onSwipe;
+        }
+
+
     }
-}
