@@ -38,6 +38,8 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.provider.CalendarContract.CalendarCache.URI;
+
 public class UserProfile extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1001;
@@ -75,10 +77,9 @@ public class UserProfile extends AppCompatActivity {
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
          profileChangeBtn= findViewById(R.id.profile_image);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                uploadProfileImage();
+            public void onClick(View v) { uploadProfileImage();
             }
         });
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
