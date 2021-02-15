@@ -17,12 +17,33 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
     lateinit var loading:ProgressBar
     lateinit var auth:FirebaseAuth
+    lateinit var firebaseUser:FirebaseUser
+
+    override fun onStart() {
+        super.onStart()
+
+        auth=FirebaseAuth.getInstance()
+
+        try {
+            firebaseUser = auth.currentUser!!
+
+            if (firebaseUser != null) {
+                val i = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(i)
+            }
+        }
+        catch (e:NullPointerException){
+            e.printStackTrace()
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +51,8 @@ class LoginActivity : AppCompatActivity() {
 
         val binding:ActivityLoginBinding=DataBindingUtil.setContentView(this, R.layout.activity_login)
 
-        auth=FirebaseAuth.getInstance()
+
+
         val usernameText=binding.usernameInput
         val userPassword=binding.passwordInput
         val signUpButton=binding.signUpButton

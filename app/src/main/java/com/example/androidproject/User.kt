@@ -1,8 +1,21 @@
 package com.example.androidproject
 
-import android.widget.ImageView
+class User() {
 
-class User(username:String, email:String, passwordEncr:String) {
+
+    constructor(ID: String, username: String, imageUrl: String) : this() {
+        this.ID=ID
+        this.username=username
+        this.imageUrl=imageUrl
+    }
+
+    var ID:String
+    get() {
+        return ID
+    }
+        set(value) {
+            ID=value
+        }
 
     var username:String
     get() {
@@ -12,20 +25,12 @@ class User(username:String, email:String, passwordEncr:String) {
             username=value
         }
 
-    var email:String
+    var imageUrl:String
     get() {
-        return email
+        return imageUrl
     }
         set(value) {
-            email=value
-        }
-
-    var passwordEncr:String
-    get() {
-        return passwordEncr
-    }
-        set(value) {
-            passwordEncr=value
+            imageUrl=value
         }
 
 }

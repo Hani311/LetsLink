@@ -1,13 +1,16 @@
 package com.example.androidproject
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidproject.databinding.ActivitySignUpBinding
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.regex.Matcher
@@ -17,6 +20,7 @@ import java.util.regex.Pattern
 class SignUpActivity : AppCompatActivity() {
 
     lateinit var auth:FirebaseAuth
+    lateinit var reference: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +73,35 @@ class SignUpActivity : AppCompatActivity() {
         this.auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful) {
 
+                //creating a user and a Database reference to the info about the new User
 
+                val fBU: FirebaseUser? =auth.currentUser
+                val userID= fBU?.uid
+
+                reference=FirebaseDatabase.getInstance().getReference("Users").child(userID!!)
+
+                val hashMap=HashMap<String, String>()
+                hashMap.put("ID",userID)
+                hashMap.put("username", username)
+                hashMap.put("imagUrl", "default")
+
+                reference.setValue(hashMap).addOnCompleteListener {
+
+
+                    if (it.isSuccessful){
+
+                        val i =Intent(this@SignUpActivity, MainActivity::class.java)
+                        startActivity(i)
+                    }
+                }
+
+                /*
                 val user=User(username, email, pass)
                 val reff: DatabaseReference
                 reff = FirebaseDatabase.getInstance().reference.child("User")
                 reff.push().setValue(user)
+                 */
+
 
                 Toast.makeText(this@SignUpActivity, "data inserted successfully", Toast.LENGTH_LONG).show()
                 val currentUser = this.auth.currentUser!!

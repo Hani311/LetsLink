@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,35 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<com.google.android.material.appbar.AppBarLayout
-    app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary_dark">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/username_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="username"
-            android:textColor="#ffffff"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-</com.google.android.material.appbar.AppBarLayout>
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -48,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation" />
+        app:navGraph="@navigation/navigation_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -60,7 +30,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation_menu" />
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

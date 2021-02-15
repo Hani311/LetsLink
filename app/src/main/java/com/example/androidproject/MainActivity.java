@@ -17,14 +17,26 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.example.androidproject.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.ui.NavigationUI;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 //import com.example.androidproject.databinding.ActivityMainBinding;
 
@@ -32,6 +44,8 @@ public class MainActivity extends AppCompatActivity  {
 
     OnSwipeTouchListener onSwipeTouchListener;
     static NavHostFragment navHostFragment;
+    DatabaseReference reference;
+    FirebaseUser fBU;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +56,33 @@ public class MainActivity extends AppCompatActivity  {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+
+        CircleImageView cIV = binding.profileImage;
+        TextView username=binding.usernameDisplay;
+
+        fBU=FirebaseAuth.getInstance().getCurrentUser();
+        reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user = snapshot.getValue(User.class);
+                username.setText(user.getUsername());
+
+                if(user.getImageUrl().equals("default")) {
+                    cIV.setImageResource(R.mipmap.ic_launcher_round);
+                }
+                else{
+                    Glide.with(MainActivity.this).load(user.getImageUrl()).into(cIV);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         BottomNavigationView navView = binding.navView;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
