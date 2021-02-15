@@ -2,18 +2,12 @@ package com.example.androidproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,18 +27,15 @@ import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.UTFDataFormatException;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.provider.CalendarContract.CalendarCache.URI;
 
 public class UserProfile extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1001;
     private CircleImageView civ;
-    private CircleImageView profileChangeBtn;
+    private TextView profileChangeBtn;
     private View view;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
@@ -76,7 +67,7 @@ public class UserProfile extends AppCompatActivity {
          storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("Profile Pic");
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
-         profileChangeBtn= findViewById(R.id.profile_image);
+         profileChangeBtn= findViewById(R.id.changePic);
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) { uploadProfileImage();
@@ -85,6 +76,7 @@ public class UserProfile extends AppCompatActivity {
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              //  chooseImageFromGallery();
           CropImage.activity().setAspectRatio(1,1).start(UserProfile.this);
             }
         });
