@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity  {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
+
+                Toast toast = Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT);
+                toast.show();
                 username.setText(user.getUsername());
 
                 if(user.getImageUrl().equals("default")) {

@@ -13,25 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
 
+        <activity android:name=".MessageActivity"/>
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity
             android:name=".SignUpActivity"
-            android:theme="@style/Theme.AndroidProject.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AndroidProject.NoActionBar" />
 
         <activity android:name=".MainActivity" />
-
     </application>
 
 </manifest>

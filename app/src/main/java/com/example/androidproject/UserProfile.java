@@ -156,7 +156,7 @@ public class UserProfile extends AppCompatActivity {
 
     public void addUserProfileFromGallery(){
 
-        civ = (CircleImageView) view.findViewById(R.id.profileImage);
+        civ = (CircleImageView) view.findViewById(R.id.profile_image);
 
 
         civ.setOnClickListener(new View.OnClickListener() {

@@ -31,14 +31,22 @@ class LoginActivity : AppCompatActivity() {
 
         auth=FirebaseAuth.getInstance()
 
+
         try {
+            /*
             firebaseUser = auth.currentUser!!
 
             if (firebaseUser != null) {
+
+                //Toast.makeText(this@LoginActivity, firebaseUser, Toast.LENGTH_SHORT)
+
                 val i = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(i)
             }
+
+             */
         }
+
         catch (e:NullPointerException){
             e.printStackTrace()
         }

@@ -9,8 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".MessagesFragment">
 
-
-    <com.google.android.material.tabs.TabLayout
+        <com.google.android.material.tabs.TabLayout
         android:id="@+id/messagesTabLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -19,12 +18,16 @@
         app:tabIndicatorColor="#ffffff"
         app:tabTextColor="#ffffff"/>
 
-    <androidx.viewpager2.widget.ViewPager2
+
+        <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/messageViewPager"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="647dp"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical" />
+
     </LinearLayout>
+
+
 </layout>
