@@ -76,7 +76,8 @@ public class UserProfile extends AppCompatActivity {
 
     getUserinfo();
     }
-    private void getUserinfo(){
+
+    public void getUserinfo(){
         databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
