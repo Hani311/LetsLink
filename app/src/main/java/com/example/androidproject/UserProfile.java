@@ -3,10 +3,12 @@ package com.example.androidproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,30 +47,20 @@ public class UserProfile extends AppCompatActivity {
     private StorageReference storageProfilePicsRef;
     private Button saveBtn, logoutBtn;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
         mAuth = FirebaseAuth.getInstance();
          databaseReference= FirebaseDatabase.getInstance().getReference().child("User");
          storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("Profile Pic");
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
          profileChangeBtn= findViewById(R.id.changePic);
-        saveBtn.setOnClickListener( new View.OnClickListener() {
+
+         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) { uploadProfileImage();
             }
@@ -76,8 +68,9 @@ public class UserProfile extends AppCompatActivity {
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  chooseImageFromGallery();
-          CropImage.activity().setAspectRatio(1,1).start(UserProfile.this);
+              //  chooseImageFromGallery()
+                Intent openGalleryIntent =  new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent,1000);
             }
         });
 
@@ -143,59 +136,16 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
-/*
-    public void addUserProfileFromGallery(){
-
-        civ = (CircleImageView) view.findViewById(R.id.profileImage);
-
-
-        civ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                        //permission not granted, ask for permission
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PERMISSION_CODE);
-                    }else {
-
-                        chooseImageFromGallery();
-
-                    }
-            }
-        });
-    } */
-
-    private void chooseImageFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 1000);
-    }
-/*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE: {
-                if (grantResults.length> 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    chooseImageFromGallery();
-                }else{
-                    Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }*/
-
-
-
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode  == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE && resultCode==  RESULT_OK && data != null){
-            CropImage.ActivityResult result=CropImage.getActivityResult(data);
-            imageUri= result.getUri();
-            civ.setImageURI(imageUri);
+        if (requestCode  == 1000){
+            if(resultCode== Activity.RESULT_OK){
+                imageUri = data.getData();
+                civ.setImageURI(imageUri);
+            }
         }
         else {
             Toast.makeText(this,"Error, Try again", Toast.LENGTH_SHORT).show();
