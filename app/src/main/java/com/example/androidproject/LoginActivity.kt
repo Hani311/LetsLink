@@ -18,13 +18,15 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
     lateinit var loading:ProgressBar
     lateinit var auth:FirebaseAuth
-    lateinit var firebaseUser:FirebaseUser
+    lateinit var reference: DatabaseReference
 
     override fun onStart() {
         super.onStart()
@@ -104,13 +106,17 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(usernameText.text.toString(), userPassword.text.toString()).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful){
 
-                var currentUser=auth.currentUser
+                var fiebaseuser:FirebaseUser= auth.currentUser!!
+                val userID:String=fiebaseuser.uid
+
+                reference=FirebaseDatabase.getInstance().getReference("Users").child(userID)
 
                 val i:Intent=Intent(this@LoginActivity, MainActivity::class.java)
-                val username=usernameText.text.toString()
-                val password=userPassword.text.toString()
+
                 //i.putExtra("Username", "$username")
                 //i.putExtra("Password", "$password")
+
+
                 startActivity(i)
             }
             else{

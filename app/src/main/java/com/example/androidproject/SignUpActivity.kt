@@ -1,5 +1,6 @@
 package com.example.androidproject
 
+import android.R.id.message
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -7,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidproject.databinding.ActivitySignUpBinding
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -59,38 +60,43 @@ class SignUpActivity : AppCompatActivity() {
 
 
             if(safe){
-                createNewUser(newUsername.text.toString(),newEmail.text.toString(), newPassword.text.toString())
+                createNewUser(newUsername.text.toString(), newEmail.text.toString(), newPassword.text.toString())
             }
         }
 
         binding.root
     }
 
-    private fun createNewUser( username: String,email: String, pass: String) {
+    private fun createNewUser(username: String, email: String, pass: String) {
 
 
         //create instance of firebase and add user info
-        this.auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task: Task<AuthResult> ->
-            if (task.isSuccessful) {
 
+        auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this@SignUpActivity, OnCompleteListener<AuthResult?> { task ->
+
+            if (!task.isSuccessful) {
+
+                val e = task.exception as FirebaseAuthException?
+                Toast.makeText(this@SignUpActivity, "Failed Registration: " + e!!.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(baseContext, "Sign up failed. Please try again in a few minutes", Toast.LENGTH_SHORT).show()
+            } else {
                 //creating a user and a Database reference to the info about the new User
 
-                val fBU: FirebaseUser? =auth.currentUser
-                val userID= fBU?.uid
+                val fBU: FirebaseUser? = auth.currentUser
+                val userID = fBU?.uid
 
-                reference=FirebaseDatabase.getInstance().getReference("Users").child(userID!!)
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(userID!!)
 
-                val hashMap=HashMap<String, String>()
-                hashMap.put("ID",userID)
+                val hashMap = HashMap<String, String>()
+                hashMap.put("ID", userID)
                 hashMap.put("username", username)
-                hashMap.put("imagUrl", "default")
+                hashMap.put("imageURL", "default")
 
                 reference.setValue(hashMap).addOnCompleteListener {
 
+                    if (it.isSuccessful) {
 
-                    if (it.isSuccessful){
-
-                        val i =Intent(this@SignUpActivity, MainActivity::class.java)
+                        val i = Intent(this@SignUpActivity, MainActivity::class.java)
                         startActivity(i)
                     }
                 }
@@ -106,9 +112,9 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this@SignUpActivity, "data inserted successfully", Toast.LENGTH_LONG).show()
                 val currentUser = this.auth.currentUser!!
 
-            } else {
-                Toast.makeText(baseContext, "Sign up failed. Please try again in a few minutes",Toast.LENGTH_SHORT).show()
             }
-        }
+        })
+
+
     }
 }

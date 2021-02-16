@@ -73,11 +73,11 @@ public class MainActivity extends AppCompatActivity  {
                 toast.show();
                 username.setText(user.getUsername());
 
-                if(user.getImageUrl().equals("default")) {
+                if(user.getImageURL().equals("default")) {
                     cIV.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
-                    Glide.with(MainActivity.this).load(user.getImageUrl()).into(cIV);
+                    Glide.with(MainActivity.this).load(user.getImageURL()).into(cIV);
                 }
             }
 

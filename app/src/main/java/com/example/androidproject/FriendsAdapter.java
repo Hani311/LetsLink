@@ -38,13 +38,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         User user = usersList.get(position);
         holder.username.setText(user.getUsername());
 
-        if(user.getImageUrl().equals("default")){
+        if(user.getImageURL().equals("default")){
 
             holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
         }
         else{
 
-            Glide.with(context).load(user.getImageUrl()).into(holder.friendsProfilePic);
+            Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
         }
     }
 
