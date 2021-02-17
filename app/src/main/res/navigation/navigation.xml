@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/userProfile"
-        android:name="com.example.androidproject.userProfileSettingsFragment"
+        android:name="com.example.androidproject.ProfileNavigationFragment"
         android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_profile_navigation_fragment" />
 </navigation>
