@@ -1,11 +1,13 @@
 package com.example.androidproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,17 +37,32 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        User user = usersList.get(position);
+        final User user = usersList.get(position);
         holder.username.setText(user.getUsername());
 
-        if(user.getImageURL().equals("default")){
+        try {
+            if (user.getImageURL().equalsIgnoreCase("default")) {
 
-            holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
-        }
-        else{
+                holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
+            } else {
 
-            Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
+                Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
+            }
         }
+        catch (NullPointerException e){
+
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("userid", user.getID());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -64,5 +81,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             username=itemView.findViewById(R.id.friends_username);
             friendsProfilePic=itemView.findViewById(R.id.friends_profile_image);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 }

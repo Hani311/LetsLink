@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,13 +57,26 @@ public class FriendsMessagesFragment extends Fragment {
             //gets all friends from database reference
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                friends.clear();
+                friends=new ArrayList<>();
+
                 for(DataSnapshot dS:snapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    User user = dS.getValue(User.class);
 
-                    if(user.getID()!=fBU.getUid()) {
+                    if(!user.getID().equals(fBU.getUid())) {
 
-                        friends.add(user);
+                        if(friends.size()>0) {
+                            if (!user.getID().equals(friends.get(friends.size() - 1).getID())) {
+
+                                friends.add(user);
+                            }
+                        }
+                        else{
+                            friends.add(user);
+                        }
                     }
+
                 }
 
                 friendsAdapter=new FriendsAdapter(getContext(), friends);

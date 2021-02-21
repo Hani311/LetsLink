@@ -10,6 +10,7 @@
     tools:context=".MessagesFragment">
 
         <com.google.android.material.tabs.TabLayout
+            android:layout_marginTop="55dp"
         android:id="@+id/messagesTabLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
