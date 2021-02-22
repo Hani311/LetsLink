@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <LinearLayout
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MessagesFragment">
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MessagesFragment">
 
         <com.google.android.material.tabs.TabLayout
             android:layout_marginTop="55dp"
-        android:id="@+id/messagesTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/design_default_color_primary_dark"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabIndicatorColor="#ffffff"
-        app:tabTextColor="#ffffff"/>
+            android:id="@+id/messagesTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/design_default_color_primary_dark"
+            app:tabSelectedTextColor="#ffffff"
+            app:tabIndicatorColor="#ffffff"
+            app:tabTextColor="#ffffff"/>
 
 
         <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/messageViewPager"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="647dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical" />
+            android:id="@+id/messageViewPager"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="647dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical" />
 
     </LinearLayout>
 

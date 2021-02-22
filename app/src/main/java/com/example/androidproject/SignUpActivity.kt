@@ -47,7 +47,7 @@ class SignUpActivity : AppCompatActivity() {
             }else if (newEmail.text.toString().isEmpty() or !matcher.matches()){
                 safe=false
 
-                newEmail.error="Plase enter an email"
+                newEmail.error="Please enter an email"
             }else if(newPassword.text.toString().isEmpty()){
                 safe=false
 
@@ -104,7 +104,7 @@ class SignUpActivity : AppCompatActivity() {
                 /*
                 val user=User(username, email, pass)
                 val reff: DatabaseReference
-                reff = FirebaseDatabase.getInstance().reference.child("User")
+                reff = FirebaseDatabase.getInstance().reference.child("Users")
                 reff.push().setValue(user)
                  */
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,13 +36,13 @@ public class FriendsMessagesFragment extends Fragment {
 
         //return inflater.inflate(R.layout.fragment_friends_messages, container, false);
 
-        View view =inflater.inflate(R.layout.fragment_friends_messages, container, false);
+        View view = inflater.inflate(R.layout.fragment_friends_messages, container, false);
 
-        friendsView=view.findViewById(R.id.friends_recycler_view);
+        friendsView = view.findViewById(R.id.friends_recycler_view);
         friendsView.setHasFixedSize(true);
         friendsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        friends=new ArrayList<>();
+        friends = new ArrayList<>();
         readAllFriends();
 
 
@@ -50,8 +51,8 @@ public class FriendsMessagesFragment extends Fragment {
 
     private void readAllFriends() {
 
-        FirebaseUser fBU= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("Users");
+        FirebaseUser fBU = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
         reference.addValueEventListener(new ValueEventListener() {
 
             //gets all friends from database reference
@@ -59,27 +60,26 @@ public class FriendsMessagesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 friends.clear();
-                friends=new ArrayList<>();
+                friends = new ArrayList<>();
 
-                for(DataSnapshot dS:snapshot.getChildren()){
+                for (DataSnapshot dS : snapshot.getChildren()) {
                     User user = dS.getValue(User.class);
 
-                    if(!user.getID().equals(fBU.getUid())) {
+                    if (!user.getID().equals(fBU.getUid())) {
 
-                        if(friends.size()>0) {
+                        if (friends.size() > 0) {
                             if (!user.getID().equals(friends.get(friends.size() - 1).getID())) {
 
                                 friends.add(user);
                             }
-                        }
-                        else{
+                        } else {
                             friends.add(user);
                         }
                     }
 
                 }
 
-                friendsAdapter=new FriendsAdapter(getContext(), friends);
+                friendsAdapter = new FriendsAdapter(getContext(), friends);
                 friendsView.setAdapter(friendsAdapter);
             }
 

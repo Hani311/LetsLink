@@ -136,6 +136,5 @@ public class ChatFragment extends Fragment {
         NotifToken token1=new NotifToken(token);
         reference.child(fBU.getUid()).setValue(token1);
 
-
     }
 }
