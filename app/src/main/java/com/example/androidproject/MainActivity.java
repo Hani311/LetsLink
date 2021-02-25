@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity  {
                     cIV.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
-                    Glide.with(MainActivity.this).load(user.getImageURL()).into(cIV);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(cIV);
                 }
             }
 
@@ -278,5 +279,25 @@ public class MainActivity extends AppCompatActivity  {
         onSwipeListener onSwipe;
         }
 
+        private void configStatus(String status){
+            reference=FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
 
+            HashMap<String, Object> hM=new HashMap<>();
+            hM.put("status", status);
+
+            reference.updateChildren(hM);
+
+        }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        configStatus("online");
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        configStatus("offline");
+    }
+}

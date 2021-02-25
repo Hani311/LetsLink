@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class ChatFragment extends Fragment {
@@ -104,10 +105,15 @@ public class ChatFragment extends Fragment {
                             if(user.getID().equals(ID)){
                                 Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
                                 if(friends.size()!=0){
-                                    for(User friend:friends){
-                                        if(!user.getID().equals(friend.getID())){
-                                            friends.add(user);
+                                    try {
+                                        for (User friend : friends) {
+                                            if (!user.getID().equals(friend.getID())) {
+                                                friends.add(user);
+                                            }
                                         }
+                                    }
+                                    catch(ConcurrentModificationException e){
+                                        friends.remove(user);
                                     }
                                 }
                                 else{
@@ -119,7 +125,7 @@ public class ChatFragment extends Fragment {
                     }
                 }
 
-                friendsAdapter=new FriendsAdapter(getContext(), friends);
+                friendsAdapter=new FriendsAdapter(getContext(), friends, true);
                 chatFriendsView.setAdapter(friendsAdapter);
             }
 
@@ -128,7 +134,7 @@ public class ChatFragment extends Fragment {
 
             }
         });
-        
+
     }
 
     private void updateNotifToken(String token){

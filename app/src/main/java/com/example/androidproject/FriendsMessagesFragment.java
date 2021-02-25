@@ -79,7 +79,7 @@ public class FriendsMessagesFragment extends Fragment {
 
                 }
 
-                friendsAdapter = new FriendsAdapter(getContext(), friends);
+                friendsAdapter = new FriendsAdapter(getContext(), friends, true);
                 friendsView.setAdapter(friendsAdapter);
             }
 

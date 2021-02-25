@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -28,29 +29,35 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.Token;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MessageActivity extends AppCompatActivity {
 
+    boolean notify=false;
     RelativeLayout relativeLayout;
     CircleImageView recepientCiv;
     TextView username;
     ImageButton sendBtn;
     EditText sendText;
-
+    String userid;
+    List<Chat> chatList;
     FirebaseUser fUser;
     DatabaseReference reference;
     Intent intent;
-
     MessageAdapter messageAdapter;
     RecyclerView chatView;
-    List<Chat> chatList;
+    ValueEventListener seenListener;
+    APISpecifier apiSpecifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,8 @@ public class MessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        apiSpecifier=NotifReceiver.getNotifReceiver("https://fcm.googleapis.com/").create(APISpecifier.class);
+        fUser= FirebaseAuth.getInstance().getCurrentUser();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
 
@@ -70,6 +79,7 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                //startActivity(new Intent(MessageActivity.this, MessageActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
@@ -89,12 +99,14 @@ public class MessageActivity extends AppCompatActivity {
         chatView.setLayoutManager(linearLayoutManager);
 
         intent=getIntent();
-        final String userid=intent.getStringExtra("userid");
+        userid=intent.getStringExtra("userid");
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
+                notify=true;
                 String message=sendText.getText().toString();
 
                 if(!message.equals("")) {
@@ -112,8 +124,8 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-        fUser= FirebaseAuth.getInstance().getCurrentUser();
-        reference= FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,7 +138,7 @@ public class MessageActivity extends AppCompatActivity {
                     recepientCiv.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
-                    Glide.with(MessageActivity.this).load(user.getImageURL()).into(recepientCiv);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(recepientCiv);
                 }
 
                 readMessage(fUser.getUid(), userid, user.getImageURL());
@@ -168,8 +180,10 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
-
+                try {
+                    chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
+                }
+                catch(NullPointerException e){}
                 return false;
             }
         });
@@ -207,8 +221,86 @@ public class MessageActivity extends AppCompatActivity {
         hM.put("sender", sender);
         hM.put("receiver", receiver);
         hM.put("message", message);
+        hM.put("seen", false);
 
         reference.child("Chats").push().setValue(hM);
+
+        final String msg=message;
+        reference=FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dS:snapshot.getChildren()){
+                    User user=dS.getValue(User.class);
+
+                    if(notify) {
+                        sendNotification(receiver, user.getUsername(), msg);
+                    }
+                    notify=false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        /*
+        DatabaseReference chatReference=FirebaseDatabase.getInstance().getReference("Chatlist").child(userid);
+        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    chatReference.child("id").setValue(userid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+         */
+    }
+
+    private void sendNotification(String receiver, String username, String msg) {
+        DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query=tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dS:snapshot.getChildren()){
+                    NotifToken token=dS.getValue(NotifToken.class);
+                    Data data= new Data(fUser.getUid(),R.mipmap.ic_launcher,username+": "+msg, "New Message", userid);
+                    NotifSender sender = new NotifSender(data, token.getToken());
+                    apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
+                        @Override
+                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                            if(response.code()==200){
+                                if(response.body().succe!=1){
+                                    Toast.makeText(MessageActivity.this, "Sending notification failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Response> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void readMessage(String receiverID, String senderID, String imageurl){
@@ -220,16 +312,20 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatList.clear();
 
-                for(DataSnapshot dS:snapshot.getChildren()){
-                    Chat chat=dS.getValue(Chat.class);
-                    if(chat.getReceiver().equals(receiverID)&&chat.getSender().equals(senderID)||chat.getReceiver().equals(senderID)
-                            && chat.getSender().equals(receiverID)){
+                for(DataSnapshot dS:snapshot.getChildren()) {
+                    Chat chat = dS.getValue(Chat.class);
+                    if (chat.getReceiver().equals(receiverID) && chat.getSender().equals(senderID) || chat.getReceiver().equals(senderID)
+                            && chat.getSender().equals(receiverID)) {
                         chatList.add(chat);
                     }
 
                     messageAdapter = new MessageAdapter(MessageActivity.this, chatList, imageurl);
                     chatView.setAdapter(messageAdapter);
-                    chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
+
+                    try {
+                        chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
+                    }
+                    catch(NullPointerException e){ }
                 }
             }
 
@@ -238,5 +334,46 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+        seen(userid);
+    }
+
+    private void seen(String userid){
+        reference=FirebaseDatabase.getInstance().getReference().child("Chats");
+        seenListener=reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dS:snapshot.getChildren()){
+                    Chat chat = dS.getValue(Chat.class);
+
+                    if(chat.getReceiver().equals(fUser.getUid())&&chat.getSender().equals(userid))
+                    {
+                        HashMap<String, Object> hM=new HashMap<>();
+
+                        hM.put("seen", true);
+                        dS.getRef().updateChildren(hM);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reference.removeEventListener(seenListener);
     }
 }

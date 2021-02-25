@@ -20,10 +20,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     private Context context;
     private List<User> usersList;
+    private boolean inChat;
 
-    public FriendsAdapter(Context context, List<User> usersList) {
+    public FriendsAdapter(Context context, List<User> usersList, boolean inChat) {
         this.context = context;
         this.usersList = usersList;
+        this.inChat=inChat;
     }
 
     @NonNull
@@ -39,6 +41,21 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         final User user = usersList.get(position);
         holder.username.setText(user.getUsername());
+
+        if(inChat){
+            if(user.getStatus().equals("online")){
+                holder.offline.setVisibility(View.GONE);
+                holder.online.setVisibility(View.VISIBLE);
+            }
+            else{
+                holder.online.setVisibility(View.GONE);
+                holder.offline.setVisibility(View.VISIBLE);
+            }
+        }
+        else{
+            holder.online.setVisibility(View.GONE);
+            holder.offline.setVisibility(View.GONE);
+        }
 
         try {
             if (user.getImageURL().equalsIgnoreCase("default")) {
@@ -74,12 +91,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         public TextView username;
         public ImageView friendsProfilePic;
+        public ImageView online;
+        public ImageView offline;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username=itemView.findViewById(R.id.friends_username);
             friendsProfilePic=itemView.findViewById(R.id.friends_profile_image);
+            online=itemView.findViewById(R.id.onStatus);
+            offline=itemView.findViewById(R.id.offStatus);
         }
     }
 

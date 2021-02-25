@@ -22,6 +22,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private Context context;
     private List<Chat> chatList;
     private String imageurl;
+
     private static final int CHAT_TYPE__LEFT=0;
     private static final int CHAT_TYPE_RIGHT=1;
     FirebaseUser fUser;
@@ -61,6 +62,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }else{
             Glide.with(context).load(imageurl);
         }
+
+        try {
+            if (position == chatList.size() - 1) {
+                if (chat.isSeen()) {
+                    holder.seenText.setText("seen");
+                } else {
+                    holder.seenText.setText("sent");
+                }
+            } else {
+                holder.seenText.setVisibility(View.GONE);
+            }
+        }catch(NullPointerException e){}
     }
 
     @Override
@@ -84,12 +97,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public TextView message;
         public ImageView chatProfilePic;
+        public TextView seenText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             message=itemView.findViewById(R.id.chat_message);
             chatProfilePic=itemView.findViewById(R.id.civ_in_chat);
+            seenText=itemView.findViewById(R.id.seen);
         }
     }
 }
