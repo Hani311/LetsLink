@@ -212,6 +212,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String sender, String receiver, String message){
+        notify=true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             sendBtn.setBackground(getDrawable(R.drawable.ic_baseline_send_24));
         }
@@ -228,10 +229,28 @@ public class MessageActivity extends AppCompatActivity {
 
         final String msg=message;
 
-        if(notify) {
-            sendNotification(receiver, "user", msg);
-            notify=false;
-        }
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(sender);
+        reference1.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 User user = snapshot.child("Users").getValue(User.class);
+                    if(notify) {
+
+                        sendNotification(receiver, "user", msg);
+                        notify=false;
+                    }
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         /*
         reference=FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
@@ -289,7 +308,7 @@ public class MessageActivity extends AppCompatActivity {
                 try {
                     for (DataSnapshot dS : snapshot.getChildren()) {
                         NotifToken token = dS.getValue(NotifToken.class);
-                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, username + ": " + msg, "New Message", userid);
+                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, userid,username + ": " + msg ,"New Message");
                         NotifSender sender = new NotifSender(data, token.getToken());
                         apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
                             @Override

@@ -11,6 +11,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -166,9 +168,11 @@ public class MainActivity extends AppCompatActivity  {
                navController.navigate(R.id.action_titleFragment2_to_userProfile);
             }
         });
-
-
          */
+
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
         binding.getRoot();
         //setContentView(R.layout.activity_main);
     }
@@ -280,7 +284,13 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         private void configStatus(String status){
+
             reference=FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
+
+            SharedPreferences sp=getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("Current_USERID", fBU.getUid());
+            editor.apply();
 
             HashMap<String, Object> hM=new HashMap<>();
             hM.put("status", status);
@@ -288,6 +298,12 @@ public class MainActivity extends AppCompatActivity  {
             reference.updateChildren(hM);
 
         }
+
+     public void updateToken(String token){
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Tokens");
+        NotifToken mToken=new NotifToken(token);
+        ref.child(fBU.getUid()).setValue(mToken);
+     }
 
     @Override
     protected void onResume() {

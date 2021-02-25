@@ -5,14 +5,14 @@ public class Data {
 
     private String user;
     private int icon;
-    private String sented;
+    private String sent;
     private String body;
     private String title;
 
-    public Data(String user, int icon, String sented, String body, String title) {
+    public Data(String user, int icon, String sent, String body, String title) {
         this.user = user;
         this.icon = icon;
-        this.sented = sented;
+        this.sent = sent;
         this.body = body;
         this.title = title;
     }
@@ -28,8 +28,8 @@ public class Data {
         this.icon = icon;
     }
 
-    public void setSented(String sented) {
-        this.sented = sented;
+    public void setsent(String sent) {
+        this.sent = sent;
     }
 
     public void setBody(String body) {
@@ -48,8 +48,8 @@ public class Data {
         return icon;
     }
 
-    public String getSented() {
-        return sented;
+    public String getsent() {
+        return sent;
     }
 
     public String getBody() {

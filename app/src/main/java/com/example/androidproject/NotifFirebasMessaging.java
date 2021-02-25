@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,11 +24,17 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String sented=remoteMessage.getData().get("sented");
+        SharedPreferences sP=getSharedPreferences("SP_USER", MODE_PRIVATE);
+        String saveUserID=sP.getString("Current_USERID", "None");
+
+        String sent=remoteMessage.getData().get("sent");
+        String user=remoteMessage.getData().get("user");
         FirebaseUser fBU = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(fBU!=null && sented.equals(fBU.getUid())){
-            sendNotifications(remoteMessage);
+        if(fBU!=null && sent.equals(fBU.getUid())){
+            if(!saveUserID.equals(user)) {
+                sendNotifications(remoteMessage);
+            }
         }
 
     }
