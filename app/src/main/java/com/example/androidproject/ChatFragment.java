@@ -103,7 +103,7 @@ public class ChatFragment extends Fragment {
 
                         for(String ID:friendsList){
                             if(user.getID().equals(ID)){
-                                Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
                                 if(friends.size()!=0){
                                     try {
                                         for (User friend : friends) {

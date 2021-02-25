@@ -34,10 +34,10 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
 
     private void sendNotifications(RemoteMessage remoteMessage) {
 
-        String userID = remoteMessage.getData().get("userID");
-        String notifIcon = remoteMessage.getData().get("notifIcon");
-        String notifBody = remoteMessage.getData().get("notifBody");
-        String notifTitle = remoteMessage.getData().get("notifTitle");
+        String userID = remoteMessage.getData().get("user");
+        String notifIcon = remoteMessage.getData().get("icon");
+        String notifBody = remoteMessage.getData().get("body");
+        String notifTitle = remoteMessage.getData().get("title");
 
         RemoteMessage.Notification notif = remoteMessage.getNotification();
         int hexed = Integer.parseInt(userID.replaceAll("[\\D]", ""));

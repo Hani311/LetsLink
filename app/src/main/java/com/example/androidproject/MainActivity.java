@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity  {
                 User user = snapshot.getValue(User.class);
 
                 Toast toast = Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT);
-                toast.show();
+                //toast.show();
                 username.setText(user.getUsername());
 
                 if(user.getImageURL().equals("default")) {

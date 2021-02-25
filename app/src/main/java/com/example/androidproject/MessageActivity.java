@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -226,18 +227,27 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hM);
 
         final String msg=message;
+
+        if(notify) {
+            sendNotification(receiver, "user", msg);
+            notify=false;
+        }
+        /*
         reference=FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot dS:snapshot.getChildren()){
-                    User user=dS.getValue(User.class);
+                    try {
+                        {
+                            User user = dS.getValue(User.class);
 
-                    if(notify) {
-                        sendNotification(receiver, user.getUsername(), msg);
-                    }
-                    notify=false;
+                            if (notify) {
+                            }
+                            notify = false;
+                        }
+                    }catch (DatabaseException e){}
                 }
             }
 
@@ -246,6 +256,8 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+         */
 
 
         /*
@@ -274,26 +286,28 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot dS:snapshot.getChildren()){
-                    NotifToken token=dS.getValue(NotifToken.class);
-                    Data data= new Data(fUser.getUid(),R.mipmap.ic_launcher,username+": "+msg, "New Message", userid);
-                    NotifSender sender = new NotifSender(data, token.getToken());
-                    apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
-                        @Override
-                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                            if(response.code()==200){
-                                if(response.body().succe!=1){
-                                    Toast.makeText(MessageActivity.this, "Sending notification failed", Toast.LENGTH_SHORT).show();
+                try {
+                    for (DataSnapshot dS : snapshot.getChildren()) {
+                        NotifToken token = dS.getValue(NotifToken.class);
+                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, username + ": " + msg, "New Message", userid);
+                        NotifSender sender = new NotifSender(data, token.getToken());
+                        apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
+                            @Override
+                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                if (response.code() == 200) {
+                                    if (response.body().succe == 1) {
+                                        Toast.makeText(MessageActivity.this, "Sending notification failed", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Response> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<Response> call, Throwable t) {
 
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
+                }catch (IllegalArgumentException e){}
             }
 
             @Override

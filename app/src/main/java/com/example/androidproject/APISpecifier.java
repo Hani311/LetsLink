@@ -10,8 +10,9 @@ public interface APISpecifier {
 
 
     @Headers({
-                    "Content-Type=application/json", "Authorization:key=AAAAnmnwK_k:APA91bHwscgbvulAHYj_IxFkRXae_ORYTRbUzTh6f9adOZIyexdc6gHkyrqHKGzZ2K3djIeR6-RPxCTBpLbfKH040Yid-CgdxT-R8pGn_fJhWfnD7DQBvSIbTKmXe1QXMAvS-m-kWZD2"
-            })
+            "Content-Type:application/json",
+            "Authorization:key=AAAAnmnwK_k:APA91bHwscgbvulAHYj_IxFkRXae_ORYTRbUzTh6f9adOZIyexdc6gHkyrqHKGzZ2K3djIeR6-RPxCTBpLbfKH040Yid-CgdxT-R8pGn_fJhWfnD7DQBvSIbTKmXe1QXMAvS-m-kWZD2"
+    })
 
     @POST("fcm/send")
         Call<Response> sendNotification(@Body NotifSender sender);

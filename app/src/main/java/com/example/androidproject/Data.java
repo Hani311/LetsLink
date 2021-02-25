@@ -3,60 +3,60 @@ package com.example.androidproject;
 public class Data {
 
 
-    private String userID;
-    private int notifIcon;
+    private String user;
+    private int icon;
     private String sented;
-    private String notifBody;
-    private String notifTitle;
+    private String body;
+    private String title;
 
-    public Data(String userID, int notifIcon, String sented, String notifBody, String notifTitle) {
-        this.userID = userID;
-        this.notifIcon = notifIcon;
+    public Data(String user, int icon, String sented, String body, String title) {
+        this.user = user;
+        this.icon = icon;
         this.sented = sented;
-        this.notifBody = notifBody;
-        this.notifTitle = notifTitle;
+        this.body = body;
+        this.title = title;
     }
 
-    public Data(){}
-
-    public String getUserID() {
-        return userID;
+    public Data() {
     }
 
-    public int getNotifIcon() {
-        return notifIcon;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getSented() {
-        return sented;
-    }
-
-    public String getNotifBody() {
-        return notifBody;
-    }
-
-    public String getNotifTitle() {
-        return notifTitle;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public void setNotifIcon(int notifIcon) {
-        this.notifIcon = notifIcon;
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 
     public void setSented(String sented) {
         this.sented = sented;
     }
 
-    public void setNotifBody(String notifBody) {
-        this.notifBody = notifBody;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public void setNotifTitle(String notifTitle) {
-        this.notifTitle = notifTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public String getSented() {
+        return sented;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 }
