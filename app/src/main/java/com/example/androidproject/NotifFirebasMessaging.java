@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,9 +9,11 @@ import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,10 +36,46 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
 
         if(fBU!=null && sent.equals(fBU.getUid())){
             if(!saveUserID.equals(user)) {
-                sendNotifications(remoteMessage);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sendOreoNotification(remoteMessage);
+                } else {
+                    sendNotifications(remoteMessage);
+                }
             }
         }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void sendOreoNotification(RemoteMessage remoteMessage) {
+
+        String userID = remoteMessage.getData().get("user");
+        String notifIcon = remoteMessage.getData().get("icon");
+        String notifBody = remoteMessage.getData().get("body");
+        String notifTitle = remoteMessage.getData().get("title");
+
+        RemoteMessage.Notification notif = remoteMessage.getNotification();
+        int hexed = Integer.parseInt(userID.replaceAll("[\\D]", ""));
+        Intent intent = new Intent(this, MessageActivity.class);
+        Bundle notifBUndle = new Bundle();
+        notifBUndle.putString("userid", userID);
+        intent.putExtras(notifBUndle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent= PendingIntent.getActivity(this, hexed, intent, PendingIntent.FLAG_ONE_SHOT);
+        Uri notifSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        OreoNotification oreoNotification=new OreoNotification(this);
+        Notification.Builder builder= oreoNotification.getOreoNotifications(notifTitle, notifBody, pendingIntent, notifSound, notifIcon);
+
+        NotificationManager manager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        int a=0;
+
+        if(hexed>0){
+            a=hexed;
+        }
+
+        oreoNotification.getManager().notify(a, builder.build());
     }
 
     private void sendNotifications(RemoteMessage remoteMessage) {

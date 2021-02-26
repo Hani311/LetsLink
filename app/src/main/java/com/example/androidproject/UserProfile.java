@@ -55,7 +55,7 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
         mAuth = FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
-        storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("Profile Pic");
+        storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("imageURL");
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
         profileChangeBtn= findViewById(R.id.changePic);
@@ -82,8 +82,8 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()&&  snapshot.getChildrenCount() > 0){
-                    if(snapshot.hasChild("image")){
-                        String image = snapshot.child("image").getValue().toString();
+                    if(snapshot.hasChild("imageURL")){
+                        String image = snapshot.child("imageURL").getValue().toString();
                         Picasso.get().load(image).into(civ);
                     }
                 }
