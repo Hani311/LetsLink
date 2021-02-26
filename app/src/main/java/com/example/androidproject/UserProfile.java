@@ -27,7 +27,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
+
+
+
 
 import java.util.HashMap;
 
@@ -54,7 +56,9 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         mAuth = FirebaseAuth.getInstance();
-         databaseReference= FirebaseDatabase.getInstance().getReference().child("User");
+
+         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
+
          storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("Profile Pic");
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
