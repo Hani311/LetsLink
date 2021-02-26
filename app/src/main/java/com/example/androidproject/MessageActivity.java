@@ -125,6 +125,7 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
+        //recepientCiv.setOnClickListener();
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addValueEventListener(new ValueEventListener() {
