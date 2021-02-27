@@ -122,7 +122,7 @@ public class UserProfile extends AppCompatActivity {
                         Uri downloadUrl= task.getResult();
                         myUri = downloadUrl.toString();
                         HashMap<String, Object> userMap = new HashMap<>();
-                        userMap.put("image", myUri);
+                        userMap.put("imageURL", myUri);
                         databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
                         progressDialog.dismiss();
                     }
