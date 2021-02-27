@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity  {
         CircleImageView cIV = binding.profileImage;
         TextView username=binding.usernameDisplay;
 
+        this.getSupportActionBar().hide();
         fBU=FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
 
@@ -72,8 +73,6 @@ public class MainActivity extends AppCompatActivity  {
 
                 User user = snapshot.getValue(User.class);
 
-                Toast toast = Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT);
-                //toast.show();
                 username.setText(user.getUsername());
 
                 if(user.getImageURL().equals("default")) {

@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
@@ -13,6 +15,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -59,6 +64,7 @@ public class MessageActivity extends AppCompatActivity {
     RecyclerView chatView;
     ValueEventListener seenListener;
     APISpecifier apiSpecifier;
+    int indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,8 @@ public class MessageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         apiSpecifier=NotifReceiver.getNotifReceiver("https://fcm.googleapis.com/").create(APISpecifier.class);
         fUser= FirebaseAuth.getInstance().getCurrentUser();
+
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
 
@@ -102,6 +110,7 @@ public class MessageActivity extends AppCompatActivity {
         intent=getIntent();
         userid=intent.getStringExtra("userid");
 
+
         sendBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -124,8 +133,17 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-
-        //recepientCiv.setOnClickListener();
+        recepientCiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context=getApplicationContext();
+                Intent intent=new Intent(context, PopInChatUserActivity.class);
+                intent.putExtra("userid", userid);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ActivityOptions options=ActivityOptions.makeCustomAnimation(context, R.animator.fad_in_popup, R.animator.fad_out_popup);
+                context.startActivity(intent, options.toBundle());
+            }
+        });
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addValueEventListener(new ValueEventListener() {
@@ -238,7 +256,7 @@ public class MessageActivity extends AppCompatActivity {
                  User user = snapshot.child("Users").getValue(User.class);
                     if(notify) {
 
-                        sendNotification(receiver, "user", msg);
+                        sendNotification(receiver, username.getText().toString(), msg);
                         notify=false;
                     }
 
@@ -398,6 +416,36 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.inchat_options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.block_options:
+                blockUser();
+                return true;
+
+            case R.id.mute_notifs:
+                muteUserNotifs();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void muteUserNotifs() {
+    }
+
+    private void blockUser() {
     }
 
     @Override
