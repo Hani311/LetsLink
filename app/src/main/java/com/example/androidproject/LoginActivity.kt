@@ -17,12 +17,43 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
     lateinit var loading:ProgressBar
     lateinit var auth:FirebaseAuth
+    lateinit var reference: DatabaseReference
+
+    override fun onStart() {
+        super.onStart()
+
+        auth=FirebaseAuth.getInstance()
+
+
+        try {
+            /*
+            firebaseUser = auth.currentUser!!
+
+            if (firebaseUser != null) {
+
+                //Toast.makeText(this@LoginActivity, firebaseUser, Toast.LENGTH_SHORT)
+
+                val i = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(i)
+            }
+
+             */
+        }
+
+        catch (e:NullPointerException){
+            e.printStackTrace()
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +61,8 @@ class LoginActivity : AppCompatActivity() {
 
         val binding:ActivityLoginBinding=DataBindingUtil.setContentView(this, R.layout.activity_login)
 
-        auth=FirebaseAuth.getInstance()
+
+
         val usernameText=binding.usernameInput
         val userPassword=binding.passwordInput
         val signUpButton=binding.signUpButton
@@ -74,13 +106,17 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(usernameText.text.toString(), userPassword.text.toString()).addOnCompleteListener { task: Task<AuthResult> ->
             if (task.isSuccessful){
 
-                var currentUser=auth.currentUser
+                var fiebaseuser:FirebaseUser= auth.currentUser!!
+                val userID:String=fiebaseuser.uid
+
+                reference=FirebaseDatabase.getInstance().getReference("Users").child(userID)
 
                 val i:Intent=Intent(this@LoginActivity, MainActivity::class.java)
-                val username=usernameText.text.toString()
-                val password=userPassword.text.toString()
+
                 //i.putExtra("Username", "$username")
                 //i.putExtra("Password", "$password")
+
+
                 startActivity(i)
             }
             else{

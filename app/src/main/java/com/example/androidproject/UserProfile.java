@@ -54,13 +54,13 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         mAuth = FirebaseAuth.getInstance();
-         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
-         storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("Profile Pic");
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
+        storageProfilePicsRef = FirebaseStorage.getInstance().getReference().child("imageURL");
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
-         profileChangeBtn= findViewById(R.id.changePic);
+        profileChangeBtn= findViewById(R.id.changePic);
 
-         saveBtn.setOnClickListener( new View.OnClickListener() {
+        saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) { uploadProfileImage();
             }
@@ -68,13 +68,13 @@ public class UserProfile extends AppCompatActivity {
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  chooseImageFromGallery()
+                //  chooseImageFromGallery()
                 Intent openGalleryIntent =  new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGalleryIntent,1000);
             }
         });
 
-    getUserinfo();
+        getUserinfo();
     }
 
     public void getUserinfo(){
@@ -82,8 +82,8 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()&&  snapshot.getChildrenCount() > 0){
-                    if(snapshot.hasChild("image")){
-                        String image = snapshot.child("image").getValue().toString();
+                    if(snapshot.hasChild("imageURL")){
+                        String image = snapshot.child("imageURL").getValue().toString();
                         Picasso.get().load(image).into(civ);
                     }
                 }

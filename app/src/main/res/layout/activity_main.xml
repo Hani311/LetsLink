@@ -8,6 +8,35 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<com.google.android.material.appbar.AppBarLayout
+    app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary_dark">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/username_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="username"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</com.google.android.material.appbar.AppBarLayout>
 
     <fragment
         android:id="@+id/nav_host_fragment"
