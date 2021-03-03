@@ -86,8 +86,8 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()&&  snapshot.getChildrenCount() > 0){
-                    if(snapshot.hasChild("image")){
-                        String image = snapshot.child("image").getValue().toString();
+                    if(snapshot.hasChild("imageURL")){
+                        String image = snapshot.child("imageURL").getValue().toString();
                         Picasso.get().load(image).into(civ);
                     }
                 }
@@ -126,7 +126,7 @@ public class UserProfile extends AppCompatActivity {
                         Uri downloadUrl= task.getResult();
                         myUri = downloadUrl.toString();
                         HashMap<String, Object> userMap = new HashMap<>();
-                        userMap.put("image", myUri);
+                        userMap.put("imageURL", myUri);
                         databaseReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userMap);
                         progressDialog.dismiss();
                     }

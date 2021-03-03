@@ -1,6 +1,5 @@
 package com.example.androidproject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,11 +27,20 @@ public class ProfileNavigationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_navigation_fragment, container, false);
-        Button  skip=view.findViewById(R.id.profileBtn);
+        Button  skip=view.findViewById(R.id.profileBTN);
+        Button  findBtn=view.findViewById(R.id.findBtn);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getActivity(), UserProfile.class);
+                startActivity(intent);
+            }
+        });
+
+        findBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), FindfriendActivity.class);
                 startActivity(intent);
             }
         });
