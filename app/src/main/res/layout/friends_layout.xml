@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background=""
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -22,6 +23,22 @@
         android:text="username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/lastSentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friends_username"
+        android:paddingTop="5dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="-110dp"
+        android:layout_toLeftOf="@id/offStatus"
+        android:layout_toEndOf="@+id/friends_profile_image"
+        android:text="last message"
+        android:maxLines="1"
+        android:textSize="12sp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
 
@@ -51,5 +68,12 @@
         android:layout_marginLeft="-15dp"
         android:layout_toRightOf="@id/friends_profile_image"
         android:layout_toEndOf="@id/friends_profile_image"/>
+
+    <View
+        android:layout_below="@id/lastSentText"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
 
 </RelativeLayout>

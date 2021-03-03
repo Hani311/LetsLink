@@ -56,6 +56,7 @@ public class MessageActivity extends AppCompatActivity {
     ImageButton sendBtn;
     EditText sendText;
     String userid;
+    String recepientUri;
     List<Chat> chatList;
     FirebaseUser fUser;
     DatabaseReference reference;
@@ -64,7 +65,6 @@ public class MessageActivity extends AppCompatActivity {
     RecyclerView chatView;
     ValueEventListener seenListener;
     APISpecifier apiSpecifier;
-    int indicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,6 @@ public class MessageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         apiSpecifier=NotifReceiver.getNotifReceiver("https://fcm.googleapis.com/").create(APISpecifier.class);
         fUser= FirebaseAuth.getInstance().getCurrentUser();
-
-
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
 
@@ -107,8 +105,17 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         chatView.setLayoutManager(linearLayoutManager);
 
+
         intent=getIntent();
         userid=intent.getStringExtra("userid");
+        recepientUri=intent.getStringExtra("imageUri");
+        if(recepientUri.equals("default")) {
+            recepientCiv.setImageResource(R.mipmap.ic_launcher_round);
+        }
+        else{
+            Glide.with(getApplicationContext()).load(recepientUri).into(recepientCiv);
+        }
+        readMessage(fUser.getUid(), userid, recepientUri);
 
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -370,15 +377,20 @@ public class MessageActivity extends AppCompatActivity {
                             && chat.getSender().equals(receiverID)) {
                         chatList.add(chat);
                     }
-
-                    messageAdapter = new MessageAdapter(MessageActivity.this, chatList, imageurl);
-                    chatView.setAdapter(messageAdapter);
-
-                    try {
-                        chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
-                    }
-                    catch(NullPointerException e){ }
                 }
+
+                messageAdapter = new MessageAdapter(MessageActivity.this, chatList, imageurl);
+                chatView.setAdapter(messageAdapter);
+
+                try {
+                    chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
+                }
+                catch(NullPointerException e){ }
+
+                try {
+                    chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
+                }
+                catch(NullPointerException e){ }
             }
 
             @Override

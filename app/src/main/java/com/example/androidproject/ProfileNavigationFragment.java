@@ -61,7 +61,10 @@ public class ProfileNavigationFragment extends Fragment {
                     civ.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
-                    Glide.with(getContext()).load(user.getImageURL()).into(civ);
+                    try {
+                        Glide.with(getContext()).load(user.getImageURL()).into(civ);
+                    }
+                    catch(NullPointerException e){}
                 }
             }
 

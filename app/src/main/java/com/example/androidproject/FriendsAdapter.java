@@ -2,6 +2,7 @@ package com.example.androidproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -21,6 +29,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private Context context;
     private List<User> usersList;
     private boolean inChat;
+    String lastSentMesage;
+    String receiverName;
+    String senderName;
+    boolean seenMsg;
+
+
 
     public FriendsAdapter(Context context, List<User> usersList, boolean inChat) {
         this.context = context;
@@ -41,6 +55,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         final User user = usersList.get(position);
         holder.username.setText(user.getUsername());
+
+        if(inChat){
+            getLastMessage(user.getID(), holder.lastMsg);
+        }
+        else{
+            holder.lastMsg.setVisibility(View.GONE);
+        }
 
         if(inChat){
             if(user.getStatus().equals("online")){
@@ -77,6 +98,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("userid", user.getID());
+                intent.putExtra("imageUri", user.getImageURL());
                 context.startActivity(intent);
             }
         });
@@ -89,10 +111,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView username;
-        public ImageView friendsProfilePic;
-        public ImageView online;
-        public ImageView offline;
+        private TextView username;
+        private ImageView friendsProfilePic;
+        private ImageView online;
+        private ImageView offline;
+        private TextView lastMsg;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +124,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             friendsProfilePic=itemView.findViewById(R.id.friends_profile_image);
             online=itemView.findViewById(R.id.onStatus);
             offline=itemView.findViewById(R.id.offStatus);
+            lastMsg=itemView.findViewById(R.id.lastSentText);
         }
     }
 
@@ -108,4 +132,94 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
+
+    private void getLastMessage(String senderID, TextView lastMsg){
+        lastSentMesage="";
+
+
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        DatabaseReference userReference= FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user = snapshot.getValue(User.class);
+
+                receiverName=user.getUsername();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        DatabaseReference senderReference= FirebaseDatabase.getInstance().getReference("Users").child(senderID);
+        senderReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user = snapshot.getValue(User.class);
+
+                senderName=user.getUsername();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                for(DataSnapshot dS:snapshot.getChildren()) {
+                    Chat chat = dS.getValue(Chat.class);
+                    if (chat.getReceiver().equals(fUser.getUid()) && chat.getSender().equals(senderID) ||
+                            chat.getReceiver().equals(senderID) && chat.getSender().equals(fUser.getUid())) {
+                        lastSentMesage=chat.getMessage();
+                        seenMsg=chat.isSeen;
+
+                    }
+                }
+
+                switch (lastSentMesage){
+                    case "":
+                        lastMsg.setText("");
+                        break;
+
+                    default:
+
+                        if (seenMsg) {
+                            lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD_ITALIC);
+                        } else {
+                            lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                        }
+
+                        if(senderID.equals(fUser.getUid())) {
+                            lastMsg.setText(receiverName+" sent: "+lastSentMesage);
+                        }
+                        else {
+                            lastMsg.setText(senderName+" sent: "+lastSentMesage);
+                        }
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }
