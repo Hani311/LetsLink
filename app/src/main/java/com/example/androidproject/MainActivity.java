@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity  {
         CircleImageView cIV = binding.profileImage;
         TextView username=binding.usernameDisplay;
 
+
+
+
+
         fBU=FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
 
