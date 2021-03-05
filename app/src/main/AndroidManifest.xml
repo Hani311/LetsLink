@@ -14,9 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
-        <activity android:name=".FindfriendActivity"
-            >
-        </activity>
+        <activity android:name=".PersonProfileActivity"></activity>
+        <activity android:name=".FindfriendActivity"></activity>
         <activity android:name=".UserProfile" />
         <activity
             android:name=".LoginActivity"

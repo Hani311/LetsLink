@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".PersonProfileActivity">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/person_pic"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/ic_baseline_person_24"/>
+        <TextView
+            android:id="@+id/person_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profile Name"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_dark"
+            android:layout_below="@id/person_pic"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/person_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="hey there i like byciles "
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_dark"
+            android:layout_below="@id/person_full_name"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/person_send_friend_request_btn"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:background="@color/black"
+            android:text="Send Friend Request"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/person_status"/>
+        <Button
+            android:id="@+id/declinefriendreq"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:background="@color/black"
+            android:text="Send Friend Request"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/person_send_friend_request_btn"/>
+
+
+
+    </RelativeLayout>
+</ScrollView>
+</RelativeLayout>

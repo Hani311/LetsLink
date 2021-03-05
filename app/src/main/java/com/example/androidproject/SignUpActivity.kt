@@ -30,7 +30,7 @@ class SignUpActivity : AppCompatActivity() {
         val newPassword=binding.passwordInput
         val confirmPassword=binding.passwordInputConfirmation
 
-        binding.signUpButton.setOnClickListener(){
+        binding.signUpButton.setOnClickListener {
             var safe =true
             val regex = "^(.+)@(.+)$"
             val pattern:Pattern= Pattern.compile(regex)

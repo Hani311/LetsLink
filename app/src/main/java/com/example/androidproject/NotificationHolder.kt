@@ -1,4 +1,3 @@
 package com.example.androidproject
 
-class NotificationHolder {
-}
+class NotificationHolder

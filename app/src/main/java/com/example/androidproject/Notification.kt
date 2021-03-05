@@ -1,4 +1,3 @@
 package com.example.androidproject
 
-class Notification {
-}
+class Notification
