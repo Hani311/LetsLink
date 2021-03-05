@@ -135,6 +135,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     private void getLastMessage(String senderID, TextView lastMsg){
         lastSentMesage="";
+        final String[] senderConfirm = new String[1];
 
 
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -187,30 +188,31 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                             chat.getReceiver().equals(senderID) && chat.getSender().equals(fUser.getUid())) {
                         lastSentMesage=chat.getMessage();
                         seenMsg=chat.isSeen;
+                        senderConfirm[0] =chat.sender;
+                        if(chat.getSender().equals(senderID)){}
 
                     }
                 }
 
-                switch (lastSentMesage){
-                    case "":
-                        lastMsg.setText("");
-                        break;
+                    switch (lastSentMesage) {
+                        case "":
+                            lastMsg.setText("");
+                            break;
 
-                    default:
+                        default:
 
-                        if (seenMsg) {
-                            lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD_ITALIC);
-                        } else {
-                            lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
-                        }
+                            if (!seenMsg) {
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD_ITALIC);
+                            } else {
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                            }
 
-                        if(senderID.equals(fUser.getUid())) {
-                            lastMsg.setText(receiverName+" sent: "+lastSentMesage);
-                        }
-                        else {
-                            lastMsg.setText(senderName+" sent: "+lastSentMesage);
-                        }
-                        break;
+                            if (senderID.equals(fUser.getUid())) {
+                                lastMsg.setText("You : " + lastSentMesage);
+                            } else {
+                                lastMsg.setText(senderName + " sent: " + lastSentMesage);
+                            }
+                            break;
 
                 }
             }

@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background=""
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -11,25 +10,28 @@
         android:id="@+id/friends_profile_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:textSize="18sp"
-        android:layout_centerVertical="true"
+        android:id="@+id/friends_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/friends_profile_image"
         android:layout_toRightOf="@id/friends_profile_image"
-        android:id="@+id/friends_username"
         android:text="username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textSize="23sp" />
 
     <TextView
         android:id="@+id/lastSentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/friends_username"
-        android:paddingTop="5dp"
+        android:paddingTop="3dp"
         android:layout_marginStart="13dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="2dp"
@@ -70,10 +72,10 @@
         android:layout_toEndOf="@id/friends_profile_image"/>
 
     <View
-        android:layout_below="@id/lastSentText"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#c0c0c0"/>
+        android:layout_below="@+id/friends_username"
+        android:layout_marginTop="35dp"
+        android:background="#c0c0c0" />
 
 </RelativeLayout>
