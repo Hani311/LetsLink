@@ -80,7 +80,7 @@ private FirebaseAuth mAuth;
                  if(currentState.equals("request_sent")) {
                      cancelFriendRequest();
                  }
-                 if(currentState.equals("request_reeived")){
+                 if(currentState.equals("request_received")){
                      acceptFriendsRequest();
                  }
              }
@@ -104,9 +104,28 @@ private FirebaseAuth mAuth;
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-                             cancelFriendRequest();
-                             currentState="friends";
-                             btnSendFriendReq.setText("Unfriend");
+                                friendReqRef.child(senderUserId).child(reciverUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            friendReqRef.child(reciverUserId).child(senderUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()) {
+                                                        btnSendFriendReq.setEnabled(true);
+                                                        currentState ="friends";
+                                                        btnSendFriendReq.setText("Unfriend");
+
+                                                        btnDeclineFriendReq.setVisibility(View.INVISIBLE);
+                                                        btnDeclineFriendReq.setEnabled(false);
+                                                    }
+                                                }
+
+
+                                            });
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -155,7 +174,7 @@ private FirebaseAuth mAuth;
                         btnDeclineFriendReq.setVisibility(View.INVISIBLE);
                         btnDeclineFriendReq.setEnabled(false);
                     }else if (requestType.equals("received")){
-                        currentState="request_recevied";
+                        currentState="request_received";
                         btnSendFriendReq.setText("Accept friend request");
                         btnDeclineFriendReq.setVisibility(View.VISIBLE);
                         btnDeclineFriendReq.setEnabled(true);

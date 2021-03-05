@@ -16,8 +16,8 @@
 
     <ImageButton
         android:id="@+id/SearchButton"
-        android:layout_width="63dp"
-        android:layout_height="49dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/toolbar2"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="4dp"
