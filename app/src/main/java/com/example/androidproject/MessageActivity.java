@@ -1,8 +1,11 @@
 package com.example.androidproject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,12 +18,15 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -57,9 +63,9 @@ public class MessageActivity extends AppCompatActivity {
     EditText sendText;
     String userid;
     String recepientUri;
-    List<Chat> chatList;
     FirebaseUser fUser;
     DatabaseReference reference;
+    List<Chat> chatList;
     Intent intent;
     MessageAdapter messageAdapter;
     RecyclerView chatView;
@@ -90,15 +96,13 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+
+
         chatView=findViewById(R.id.chat_view);
         recepientCiv=findViewById(R.id.profile_image);
         username=findViewById(R.id.username_display);
         sendBtn=findViewById(R.id.sendBtn);
         sendText=findViewById(R.id.send_text);
-
-
-
-
 
         chatView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
@@ -140,19 +144,23 @@ public class MessageActivity extends AppCompatActivity {
                     }
                 }
                 else{
-                    Toast.makeText(MessageActivity.this, "Cannot send empty message", Toast.LENGTH_SHORT).show();
+                    sendMessage(fUser.getUid(), userid, new String(Character.toChars(0x1F44D)));
                 }
                 sendText.setText("");
             }
         });
 
         recepientCiv.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 Context context=getApplicationContext();
                 Intent intent=new Intent(context, PopInChatUserActivity.class);
                 intent.putExtra("userid", userid);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
+                //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation(MessageActivity.this, recepientCiv, ViewCompat.getTransitionName(recepientCiv));
                 ActivityOptions options=ActivityOptions.makeCustomAnimation(context, R.animator.fad_in_popup, R.animator.fad_out_popup);
                 context.startActivity(intent, options.toBundle());
             }
@@ -204,15 +212,20 @@ public class MessageActivity extends AppCompatActivity {
                     if(s.toString().trim().length()>0){
                         sendBtn.setBackground(getDrawable(R.drawable.ic_baseline_send_ready_24));
                     }else{
-                        sendBtn.setBackground(getDrawable(R.drawable.ic_baseline_send_24));
+                        sendBtn.setBackground(getDrawable(R.mipmap.thumbs_up_foreground));
                     }
                 }
             }
         });
 
         sendText.setOnTouchListener(new View.OnTouchListener() {
+
+
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+
 
                 try {
                     chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
@@ -258,18 +271,37 @@ public class MessageActivity extends AppCompatActivity {
         hM.put("seen", false);
 
         reference.child("Chats").push().setValue(hM);
-
         final String msg=message;
 
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(sender);
+        final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(fUser.getUid())
+                .child(userid);
+
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    chatRef.child("id").setValue(userid);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference1.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 User user = snapshot.child("Users").getValue(User.class);
+                 User user = snapshot.getValue(User.class);
                     if(notify) {
 
-                        sendNotification(receiver, username.getText().toString(), msg);
+                        sendNotification(receiver, user.getUsername(), msg);
                         notify=false;
                     }
 
@@ -281,7 +313,6 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-
 
         /*
         reference=FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
@@ -331,6 +362,10 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String receiver, String username, String msg) {
+
+
+
+
         DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Tokens");
         Query query=tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
@@ -366,9 +401,14 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
-    private MessageAdapter readMessage(String receiverID, String senderID, String imageurl){
+    private void readMessage(String receiverID, String senderID, String imageurl){
+
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
+
+
         chatList=new ArrayList<>();
 
         reference=FirebaseDatabase.getInstance().getReference("Chats");
@@ -401,7 +441,6 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         seen(userid);
-        return messageAdapter;
     }
 
     private void seen(String userid){

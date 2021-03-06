@@ -1,5 +1,6 @@
 package com.example.androidproject;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -102,8 +105,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("userid", user.getID());
                 intent.putExtra("imageUri", user.getImageURL());
+                //context.startActivity(intent);
+                //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.friendsProfilePic, ViewCompat.getTransitionName(holder.friendsProfilePic));
                 context.startActivity(intent);
-                //context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
             }
         });
     }
@@ -205,17 +209,17 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
                         default:
 
-                            if (!seenMsg) {
-                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD_ITALIC);
-                            } else {
-                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
-                            }
-
                             if (senderConfirm[0].equals(fUser.getUid())) {
                                 lastMsg.setText("You : " + lastSentMesage);
                             } else {
                                 lastMsg.setText(senderName + " : " + lastSentMesage);
+                                if (!seenMsg) {
+                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
+                                } else {
+                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                                }
                             }
+
                             break;
 
                 }

@@ -25,7 +25,7 @@
         android:id="@+id/chat_message"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/civ_in_chat"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:padding="8dp"
         android:text=""
         android:background="@drawable/chat_background_right"

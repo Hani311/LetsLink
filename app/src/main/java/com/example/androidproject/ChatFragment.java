@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.Tag;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class ChatFragment extends Fragment {
     private RecyclerView chatFriendsView;
     FirebaseUser fBU;
     DatabaseReference reference;
+    private List<ChatList> usersList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +55,38 @@ public class ChatFragment extends Fragment {
         chatFriendsView=view.findViewById(R.id.current_chats_view);
         chatFriendsView.setHasFixedSize(true);
         chatFriendsView.setLayoutManager(new LinearLayoutManager(getContext()));
-        fBU= FirebaseAuth.getInstance().getCurrentUser();
         friendsList=new ArrayList<>();
+        fBU= FirebaseAuth.getInstance().getCurrentUser();
+
+        reference=FirebaseDatabase.getInstance().getReference("Chatlist").child(fBU.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersList=new ArrayList<ChatList>();
+                try {
+                    usersList.clear();
+                }
+                catch (NullPointerException e){}
+
+                for(DataSnapshot dS:snapshot.getChildren()){
+
+                    ChatList chatList =dS.getValue(ChatList.class);
+                    Log.e("chatlist", chatList.getId().trim());
+                    usersList.add(chatList);
+
+                }
+
+                chatList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*
         reference= FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -79,10 +112,46 @@ public class ChatFragment extends Fragment {
 
             }
         });
+    */
 
         updateNotifToken(FirebaseInstanceId.getInstance().getToken());
 
         return view;
+    }
+
+    private void chatList() {
+
+        friends=new ArrayList<>();
+        reference=FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                friends.clear();
+
+                for(DataSnapshot dS:snapshot.getChildren()){
+                    User user = dS.getValue(User.class);
+
+
+
+                    try {
+                        for (ChatList chatList : usersList) {
+                            if (user.getID().equals(chatList.getId())) {
+                                friends.add(user);
+                            }
+                        }
+                    }
+                    catch(NullPointerException e){}
+
+                }
+                friendsAdapter=new FriendsAdapter(getContext(), friends, true);
+                chatFriendsView.setAdapter(friendsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void displayAllChatFriends() {
@@ -102,25 +171,22 @@ public class ChatFragment extends Fragment {
                     if(!user.getID().equals(fBU.getUid())){
 
                         for(String ID:friendsList){
-                            if(user.getID().equals(ID)){
+                            if((user.getID().equals(ID))) {
                                 //Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
-                                if(friends.size()!=0){
+                                if (friends.size() != 0) {
                                     try {
                                         for (User friend : friends) {
                                             if (!user.getID().equals(friend.getID())) {
                                                 friends.add(user);
                                             }
                                         }
-                                    }
-                                    catch(ConcurrentModificationException e){
+                                    } catch (ConcurrentModificationException e) {
                                         friends.remove(user);
                                     }
-                                }
-                                else{
+                                } else {
                                     friends.add(user);
                                 }
                             }
-
                         }
                     }
                 }

@@ -61,8 +61,6 @@ class PopInChatUserActivity : AppCompatActivity() {
         })
 
         dM= DisplayMetrics()
-
-
         windowManager.defaultDisplay.getMetrics(dM)
 
         val width=dM.widthPixels
