@@ -1,8 +1,10 @@
 package com.example.androidproject;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,7 +36,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     String receiverName;
     String senderName;
     boolean seenMsg;
-
 
 
     public FriendsAdapter(Context context, List<User> usersList, boolean inChat) {
@@ -94,12 +96,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener(){
 
 
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("userid", user.getID());
                 intent.putExtra("imageUri", user.getImageURL());
                 context.startActivity(intent);
+                //context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(context).toBundle());
             }
         });
     }
@@ -207,10 +211,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                                 lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
                             }
 
-                            if (senderID.equals(fUser.getUid())) {
+                            if (senderConfirm[0].equals(fUser.getUid())) {
                                 lastMsg.setText("You : " + lastSentMesage);
                             } else {
-                                lastMsg.setText(senderName + " sent: " + lastSentMesage);
+                                lastMsg.setText(senderName + " : " + lastSentMesage);
                             }
                             break;
 

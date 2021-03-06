@@ -115,7 +115,13 @@ public class MessageActivity extends AppCompatActivity {
         else{
             Glide.with(getApplicationContext()).load(recepientUri).into(recepientCiv);
         }
-        readMessage(fUser.getUid(), userid, recepientUri);
+
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                readMessage(fUser.getUid(), userid, recepientUri);
+            }
+        });
 
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -167,6 +173,7 @@ public class MessageActivity extends AppCompatActivity {
                 else{
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(recepientCiv);
                 }
+
 
                 readMessage(fUser.getUid(), userid, user.getImageURL());
 
@@ -234,7 +241,6 @@ public class MessageActivity extends AppCompatActivity {
                         }
                         catch(NullPointerException e){}
                     }});
-
     }
 
     private void sendMessage(String sender, String receiver, String message){
@@ -362,7 +368,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessage(String receiverID, String senderID, String imageurl){
+    private MessageAdapter readMessage(String receiverID, String senderID, String imageurl){
         chatList=new ArrayList<>();
 
         reference=FirebaseDatabase.getInstance().getReference("Chats");
@@ -386,11 +392,6 @@ public class MessageActivity extends AppCompatActivity {
                     chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
                 }
                 catch(NullPointerException e){ }
-
-                try {
-                    chatView.smoothScrollToPosition(chatView.getAdapter().getItemCount());
-                }
-                catch(NullPointerException e){ }
             }
 
             @Override
@@ -400,6 +401,7 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         seen(userid);
+        return messageAdapter;
     }
 
     private void seen(String userid){
