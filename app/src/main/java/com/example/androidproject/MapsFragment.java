@@ -17,6 +17,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
@@ -45,8 +46,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,17 +57,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.view.Event;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static MapsFragment INSTANCE = null;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    double longi, lati;
     String cityName;
     ViewGroup view;
     GoogleMap gMap;
@@ -77,7 +82,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.fragment_maps, null);
-        search = (SearchView) view.findViewById(R.id.searchLocation);
+        search = view.findViewById(R.id.searchLocation);
 
         return view;
     }
@@ -136,11 +141,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
 
-        getClientCurrentLocation();
+        gMap = googleMap;
+
+
         spawnNearbyEventsOnMap(googleMap);
         searchLocation();
-        LatLng sydney = new LatLng(lati, longi);
-        gMap = googleMap;
+
+
         gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -192,26 +199,58 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             btnJoin.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    boolean value = false;
+
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
                                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            int number = snapshot.getValue(Integer.class);
-                                            if (number < Integer.parseInt(event.getCapacity())) {
-                                                number++;
-                                                ref.setValue(number);
-                                                Log.e("TAGGGGG", number + "");
+                                            final int[] number = {snapshot.getValue(Integer.class)};
+                                            if (number[0] < Integer.parseInt(event.getCapacity())) {
+                                               // number++;
+                                               // ref.setValue(number);
+                                                DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                        boolean newUser=true;
+
+                                                        for(DataSnapshot snapshot1:snapshot.getChildren())
+                                                        {
+
+                                                            if(snapshot1.getValue().equals(getUserID()))
+                                                            {
+                                                                newUser=false;
+                                                            }
+
+                                                        }
+
+                                                        if(newUser)
+                                                        {
+                                                            number[0]++;
+                                                            ref.setValue(number[0]);
+                                                            userJoind.child(getUserID()).setValue(getUserID());
+                                                        }
+                                                        Log.e("values",snapshot.toString());
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
+                                                Log.e("TAGGGGG", number[0] + "");
                                             }
 
                                         }
-
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
 
                                         }
                                     });
-
 
                                 }
                             });
@@ -224,12 +263,42 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            int number = snapshot.getValue(Integer.class);
-                                            if (number > 0)
-                                                number--;
+                                            final int[] number = {snapshot.getValue(Integer.class)};
+                                            DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                            userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    boolean newUser=true;
 
-                                            ref.setValue(number);
-                                            Log.e("TAGGGGG", number + "");
+                                                    for(DataSnapshot snapshot1:snapshot.getChildren())
+                                                    {
+
+                                                        if(snapshot1.getValue().equals(getUserID()))
+                                                        {
+
+                                                            if (number[0] > 0) {
+                                                                number[0]--;
+                                                                ref.setValue(number[0]);
+                                                                userJoind.child(getUserID()).removeValue();
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                    Log.e("values",snapshot.toString());
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
+
+
+                                            Log.e("TAGGGGG", number[0] + "");
 
                                         }
 
@@ -271,45 +340,49 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 markerOptions.position(latLng).title(cityName);
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
-                gMap.clear();
+
                 gMap.addMarker(markerOptions);
+                gMap.clear();
+
 
             }
         });
+        getClientCurrentLocation(googleMap);
         //Bitmap bitmapIcon = BitmapFactory.decodeResource(getResources(), R.drawable.sport);
-        googleMap.addMarker(new MarkerOptions().position(sydney).title("You").snippet("Snippet ...").icon(BitmapDescriptorFactory.fromBitmap(customizeImageToBitMap(R.drawable.sport))));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //gMap.addMarker(new MarkerOptions().position(sydney).title("You").snippet("Snippet ...").icon(BitmapDescriptorFactory.fromBitmap(customizeImageToBitMap(R.drawable.sport))));
+
+       // googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
     }
 
-    public void getClientCurrentLocation() {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(requireActivity()));
+    public void getClientCurrentLocation(GoogleMap map) {
 
-        //Objects.requireNonNull(getActivity())
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (requireActivity().getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED){
+                    fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null){
+                                map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())));
+                                Log.e("location", "onSuccess: Here!");
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                            }
+                        }
+                    });
 
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
+            }else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
 
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        lati = location.getLatitude();
-                        longi = location.getLongitude();
-                    } else {
-                        System.out.println("Couldn't access the location!!!");
-                    }
-                }
-            });
-
-
         }
+
+
+
+
+
 
 
     }
@@ -340,6 +413,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     }
                     assert addressList != null;
                     Address address = addressList.get(0);
+                    System.out.println(address);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                     gMap.addMarker(new MarkerOptions().position(latLng).title(location));
                     gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
@@ -370,7 +444,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     double lon = Double.parseDouble(String.valueOf(post.child("longitude").getValue()));
                     String type = String.valueOf(post.child("eventType").getValue());
                     System.out.println(lats + "     " + lon);
-                    Log.e("tagg", String.valueOf(lats) + "   " + String.valueOf(lon));
                     int event = 0;
                     if (type.equals("sport")) {
                         event = R.drawable.sport;
@@ -532,6 +605,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         return p1;
+    }
+
+    public String getUserID(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        return  Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
     }
 
 

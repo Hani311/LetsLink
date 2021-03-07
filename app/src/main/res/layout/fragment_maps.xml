@@ -11,7 +11,7 @@
         xlmns:layout_height="665dp"
         xlmns:layout_alignParentStart="true"
         xlmns:layout_alignParentTop="true"
-        xlmns:layout_marginTop="66dp"
+        xlmns:layout_marginTop="60dp"
         tools:context=".MapsFragment" />
 
 
@@ -19,8 +19,10 @@
         xlmns:id="@+id/searchLocation"
         xlmns:layout_width="match_parent"
         xlmns:layout_height="74dp"
+        xlmns:layout_marginTop="45dp"
         xlmns:queryHint=" search..."
         xlmns:iconifiedByDefault="false"
+        xlmns:background="@color/white"
         />
 
     <ImageView

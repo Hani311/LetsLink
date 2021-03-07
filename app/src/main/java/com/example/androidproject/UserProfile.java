@@ -117,7 +117,7 @@ public class UserProfile extends AppCompatActivity {
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if( task.isSuccessful())
+                    if(task.isSuccessful())
                     {
                         Uri downloadUrl= task.getResult();
                         myUri = downloadUrl.toString();
