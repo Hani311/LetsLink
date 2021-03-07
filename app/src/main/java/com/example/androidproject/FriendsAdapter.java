@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
@@ -38,13 +40,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     String lastSentMesage;
     String receiverName;
     String senderName;
+    String senderConfirm;
     boolean seenMsg;
 
 
     public FriendsAdapter(Context context, List<User> usersList, boolean inChat) {
         this.context = context;
-        this.usersList = usersList;
         this.inChat=inChat;
+        this.usersList=usersList;
     }
 
     @NonNull
@@ -58,58 +61,56 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final User user = usersList.get(position);
-        holder.username.setText(user.getUsername());
+            final User user = usersList.get(position);
+            holder.username.setText(user.getUsername());
 
-        if(inChat){
-            getLastMessage(user.getID(), holder.lastMsg);
-        }
-        else{
-            holder.lastMsg.setVisibility(View.GONE);
-        }
+            if (inChat) {
 
-        if(inChat){
-            if(user.getStatus().equals("online")){
-                holder.offline.setVisibility(View.GONE);
-                holder.online.setVisibility(View.VISIBLE);
-            }
-            else{
-                holder.online.setVisibility(View.GONE);
-                holder.offline.setVisibility(View.VISIBLE);
-            }
-        }
-        else{
-            holder.online.setVisibility(View.GONE);
-            holder.offline.setVisibility(View.GONE);
-        }
+                getLastMessage(user.getID(), holder.lastMsg);
 
-        try {
-            if (user.getImageURL().equalsIgnoreCase("default")) {
-
-                holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
             } else {
-
-                Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
+                holder.lastMsg.setVisibility(View.GONE);
             }
-        }
-        catch (NullPointerException e){
 
-        }
-
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("userid", user.getID());
-                intent.putExtra("imageUri", user.getImageURL());
-                //context.startActivity(intent);
-                //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.friendsProfilePic, ViewCompat.getTransitionName(holder.friendsProfilePic));
-                context.startActivity(intent);
+            if (inChat) {
+                if (user.getStatus().equals("online")) {
+                    holder.offline.setVisibility(View.GONE);
+                    holder.online.setVisibility(View.VISIBLE);
+                } else {
+                    holder.online.setVisibility(View.GONE);
+                    holder.offline.setVisibility(View.VISIBLE);
+                }
+            } else {
+                holder.online.setVisibility(View.GONE);
+                holder.offline.setVisibility(View.GONE);
             }
-        });
+
+            try {
+                if (user.getImageURL().equalsIgnoreCase("default")) {
+
+                    holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
+                } else {
+
+                    Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
+                }
+            } catch (NullPointerException e) {
+
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, MessageActivity.class);
+                    intent.putExtra("userid", user.getID());
+                    intent.putExtra("imageUri", user.getImageURL());
+                    //context.startActivity(intent);
+                    //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.friendsProfilePic, ViewCompat.getTransitionName(holder.friendsProfilePic));
+                    context.startActivity(intent);
+                }
+            });
     }
 
     @Override
@@ -143,8 +144,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     private void getLastMessage(String senderID, TextView lastMsg){
         lastSentMesage="";
-        final String[] senderConfirm = new String[1];
-
 
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -196,7 +195,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                             chat.getReceiver().equals(senderID) && chat.getSender().equals(fUser.getUid())) {
                         lastSentMesage=chat.getMessage();
                         seenMsg=chat.isSeen;
-                        senderConfirm[0] =chat.sender;
+                        senderConfirm=chat.sender;
+                        Log.e("senderID", chat.sender);
+                        Log.e("receiverID", fUser.getUid());
                         if(chat.getSender().equals(senderID)){}
 
                     }
@@ -208,17 +209,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                             break;
 
                         default:
-
-                            if (senderConfirm[0].equals(fUser.getUid())) {
-                                lastMsg.setText("You : " + lastSentMesage);
-                            } else {
-                                lastMsg.setText(senderName + " : " + lastSentMesage);
-                                if (!seenMsg) {
-                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
+                                if (senderConfirm.equals(fUser.getUid())) {
+                                    lastMsg.setText("You : " + lastSentMesage);
                                 } else {
-                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                                    lastMsg.setText(senderName + " : " + lastSentMesage);
+                                    if (!seenMsg) {
+                                        lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
+                                    } else {
+                                        lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                                    }
                                 }
-                            }
 
                             break;
 

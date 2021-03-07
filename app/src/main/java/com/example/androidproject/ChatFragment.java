@@ -7,12 +7,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Tag;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -36,7 +33,7 @@ public class ChatFragment extends Fragment {
     private RecyclerView chatFriendsView;
     FirebaseUser fBU;
     DatabaseReference reference;
-    private List<ChatList> usersList;
+    private List<Chatlist> usersList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,20 +47,24 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        chatFriendsView=view.findViewById(R.id.current_chats_view);
+        chatFriendsView = view.findViewById(R.id.current_chats_view);
         chatFriendsView.setHasFixedSize(true);
         chatFriendsView.setLayoutManager(new LinearLayoutManager(getContext()));
-        friendsList=new ArrayList<>();
-        fBU= FirebaseAuth.getInstance().getCurrentUser();
+        friendsList = new ArrayList<>();
+        fBU = FirebaseAuth.getInstance().getCurrentUser();
 
+        /*
         reference=FirebaseDatabase.getInstance().getReference("Chatlist").child(fBU.getUid());
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                usersList=new ArrayList<ChatList>();
+                friends=new ArrayList<>();
+                friends.clear();
+
+                usersList=new ArrayList<Chatlist>();
                 try {
                     usersList.clear();
                 }
@@ -71,20 +72,87 @@ public class ChatFragment extends Fragment {
 
                 for(DataSnapshot dS:snapshot.getChildren()){
 
-                    ChatList chatList =dS.getValue(ChatList.class);
-                    Log.e("chatlist", chatList.getId().trim());
+                    Chatlist chatList =dS.getValue(Chatlist.class);
+                    //Log.e("chatlist", chatList.getId().trim());
                     usersList.add(chatList);
 
                 }
 
+                DatabaseReference reference1=FirebaseDatabase.getInstance().getReference("Users");
+                reference1.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        friends=new ArrayList<>();
+                        friends.clear();
+
+
+                        for(DataSnapshot dS:snapshot.getChildren()){
+
+                            User user = dS.getValue(User.class);
+                            DatabaseReference reference2=FirebaseDatabase.getInstance().getReference("Chatlist").child(user.getID());
+                            reference2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    //ArrayList<String> limited=null;
+
+                                    for(DataSnapshot dS:snapshot.getChildren()){
+                                        Log.e("friendsSize", String.valueOf(friends.size()));
+                                        Chatlist chatList =dS.getValue(Chatlist.class);
+                                        if() {
+                                            //limited.add(dS.getKey());
+                                            friends.add(user);
+
+                                            /*
+                                            try {
+
+                                                for(User temp:friends){
+
+                                                    Log.e("temp", temp.getID());
+                                                    Log.e("new", user.getID());
+
+                                                    if (temp.getID().equals(user.getID())){
+                                                        friends.remove(temp);
+                                                } else{
+                                                    friends.add(user); }
+                                                }
+
+                                            }catch(ConcurrentModificationException e){
+
+
+
+
+                                        }
+
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) { }
+                            });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 chatList();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {}
 
-            }
         });
+        */
+
+
+
+
+
 
         /*
         reference= FirebaseDatabase.getInstance().getReference("Chats");
@@ -114,6 +182,59 @@ public class ChatFragment extends Fragment {
         });
     */
 
+        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference().child("Chatlist");
+        reference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersList=new ArrayList<>();
+                try {
+                    usersList.clear();
+                }catch (NullPointerException e){}
+
+                for (DataSnapshot dS : snapshot.getChildren()) {
+                    Chatlist chatList = dS.getValue(Chatlist.class);
+
+//                    Log.e("chatlistID", chatList.getFrom());
+                    usersList.add(chatList);
+                    Log.e("newID", String.valueOf(usersList.size()));
+                    //limited.add(dS.getKey());
+                }
+
+                chatList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        /*
+        DatabaseReference reference1=FirebaseDatabase.getInstance().getReference("Users");
+        reference1.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for (DataSnapshot dS : snapshot.getChildren()) {
+
+                    usersList=new ArrayList<Chatlist>();
+                    usersList.clear();
+
+                    User user = dS.getValue(User.class);
+
+                    Log.e("userId",user.getID());
+
+
+                }
+            }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+         */
+
         updateNotifToken(FirebaseInstanceId.getInstance().getToken());
 
         return view;
@@ -121,43 +242,107 @@ public class ChatFragment extends Fragment {
 
     private void chatList() {
 
-        friends=new ArrayList<>();
-        reference=FirebaseDatabase.getInstance().getReference("Users");
+        final boolean[] add = {false};
+
+        reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                friends=new ArrayList<>();
                 friends.clear();
 
-                for(DataSnapshot dS:snapshot.getChildren()){
+                for (DataSnapshot dS : snapshot.getChildren()) {
                     User user = dS.getValue(User.class);
 
+                        for (Chatlist chatList : usersList) {
 
 
-                    try {
-                        for (ChatList chatList : usersList) {
-                            if (user.getID().equals(chatList.getId())) {
-                                friends.add(user);
+                            //Log.e("info",chatList.getId());
+
+                            Log.e("info1", fBU.getUid());
+                            Log.e("info3",user.getID());
+
+
+
+                            if ((fBU.getUid().equals(chatList.getId()))){
+                                user=snapshot.child(chatList.getFrom()).getValue(User.class);
+                                    /*&& chatList.getFrom().equals(user.getID()))
+                                    || (fBU.getUid().equals(chatList.getFrom()) && chatList.getId().equals(user.getID())))
+                                    {
+                                     */
+
+                                try {
+                                    add[0]=true;
+                                    for(int x=0;x<friends.size()-1;x++) {
+                                        if (user.getID().equals(friends.get(x).getID())) {
+                                            add[0] =false;
+                                        }
+                                    }
+
+                                    if(add[0]){
+                                        friends.add(user);
+                                    }
+
+                                }catch (IndexOutOfBoundsException|NullPointerException e){
+                                    friends.add(user);
+                                }
+
+                                Log.e("friendsSize", String.valueOf(friends.size()));
+
+
                             }
+                            else if((fBU.getUid().equals(chatList.getFrom()))){
+
+                                user=snapshot.child(chatList.getId()).getValue(User.class);
+
+                                try {
+
+                                    /*
+                                    if (!user.getID().equals(friends.get(friends.size()-1).getID())) {
+                                            friends.add(user);
+
+                                    }
+
+                                     */
+                                    add[0]=true;
+
+                                    for(int x=0;x<friends.size()-1;x++) {
+                                        if (user.getID().equals(friends.get(x).getID())) {
+                                            add[0] =false;
+                                        }
+                                    }
+                                    if(add[0]){
+                                        friends.add(user);
+                                    }
+
+                                }catch (IndexOutOfBoundsException|NullPointerException e){
+                                    friends.add(user);
+                                }
+                                Log.e("friendsSize", String.valueOf(friends.size()));
+                            }
+                            // }
                         }
-                    }
-                    catch(NullPointerException e){}
 
                 }
+
+                friends.remove(friends.size()-1);
                 friendsAdapter=new FriendsAdapter(getContext(), friends, true);
                 chatFriendsView.setAdapter(friendsAdapter);
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void displayAllChatFriends() {
 
-        friends=new ArrayList<>();
-        reference=FirebaseDatabase.getInstance().getReference("Users");
+        friends = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -165,13 +350,13 @@ public class ChatFragment extends Fragment {
                 friends.clear();
 
 
-                for(DataSnapshot dS:snapshot.getChildren()){
+                for (DataSnapshot dS : snapshot.getChildren()) {
                     User user = dS.getValue(User.class);
 
-                    if(!user.getID().equals(fBU.getUid())){
+                    if (!user.getID().equals(fBU.getUid())) {
 
-                        for(String ID:friendsList){
-                            if((user.getID().equals(ID))) {
+                        for (String ID : friendsList) {
+                            if ((user.getID().equals(ID))) {
                                 //Toast.makeText(getContext(), "ok", Toast.LENGTH_SHORT).show();
                                 if (friends.size() != 0) {
                                     try {
@@ -181,7 +366,6 @@ public class ChatFragment extends Fragment {
                                             }
                                         }
                                     } catch (ConcurrentModificationException e) {
-                                        friends.remove(user);
                                     }
                                 } else {
                                     friends.add(user);
@@ -190,7 +374,7 @@ public class ChatFragment extends Fragment {
                         }
                     }
                 }
-
+                Log.e("friendsSize", String.valueOf(friends.size()));
                 friendsAdapter=new FriendsAdapter(getContext(), friends, true);
                 chatFriendsView.setAdapter(friendsAdapter);
             }
@@ -203,9 +387,9 @@ public class ChatFragment extends Fragment {
 
     }
 
-    private void updateNotifToken(String token){
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Tokens");
-        NotifToken token1=new NotifToken(token);
+    private void updateNotifToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        NotifToken token1 = new NotifToken(token);
         reference.child(fBU.getUid()).setValue(token1);
 
     }

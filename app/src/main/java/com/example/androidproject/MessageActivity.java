@@ -274,15 +274,13 @@ public class MessageActivity extends AppCompatActivity {
         final String msg=message;
 
         final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist")
-                .child(fUser.getUid())
                 .child(userid);
 
         chatRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
                     chatRef.child("id").setValue(userid);
-                }
+                    chatRef.child("from").setValue(fUser.getUid());
             }
 
             @Override
