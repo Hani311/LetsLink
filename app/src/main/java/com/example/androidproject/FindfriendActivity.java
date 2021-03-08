@@ -57,10 +57,10 @@ public class FindfriendActivity extends AppCompatActivity {
 
     private void SearchPeopleAndFriends(String searchTextInput) {
         Toast.makeText(this,"Searching....",Toast.LENGTH_LONG).show();
-        Query searchPepoleAndFriendsQuery= allUsersDataBaseRef.orderByChild("username").startAt(searchTextInput).endAt(searchTextInput + "\uf8ff" );
+        Query searchPeopleAndFriendsQuery= allUsersDataBaseRef.orderByChild("username").startAt(searchTextInput).endAt(searchTextInput + "\uf8ff" );
         FirebaseRecyclerAdapter<FindFriends, FindFriendsViewHolder> firebaseRecyclerAdapter= new FirebaseRecyclerAdapter<FindFriends, FindFriendsViewHolder>(FindFriends.class,
                 R.layout.all_users_display_layout,FindFriendsViewHolder.class,
-            searchPepoleAndFriendsQuery ) {
+            searchPeopleAndFriendsQuery ) {
             @Override
             protected void populateViewHolder(FindFriendsViewHolder viewHolder, FindFriends findFriends, int i) {
                 viewHolder.setUsername(findFriends.getUsername());

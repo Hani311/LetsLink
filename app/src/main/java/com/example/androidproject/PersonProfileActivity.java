@@ -83,6 +83,10 @@ private FirebaseAuth mAuth;
                  if(currentState.equals("request_received")){
                      acceptFriendsRequest();
                  }
+                 if (currentState.equals("friends")){
+                unFriend();
+                 }
+
              }
          });
      }
@@ -90,6 +94,33 @@ private FirebaseAuth mAuth;
          btnDeclineFriendReq.setVisibility(View.INVISIBLE);
          btnSendFriendReq.setVisibility(View.INVISIBLE);
      }
+    }
+
+    private void unFriend() {
+        friendsRef.child(senderUserId).child(reciverUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    friendsRef.child(reciverUserId).child(senderUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                btnSendFriendReq.setEnabled(true);
+                                currentState ="not_friends";
+                                btnSendFriendReq.setText("Send friend request");
+
+                                btnDeclineFriendReq.setVisibility(View.INVISIBLE);
+                                btnDeclineFriendReq.setEnabled(false);
+                            }
+                        }
+
+
+                    });
+                }
+            }
+        });
+
+
     }
 
     private void acceptFriendsRequest() {
@@ -174,11 +205,36 @@ private FirebaseAuth mAuth;
                         btnDeclineFriendReq.setVisibility(View.INVISIBLE);
                         btnDeclineFriendReq.setEnabled(false);
                     }else if (requestType.equals("received")){
+                        System.out.println("received");
                         currentState="request_received";
                         btnSendFriendReq.setText("Accept friend request");
                         btnDeclineFriendReq.setVisibility(View.VISIBLE);
                         btnDeclineFriendReq.setEnabled(true);
+                        btnDeclineFriendReq.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                cancelFriendRequest();
+                            }
+                        });
                     }
+                }   else{
+                    friendsRef.child(senderUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChild(reciverUserId)){
+                                currentState="friends";
+                                btnSendFriendReq.setText("Unfriend ");
+
+                                btnDeclineFriendReq.setVisibility(View.INVISIBLE);
+                                btnDeclineFriendReq.setEnabled(false);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 

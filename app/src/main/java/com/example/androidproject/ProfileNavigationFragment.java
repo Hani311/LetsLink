@@ -29,6 +29,7 @@ public class ProfileNavigationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_navigation_fragment, container, false);
         Button  skip=view.findViewById(R.id.profileBTN);
         Button  findBtn=view.findViewById(R.id.findBtn);
+        Button  btnFriends= view.findViewById(R.id.btnFriendsList);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +42,13 @@ public class ProfileNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getActivity(), FindfriendActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), FrindsListActivity.class);
                 startActivity(intent);
             }
         });

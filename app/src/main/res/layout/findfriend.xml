@@ -22,7 +22,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/textInputLayout"
-        tools:srcCompat="@drawable/ic_search_black" />
+        android:src="@drawable/ic_search_black" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
