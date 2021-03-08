@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_baseline_message_24"
         android:title="Messages"/>
 
-    <item android:id="@+id/maps"
+    <item android:id="@+id/mapsFragment"
         android:icon="@drawable/ic_baseline_map_24"
         android:title="Maps" />
 
