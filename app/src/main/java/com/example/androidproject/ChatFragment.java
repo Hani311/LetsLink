@@ -155,7 +155,7 @@ public class ChatFragment extends Fragment {
                 usersList=new ArrayList<>();
                 try {
                     usersList.clear();
-                }catch (NullPointerException e){}
+
 
                 for (DataSnapshot dS : snapshot.getChildren()) {
                     Chatlist chatList = dS.getValue(Chatlist.class);
@@ -165,6 +165,8 @@ public class ChatFragment extends Fragment {
                     Log.e("newID", String.valueOf(usersList.size()));
                     //limited.add(dS.getKey());
                 }
+                }catch (NullPointerException e){}
+
 
                 chatList();
             }

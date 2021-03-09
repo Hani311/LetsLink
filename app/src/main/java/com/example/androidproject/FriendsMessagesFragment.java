@@ -79,11 +79,8 @@ public class FriendsMessagesFragment extends Fragment {
 
                 }
 
-<<<<<<< HEAD
-                friendsAdapter = new FriendsAdapter(getContext(), friends, false);
-=======
+
                 friendsAdapter = new FriendsAdapter(getContext(), friends, true);
->>>>>>> f728947c774061b372c41f6d876d0eff2787564b
                 friendsView.setAdapter(friendsAdapter);
             }
 
