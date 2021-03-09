@@ -2,27 +2,18 @@ package com.example.androidproject;
 
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.CalendarContract;
-import android.provider.ContactsContract;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +26,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,10 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,15 +48,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.view.Event;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
@@ -76,6 +63,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     SearchView search = null;
     static boolean iftrue = true;
     private Button create;
+    private ImageView sharee;
 
 
     @Nullable
@@ -99,6 +87,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         createEvent(); //The plus button at the top-right corner of the map method
+        shareEvent();
 
 
     }
@@ -471,6 +460,32 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
     }
+
+
+    public void shareEvent(){
+
+        sharee = getActivity().findViewById(R.id.shareEvent);
+        sharee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),Facebook.class));
+
+               /* final AlertDialog.Builder facebook = new AlertDialog.Builder(getActivity());
+                final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                final View dialogView = inflater.inflate(R.layout.activity_facebook,null); //Inflate the actual newnewtest.xml file
+                final AlertDialog dialog;
+                facebook.setView(dialogView);
+                facebook.setTitle("Share Event to FACEBOOK");
+                dialog = facebook.create();
+                dialog.show();
+
+                */
+            }
+        });
+
+
+    }
+
 
 
     public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"

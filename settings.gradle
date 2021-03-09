@@ -1,2 +1,4 @@
+include ':facebook-share'
+include ':facebook-login'
 include ':app'
 rootProject.name = "Android project"
