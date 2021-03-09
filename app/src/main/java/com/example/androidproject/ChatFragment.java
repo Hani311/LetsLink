@@ -148,6 +148,8 @@ public class ChatFragment extends Fragment {
         });
     */
 
+
+
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference().child("Chatlist");
         reference2.addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,8 +162,13 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot dS : snapshot.getChildren()) {
                     Chatlist chatList = dS.getValue(Chatlist.class);
 
-//                    Log.e("chatlistID", chatList.getFrom());
-                    usersList.add(chatList);
+//                   Log.e("chatlistID", chatList.getFrom());
+                    if(chatList.getId().equals(fBU.getUid())){
+                        usersList.add(chatList);
+                    }
+                    else if(chatList.getFrom().equals(fBU.getUid())){
+                        usersList.add(chatList);
+                    }
                     Log.e("newID", String.valueOf(usersList.size()));
                     //limited.add(dS.getKey());
                 }
@@ -200,7 +207,8 @@ public class ChatFragment extends Fragment {
 
     private void chatList() {
 
-        final boolean[] add = {false};
+
+
 
         reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.addValueEventListener(new ValueEventListener() {
@@ -213,76 +221,57 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot dS : snapshot.getChildren()) {
                     User user = dS.getValue(User.class);
 
-                    for (Chatlist chatList : usersList) {
+                    ArrayList<String> friendNames = new ArrayList<>();
 
+                    for (Chatlist chatList : usersList) {
 
                         //Log.e("info",chatList.getId());
 
                         Log.e("info1", fBU.getUid());
                         Log.e("info3",user.getID());
+                        Log.e("usersList", String.valueOf(usersList.size()));
 
 
 
-                        if ((fBU.getUid().equals(chatList.getId()))){
-                            user=snapshot.child(chatList.getFrom()).getValue(User.class);
+                        if ((fBU.getUid().equals(chatList.getId()))&&user.getID().equals(chatList.getFrom())){
                                     /*&& chatList.getFrom().equals(user.getID()))
                                     || (fBU.getUid().equals(chatList.getFrom()) && chatList.getId().equals(user.getID())))
                                     {
                                      */
-
                             try {
-                                add[0]=true;
-                                for(int x=0;x<friends.size()-1;x++) {
-                                    if (user.getID().equals(friends.get(x).getID())) {
-                                        add[0] =false;
-                                    }
-                                }
 
-                                if(add[0]){
+                                if(!friends.get(friends.size()-1).getID().equals(user.getID())) {
                                     friends.add(user);
                                 }
-
                             }catch (IndexOutOfBoundsException|NullPointerException e){
                                 friends.add(user);
+                                friendNames.add(chatList.getFrom());
                             }
 
                             Log.e("friendsSize", String.valueOf(friends.size()));
 
 
                         }
-                        else if((fBU.getUid().equals(chatList.getFrom()))){
-
-                            user=snapshot.child(chatList.getId()).getValue(User.class);
+                        else if((fBU.getUid().equals(chatList.getFrom()))&&user.getID().equals(chatList.getId())){
 
                             try {
 
-                                    /*
-                                    if (!user.getID().equals(friends.get(friends.size()-1).getID())) {
-                                            friends.add(user);
-                                    }
-                                     */
-                                add[0]=true;
-
-                                for(int x=0;x<friends.size()-1;x++) {
-                                    if (user.getID().equals(friends.get(x).getID())) {
-                                        add[0] =false;
-                                    }
-                                }
-                                if(add[0]){
+                                if(!friends.get(friends.size()-1).getID().equals(user.getID())) {
                                     friends.add(user);
                                 }
 
                             }catch (IndexOutOfBoundsException|NullPointerException e){
                                 friends.add(user);
+                                friendNames.add(chatList.getId());
                             }
                             Log.e("friendsSize", String.valueOf(friends.size()));
                         }
                         // }
                     }
-
                 }
 
-                friends.remove(friends.size()-1);
+                //friends.remove(friends.size()-1);
+
                 friendsAdapter=new FriendsAdapter(getContext(), friends, true);
                 chatFriendsView.setAdapter(friendsAdapter);
             }
