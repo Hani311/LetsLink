@@ -19,6 +19,20 @@
     <string name="login_failed">"Login failed"</string>
     <string name="checbox_title">I have read and accept the conditions for terms and services</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="createButton">Create</string>
+    <array name="type">
+        <item>party</item>
+        <item>sport</item>
+    </array>
+    <string name="capacity">Capacity:</string>
+    <array name="capacity">
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+        <item>four</item>
+    </array>
+    <string name="description_box">Description box....</string>
+
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

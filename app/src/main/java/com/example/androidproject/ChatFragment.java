@@ -58,94 +58,66 @@ public class ChatFragment extends Fragment {
         /*
         reference=FirebaseDatabase.getInstance().getReference("Chatlist").child(fBU.getUid());
         reference.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 friends=new ArrayList<>();
                 friends.clear();
-
                 usersList=new ArrayList<Chatlist>();
                 try {
                     usersList.clear();
                 }
                 catch (NullPointerException e){}
-
                 for(DataSnapshot dS:snapshot.getChildren()){
-
                     Chatlist chatList =dS.getValue(Chatlist.class);
                     //Log.e("chatlist", chatList.getId().trim());
                     usersList.add(chatList);
-
                 }
-
                 DatabaseReference reference1=FirebaseDatabase.getInstance().getReference("Users");
                 reference1.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         friends=new ArrayList<>();
                         friends.clear();
-
-
                         for(DataSnapshot dS:snapshot.getChildren()){
-
                             User user = dS.getValue(User.class);
                             DatabaseReference reference2=FirebaseDatabase.getInstance().getReference("Chatlist").child(user.getID());
                             reference2.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                     //ArrayList<String> limited=null;
-
                                     for(DataSnapshot dS:snapshot.getChildren()){
                                         Log.e("friendsSize", String.valueOf(friends.size()));
                                         Chatlist chatList =dS.getValue(Chatlist.class);
                                         if() {
                                             //limited.add(dS.getKey());
                                             friends.add(user);
-
                                             /*
                                             try {
-
                                                 for(User temp:friends){
-
                                                     Log.e("temp", temp.getID());
                                                     Log.e("new", user.getID());
-
                                                     if (temp.getID().equals(user.getID())){
                                                         friends.remove(temp);
                                                 } else{
                                                     friends.add(user); }
                                                 }
-
                                             }catch(ConcurrentModificationException e){
-
-
-
-
                                         }
-
-
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) { }
                             });
                         }
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
                 chatList();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-
         });
         */
 
@@ -159,25 +131,19 @@ public class ChatFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 for(DataSnapshot dS:snapshot.getChildren()){
-
                     Chat chat = dS.getValue(Chat.class);
                     if(chat.getSender().equals(fBU.getUid())) {
-
                         friendsList.add(chat.getReceiver());
                     }
                     if(chat.getReceiver().equals(fBU.getUid())){
                         friendsList.add(chat.getSender());
                     }
-
                 }
                 displayAllChatFriends();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     */
@@ -210,29 +176,19 @@ public class ChatFragment extends Fragment {
         /*
         DatabaseReference reference1=FirebaseDatabase.getInstance().getReference("Users");
         reference1.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 for (DataSnapshot dS : snapshot.getChildren()) {
-
                     usersList=new ArrayList<Chatlist>();
                     usersList.clear();
-
                     User user = dS.getValue(User.class);
-
                     Log.e("userId",user.getID());
-
-
                 }
             }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
-
          */
 
         updateNotifToken(FirebaseInstanceId.getInstance().getToken());
@@ -255,74 +211,72 @@ public class ChatFragment extends Fragment {
                 for (DataSnapshot dS : snapshot.getChildren()) {
                     User user = dS.getValue(User.class);
 
-                        for (Chatlist chatList : usersList) {
+                    for (Chatlist chatList : usersList) {
 
 
-                            //Log.e("info",chatList.getId());
+                        //Log.e("info",chatList.getId());
 
-                            Log.e("info1", fBU.getUid());
-                            Log.e("info3",user.getID());
+                        Log.e("info1", fBU.getUid());
+                        Log.e("info3",user.getID());
 
 
 
-                            if ((fBU.getUid().equals(chatList.getId()))){
-                                user=snapshot.child(chatList.getFrom()).getValue(User.class);
+                        if ((fBU.getUid().equals(chatList.getId()))){
+                            user=snapshot.child(chatList.getFrom()).getValue(User.class);
                                     /*&& chatList.getFrom().equals(user.getID()))
                                     || (fBU.getUid().equals(chatList.getFrom()) && chatList.getId().equals(user.getID())))
                                     {
                                      */
 
-                                try {
-                                    add[0]=true;
-                                    for(int x=0;x<friends.size()-1;x++) {
-                                        if (user.getID().equals(friends.get(x).getID())) {
-                                            add[0] =false;
-                                        }
+                            try {
+                                add[0]=true;
+                                for(int x=0;x<friends.size()-1;x++) {
+                                    if (user.getID().equals(friends.get(x).getID())) {
+                                        add[0] =false;
                                     }
+                                }
 
-                                    if(add[0]){
-                                        friends.add(user);
-                                    }
-
-                                }catch (IndexOutOfBoundsException|NullPointerException e){
+                                if(add[0]){
                                     friends.add(user);
                                 }
 
-                                Log.e("friendsSize", String.valueOf(friends.size()));
-
-
+                            }catch (IndexOutOfBoundsException|NullPointerException e){
+                                friends.add(user);
                             }
-                            else if((fBU.getUid().equals(chatList.getFrom()))){
 
-                                user=snapshot.child(chatList.getId()).getValue(User.class);
+                            Log.e("friendsSize", String.valueOf(friends.size()));
 
-                                try {
+
+                        }
+                        else if((fBU.getUid().equals(chatList.getFrom()))){
+
+                            user=snapshot.child(chatList.getId()).getValue(User.class);
+
+                            try {
 
                                     /*
                                     if (!user.getID().equals(friends.get(friends.size()-1).getID())) {
                                             friends.add(user);
-
                                     }
-
                                      */
-                                    add[0]=true;
+                                add[0]=true;
 
-                                    for(int x=0;x<friends.size()-1;x++) {
-                                        if (user.getID().equals(friends.get(x).getID())) {
-                                            add[0] =false;
-                                        }
+                                for(int x=0;x<friends.size()-1;x++) {
+                                    if (user.getID().equals(friends.get(x).getID())) {
+                                        add[0] =false;
                                     }
-                                    if(add[0]){
-                                        friends.add(user);
-                                    }
-
-                                }catch (IndexOutOfBoundsException|NullPointerException e){
+                                }
+                                if(add[0]){
                                     friends.add(user);
                                 }
-                                Log.e("friendsSize", String.valueOf(friends.size()));
+
+                            }catch (IndexOutOfBoundsException|NullPointerException e){
+                                friends.add(user);
                             }
-                            // }
+                            Log.e("friendsSize", String.valueOf(friends.size()));
                         }
+                        // }
+                    }
 
                 }
 

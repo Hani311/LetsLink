@@ -279,8 +279,8 @@ public class MessageActivity extends AppCompatActivity {
         chatRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    chatRef.child("id").setValue(userid);
-                    chatRef.child("from").setValue(fUser.getUid());
+                chatRef.child("id").setValue(userid);
+                chatRef.child("from").setValue(fUser.getUid());
             }
 
             @Override
@@ -296,12 +296,12 @@ public class MessageActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 User user = snapshot.getValue(User.class);
-                    if(notify) {
+                User user = snapshot.getValue(User.class);
+                if(notify) {
 
-                        sendNotification(receiver, user.getUsername(), msg);
-                        notify=false;
-                    }
+                    sendNotification(receiver, user.getUsername(), msg);
+                    notify=false;
+                }
 
             }
 
@@ -317,12 +317,10 @@ public class MessageActivity extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 for(DataSnapshot dS:snapshot.getChildren()){
                     try {
                         {
                             User user = dS.getValue(User.class);
-
                             if (notify) {
                             }
                             notify = false;
@@ -330,13 +328,10 @@ public class MessageActivity extends AppCompatActivity {
                     }catch (DatabaseException e){}
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
          */
 
 
@@ -349,13 +344,10 @@ public class MessageActivity extends AppCompatActivity {
                     chatReference.child("id").setValue(userid);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
          */
     }
 

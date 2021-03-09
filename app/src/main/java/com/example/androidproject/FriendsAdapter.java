@@ -61,56 +61,56 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-            final User user = usersList.get(position);
-            holder.username.setText(user.getUsername());
+        final User user = usersList.get(position);
+        holder.username.setText(user.getUsername());
 
-            if (inChat) {
+        if (inChat) {
 
-                getLastMessage(user.getID(), holder.lastMsg);
+            getLastMessage(user.getID(), holder.lastMsg);
 
-            } else {
-                holder.lastMsg.setVisibility(View.GONE);
-            }
+        } else {
+            holder.lastMsg.setVisibility(View.GONE);
+        }
 
-            if (inChat) {
-                if (user.getStatus().equals("online")) {
-                    holder.offline.setVisibility(View.GONE);
-                    holder.online.setVisibility(View.VISIBLE);
-                } else {
-                    holder.online.setVisibility(View.GONE);
-                    holder.offline.setVisibility(View.VISIBLE);
-                }
+        if (inChat) {
+            if (user.getStatus().equals("online")) {
+                holder.offline.setVisibility(View.GONE);
+                holder.online.setVisibility(View.VISIBLE);
             } else {
                 holder.online.setVisibility(View.GONE);
-                holder.offline.setVisibility(View.GONE);
+                holder.offline.setVisibility(View.VISIBLE);
             }
+        } else {
+            holder.online.setVisibility(View.GONE);
+            holder.offline.setVisibility(View.GONE);
+        }
 
-            try {
-                if (user.getImageURL().equalsIgnoreCase("default")) {
+        try {
+            if (user.getImageURL().equalsIgnoreCase("default")) {
 
-                    holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
-                } else {
+                holder.friendsProfilePic.setImageResource(R.mipmap.ic_launcher);
+            } else {
 
-                    Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
-                }
-            } catch (NullPointerException e) {
-
+                Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
             }
+        } catch (NullPointerException e) {
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
 
 
-                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, MessageActivity.class);
-                    intent.putExtra("userid", user.getID());
-                    intent.putExtra("imageUri", user.getImageURL());
-                    //context.startActivity(intent);
-                    //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.friendsProfilePic, ViewCompat.getTransitionName(holder.friendsProfilePic));
-                    context.startActivity(intent);
-                }
-            });
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("userid", user.getID());
+                intent.putExtra("imageUri", user.getImageURL());
+                //context.startActivity(intent);
+                //ActivityOptionsCompat options=ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.friendsProfilePic, ViewCompat.getTransitionName(holder.friendsProfilePic));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -203,24 +203,24 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                     }
                 }
 
-                    switch (lastSentMesage) {
-                        case "":
-                            lastMsg.setText("");
-                            break;
+                switch (lastSentMesage) {
+                    case "":
+                        lastMsg.setText("");
+                        break;
 
-                        default:
-                                if (senderConfirm.equals(fUser.getUid())) {
-                                    lastMsg.setText("You : " + lastSentMesage);
-                                } else {
-                                    lastMsg.setText(senderName + " : " + lastSentMesage);
-                                    if (!seenMsg) {
-                                        lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
-                                    } else {
-                                        lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
-                                    }
-                                }
+                    default:
+                        if (senderConfirm.equals(fUser.getUid())) {
+                            lastMsg.setText("You : " + lastSentMesage);
+                        } else {
+                            lastMsg.setText(senderName + " : " + lastSentMesage);
+                            if (!seenMsg) {
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
+                            } else {
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                            }
+                        }
 
-                            break;
+                        break;
 
                 }
             }

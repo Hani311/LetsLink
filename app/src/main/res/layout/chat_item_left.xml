@@ -5,7 +5,7 @@
     android:padding="4dp"
     android:layout_height="wrap_content">
 
-    
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_in_chat"
         android:layout_width="40dp"

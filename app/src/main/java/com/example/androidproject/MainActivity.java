@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity  {
             toolbar.setElevation(0);
             layout.setElevation(0);
         }
+
         fBU=FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
 
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity  {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
-
                 username.setText(user.getUsername());
 
                 if(user.getImageURL().equals("default")) {
