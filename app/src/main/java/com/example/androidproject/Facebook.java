@@ -62,6 +62,7 @@ public class Facebook extends AppCompatActivity {
         // this will not work for developer account in case was not fixed
         // loginButton.setPermissions(Arrays.asList("user_gender, user_friends"));
 
+        //for login
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -82,7 +83,7 @@ public class Facebook extends AppCompatActivity {
 
             }
         });
-
+        LoginManager.getInstance().logOut();
     }
 
     @Override
@@ -91,7 +92,7 @@ public class Facebook extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        //for login
+
         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
