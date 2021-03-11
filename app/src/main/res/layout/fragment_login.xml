@@ -9,7 +9,7 @@
         android:layout_gravity="center_vertical"
         android:background="@drawable/backround_img_1"
         android:orientation="vertical"
-        tools:context=".LoginFragment">
+        tools:context=".Login.LoginFragment">
 
         <!-- TODO: Update blank fragment layout -->
 
