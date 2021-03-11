@@ -12,25 +12,25 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:visibility="gone"
-        android:id="@+id/civ_in_chat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:visibility="gone"
+            android:id="@+id/civ_in_chat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:layout_alignParentEnd="true"
-        android:textColor="#fff"
-        android:id="@+id/chat_message"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/civ_in_chat"
-        android:textSize="18sp"
-        android:padding="8dp"
-        android:text=""
-        android:background="@drawable/chat_background_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:textColor="#fff"
+            android:id="@+id/chat_message"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/civ_in_chat"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:text=""
+            android:background="@drawable/chat_background_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
 

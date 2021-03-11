@@ -10,18 +10,39 @@
         android:id="@+id/friends_profile_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="1dp"
+        android:src="@mipmap/ic_launcher"
+        android:transitionName="imageTransition" />
 
     <TextView
-        android:textSize="18sp"
-        android:layout_centerVertical="true"
+        android:id="@+id/friends_username"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="1dp"
         android:layout_toEndOf="@id/friends_profile_image"
         android:layout_toRightOf="@id/friends_profile_image"
-        android:id="@+id/friends_username"
         android:text="username"
+        android:textSize="23sp" />
+
+    <TextView
+        android:id="@+id/lastSentText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friends_username"
+        android:paddingTop="3dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="-110dp"
+        android:layout_toLeftOf="@id/offStatus"
+        android:layout_toEndOf="@+id/friends_profile_image"
+        android:text="last message"
+        android:maxLines="1"
+        android:textSize="14sp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
 
@@ -51,5 +72,12 @@
         android:layout_marginLeft="-15dp"
         android:layout_toRightOf="@id/friends_profile_image"
         android:layout_toEndOf="@id/friends_profile_image"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/friends_username"
+        android:layout_marginTop="30dp"
+        android:background="#c0c0c0" />
 
 </RelativeLayout>

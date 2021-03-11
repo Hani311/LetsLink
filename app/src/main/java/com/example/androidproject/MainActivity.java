@@ -3,6 +3,7 @@ package com.example.androidproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,17 +13,23 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.androidproject.databinding.ActivityMainBinding;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,12 +67,29 @@ public class MainActivity extends AppCompatActivity  {
         //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
 
+
         CircleImageView cIV = binding.profileImage;
         TextView username=binding.usernameDisplay;
+        Toolbar toolbar=binding.toolBar;
+        AppBarLayout layout=binding.appBarLayout;
 
+        Fade fade = new Fade();
+        View decor=getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.nav_host_fragment), true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(enterTransition());
+            getWindow().setSharedElementExitTransition(returnTransition());
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
+        }
 
-
-
+        this.getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0);
+            layout.setElevation(0);
+        }
 
         fBU=FirebaseAuth.getInstance().getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
@@ -75,9 +99,6 @@ public class MainActivity extends AppCompatActivity  {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
-
-                Toast toast = Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT);
-                //toast.show();
                 username.setText(user.getUsername());
 
                 if(user.getImageURL().equals("default")) {
@@ -319,5 +340,20 @@ public class MainActivity extends AppCompatActivity  {
     protected void onPause() {
         super.onPause();
         configStatus("offline");
+    }
+
+    private Transition enterTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(200);
+
+        return bounds;
+    }
+
+    private Transition returnTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setInterpolator(new DecelerateInterpolator());
+        bounds.setDuration(200);
+
+        return bounds;
     }
 }

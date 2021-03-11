@@ -5,7 +5,7 @@
     android:padding="4dp"
     android:layout_height="wrap_content">
 
-    
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_in_chat"
         android:layout_width="40dp"
@@ -15,7 +15,7 @@
     <TextView
         android:textColor="@color/black"
         android:id="@+id/chat_message"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/civ_in_chat"
         android:padding="8dp"
