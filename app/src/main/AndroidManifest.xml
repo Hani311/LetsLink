@@ -37,9 +37,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".UserProfile" />
+        <activity android:name=".Users.UserProfile" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,21 +48,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".Login.SignUpActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".MessageActivity"
+            android:name=".Chat.MessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
-        <activity android:name=".PopInChatUserActivity"
+        <activity android:name=".Chat.PopInChatUserActivity"
             android:theme="@style/AppTheme.InChatPop"/>
 
         <service
-            android:name=".FirebaseIDHelper"
+            android:name=".DB.FirebaseIDHelper"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -71,7 +71,7 @@
         </service>
 
         <service
-            android:name=".NotifFirebasMessaging"
+            android:name=".Chat.NotifFirebasMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
