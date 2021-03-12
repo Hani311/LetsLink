@@ -1,10 +1,10 @@
 package com.example.androidproject.Map;
 
 
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -63,6 +63,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     SearchView search = null;
     static boolean iftrue = true;
     private Button create;
+    private ImageView sharee;
 
 
     @Nullable
@@ -86,7 +87,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         createEvent(); //The plus button at the top-right corner of the map method
-
+        shareEvent();
 
     }
 
@@ -455,6 +456,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+
+
+    }
+
+    public void shareEvent(){
+
+        sharee = getActivity().findViewById(R.id.shareEvent);
+        sharee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Facebook.class));
+
+               /* final AlertDialog.Builder facebook = new AlertDialog.Builder(getActivity());
+                final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                final View dialogView = inflater.inflate(R.layout.activity_facebook,null); //Inflate the actual newnewtest.xml file
+                final AlertDialog dialog;
+                facebook.setView(dialogView);
+                facebook.setTitle("Share Event to FACEBOOK");
+                dialog = facebook.create();
+                dialog.show();
+                */
+            }
+        });
 
 
     }
