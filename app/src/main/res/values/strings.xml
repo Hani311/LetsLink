@@ -25,12 +25,18 @@
         <item>sport</item>
     </array>
     <string name="capacity">Capacity:</string>
-    <array name="capacity">
-        <item>one</item>
-        <item>two</item>
-        <item>three</item>
-        <item>four</item>
-    </array>
+    <string-array name="capacity">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+
+    </string-array>
     <string name="description_box">Description box....</string>
 
     <!--
@@ -46,4 +52,5 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="starts">Start:</string>
 </resources>

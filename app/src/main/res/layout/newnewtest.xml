@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="407dp"
         android:orientation="vertical">
 
         <EditText
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Event name" />
 
         <EditText
             android:id="@+id/addressToLatLong"
@@ -72,7 +72,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:background="@drawable/style_spinner"
-                android:entries="@array/capacity" />
+                android:entries="@array/capacity"
+                 />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/textView4s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/starts"
+                android:textColor="#0B0000"
+                android:textSize="14sp" />
+
+
+            <Spinner
+                android:id="@+id/startDateSpinnerDD"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/style_spinner"
+            />
+            <Spinner
+                android:id="@+id/startDateSpinnerMM"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/style_spinner"
+                 />
+            <Spinner
+                android:id="@+id/startDateSpinnerYY"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/style_spinner"
+                 />
 
 
         </TableRow>
