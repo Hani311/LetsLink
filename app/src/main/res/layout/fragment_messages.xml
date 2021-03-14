@@ -7,7 +7,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MessagesFragment">
+        tools:context=".Chat.MessagesFragment">
 
         <com.google.android.material.tabs.TabLayout
             android:layout_marginTop="55dp"
