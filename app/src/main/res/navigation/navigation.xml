@@ -12,22 +12,22 @@
 
     <fragment
         android:id="@+id/messages"
-        android:name="com.example.androidproject.MessagesFragment"
+        android:name="com.example.androidproject.Chat.MessagesFragment"
         android:label="fragment_messages"
         tools:layout="@layout/fragment_messages" />
     <fragment
         android:id="@+id/notifications"
-        android:name="com.example.androidproject.NotificationFragment"
+        android:name="com.example.androidproject.Notifications.NotificationFragment"
         android:label="NotificationFragment"/>
 
     <fragment
         android:id="@+id/userProfile"
-        android:name="com.example.androidproject.ProfileNavigationFragment"
+        android:name="com.example.androidproject.Users.ProfileNavigationFragment"
         android:label="fragment_user_profile"
         tools:layout="@layout/fragment_profile_navigation_fragment" />
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.example.androidproject.MapsFragment"
+        android:name="com.example.androidproject.Map.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
 </navigation>

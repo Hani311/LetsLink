@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.androidproject">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -17,6 +16,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
 
-
+        <activity android:name=".Map.Facebook"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,9 +38,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".UserProfile" />
+        <activity android:name=".Users.UserProfile" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login.LoginActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,21 +49,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".Login.SignUpActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".MessageActivity"
+            android:name=".Chat.MessageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
-        <activity android:name=".PopInChatUserActivity"
+
+        <activity android:name=".Chat.PopInChatUserActivity"
             android:theme="@style/AppTheme.InChatPop"/>
 
         <service
-            android:name=".FirebaseIDHelper"
+            android:name=".DB.FirebaseIDHelper"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -70,8 +72,21 @@
             </intent-filter>
         </service>
 
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1440070412991487"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
         <service
-            android:name=".NotifFirebasMessaging"
+            android:name=".Chat.NotifFirebasMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

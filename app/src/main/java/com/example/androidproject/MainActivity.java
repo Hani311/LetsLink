@@ -13,21 +13,36 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Transition;
 import android.util.AttributeSet;
+import android.util.Base64;
+import android.util.Log;
 import android.view.GestureDetector;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+
 import com.bumptech.glide.Glide;
+import com.example.androidproject.Notifications.NotifToken;
+import com.example.androidproject.Users.User;
 import com.example.androidproject.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,11 +55,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Objects;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.ui.NavigationUI;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,6 +97,28 @@ public class MainActivity extends AppCompatActivity  {
             getWindow().setEnterTransition(fade);
             getWindow().setExitTransition(fade);
         }
+
+
+
+        //generate key-hash for the developer facebook
+        //make sure to change the packageName
+        //key-hash will be in logcat
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.androidproject",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+
+
 
         this.getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
