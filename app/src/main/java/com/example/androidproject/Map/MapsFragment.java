@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,8 +23,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,7 +57,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MapsFragment extends Fragment implements OnMapReadyCallback, AdapterView.OnItemSelectedListener {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static MapsFragment INSTANCE = null;
     private FusedLocationProviderClient fusedLocationProviderClient;
     String cityName;
@@ -90,7 +89,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
             mapFragment.getMapAsync(this);
         }
 
-        createEvent(); //The plus button at the top-right corner of the map method
+         //The plus button at the top-right corner of the map method
+        Log.e("mi", "onViewCreated: "+gMap );
         shareEvent();
 
 
@@ -138,6 +138,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
         spawnNearbyEventsOnMap(googleMap);
         searchLocation();
         markerClicked();
+        createEvent(gMap);
         gMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -170,107 +171,59 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
     }
 
     public void markerClicked(){
-        Log.e("mm", "marker: "+gMap);
-        Query query = FirebaseDatabase.getInstance().getReference("Events").orderByChild("eventType");
-        gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
-                boolean m = true;
-
-
-                String title = marker.getTitle();
-                // Log.e("Title", "onMarkerClick: "+title);
-
-
-                query.addValueEventListener(new ValueEventListener() {
+            public void run() {
+                Log.e("mm", "marker: " + gMap);
+                Query query = FirebaseDatabase.getInstance().getReference("Events").orderByChild("eventType");
+                gMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-
-                            Events event = dataSnapshot.getValue(Events.class);
-
-                            if (event.getEventName().toLowerCase().equals(title.toLowerCase())) {
-                                final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
-                                final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                                final View dialogView = inflater.inflate(R.layout.view_eventmarker, null);
-                                final AlertDialog dialog = eventPopup.create();
-                                // eventPopup.setNegativeButton("Cancel", null);
-                                eventPopup.setView(dialogView);
-                                eventPopup.setTitle("Event");
-                                eventPopup.show();
-                                deleteEventOnlyForUser(dialogView,event);
+                    public boolean onMarkerClick(Marker marker) {
+                        boolean m = true;
 
 
-                                TextView capacity = dialogView.findViewById(R.id.capacity);
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
-
-                                ref.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        int number = snapshot.getValue(Integer.class);
-
-                                        capacity.setText(number + "/" + event.getCapacity());
-                                    }
+                        String title = marker.getTitle();
+                        // Log.e("Title", "onMarkerClick: "+title);
 
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                    }
-                                });
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-                                TextView desc = dialogView.findViewById(R.id.description);
-                                desc.setText(event.getDescription());
-                                Button btnJoin = dialogView.findViewById(R.id.join);
+                                    Events event = dataSnapshot.getValue(Events.class);
+
+                                    if (event.getEventName().toLowerCase().equals(title.toLowerCase())) {
+                                        final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
+                                        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                                        final View dialogView = inflater.inflate(R.layout.view_eventmarker, null);
+                                        final AlertDialog dialog;
+                                        // eventPopup.setNegativeButton("Cancel", null);
+                                        eventPopup.setView(dialogView);
+                                        eventPopup.setTitle("Event");
+                                        dialog = eventPopup.create();
+                                        dialog.show();
+                                        deleteEventByOwner(dialog,dialogView, event);
 
 
-                                btnJoin.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        boolean value = false;
-
+                                        TextView capacity = dialogView.findViewById(R.id.capacity);
                                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
-                                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                        ref.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                final int[] number = {snapshot.getValue(Integer.class)};
-                                                if (number[0] < Integer.parseInt(event.getCapacity())) {
-                                                    // number++;
-                                                    // ref.setValue(number);
-                                                    DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
-                                                    userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                                            boolean newUser = true;
-
-                                                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-
-                                                                if (snapshot1.getValue().equals(getUserID())) {
-                                                                    newUser = false;
-                                                                }
-
-                                                            }
-
-                                                            if (newUser) {
-                                                                number[0]++;
-                                                                ref.setValue(number[0]);
-                                                                userJoind.child(getUserID()).setValue(getUserID());
-                                                            }
-                                                            Log.e("values", snapshot.toString());
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                                        }
-                                                    });
-
-                                                    Log.e("TAGGGGG", number[0] + "");
+                                                try {
+                                                    int number = snapshot.getValue(Integer.class);
+                                                    capacity.setText(number + "/" + event.getCapacity());
+                                                } catch (NullPointerException e) {
+                                                    spawnNearbyEventsOnMap(gMap);
                                                 }
 
+
                                             }
+
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {
@@ -278,39 +231,58 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
                                             }
                                         });
 
-                                    }
-                                });
+                                        TextView desc = dialogView.findViewById(R.id.description);
+                                        desc.setText(event.getDescription());
+                                        Button btnJoin = dialogView.findViewById(R.id.join);
 
-                                Button btnLeave = dialogView.findViewById(R.id.leave);
-                                btnLeave.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
-                                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                        btnJoin.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                final int[] number = {snapshot.getValue(Integer.class)};
-                                                DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
-                                                userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            public void onClick(View v) {
+                                                boolean value = false;
+
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
+                                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        boolean newUser = true;
+                                                        final int[] number = {snapshot.getValue(Integer.class)};
+                                                        if (number[0] < Integer.parseInt(event.getCapacity())) {
+                                                            // number++;
+                                                            // ref.setValue(number);
+                                                            DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                            userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                                    boolean newUser = true;
 
-                                                            if (snapshot1.getValue().equals(getUserID())) {
+                                                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
 
-                                                                if (number[0] > 0) {
-                                                                    number[0]--;
-                                                                    ref.setValue(number[0]);
-                                                                    userJoind.child(getUserID()).removeValue();
+                                                                        if (snapshot1.getValue().equals(getUserID())) {
+                                                                            newUser = false;
+                                                                        }
+
+                                                                    }
+
+                                                                    if (newUser) {
+                                                                        number[0]++;
+                                                                        ref.setValue(number[0]);
+                                                                        userJoind.child(getUserID()).setValue(getUserID());
+                                                                        Snackbar.make(view, "You have joined the event", Snackbar.LENGTH_LONG)
+                                                                                .setAction("Action", null).show();
+
+                                                                    }
+                                                                    Log.e("values", snapshot.toString());
                                                                 }
-                                                            }
 
+                                                                @Override
+                                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                }
+                                                            });
+
+                                                            Log.e("TAGGGGG", number[0] + "");
                                                         }
-
-
-                                                        Log.e("values", snapshot.toString());
 
                                                     }
 
@@ -321,42 +293,89 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
                                                 });
 
 
-                                                Log.e("TAGGGGG", number[0] + "");
-
                                             }
+                                        });
 
-
+                                        Button btnLeave = dialogView.findViewById(R.id.leave);
+                                        btnLeave.setOnClickListener(new View.OnClickListener() {
                                             @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                            public void onClick(View v) {
+                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
+                                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        final int[] number = {snapshot.getValue(Integer.class)};
+                                                        DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                        userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                boolean newUser = true;
+
+                                                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                                    if (snapshot1.getValue().equals(getUserID())) {
+                                                                        if (number[0] > 0) {
+                                                                            number[0]--;
+                                                                            ref.setValue(number[0]);
+                                                                            userJoind.child(getUserID()).removeValue();
+                                                                            Snackbar.make(view, "You have left the event", Snackbar.LENGTH_LONG)
+                                                                                    .setAction("Action", null).show();
+                                                                        }
+                                                                    }
+
+                                                                }
+
+
+                                                                Log.e("values", snapshot.toString());
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                                            }
+                                                        });
+
+
+                                                        Log.e("TAGGGGG", number[0] + "");
+
+                                                    }
+
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
 
                                             }
                                         });
 
                                     }
-                                });
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
                             }
-                        }
+                        });
+
+
+                        return true;
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
                 });
-
-
-                return true;
             }
-
-
-
         });
 
     }
 
-    public void deleteEventOnlyForUser(View dialogView,Events events){
+    public void deleteEventByOwner(Dialog dialog, View dialogView, Events events){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(events.getEventID());
+        DatabaseReference MemberCountRef = FirebaseDatabase.getInstance().getReference("Joined Member").child(events.getEventID());
+        DatabaseReference joinedMemberRef = FirebaseDatabase.getInstance().getReference("Joined Users").child(events.getEventID());
         Button button = dialogView.findViewById(R.id.deleteEvent);
 
         if (getUserID().equals(events.getEventAdminID())) {
@@ -365,7 +384,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
                 @Override
                 public void onClick(View v) {
                     reference.removeValue();
+                    MemberCountRef.removeValue();
+                    joinedMemberRef.removeValue();
+                    gMap.clear();
                     spawnNearbyEventsOnMap(gMap);
+
+
+                    Log.e("Tigris", "onClick: "+gMap );
+                    dialog.dismiss();
                 }
             });
         }
@@ -373,39 +399,41 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
 
 
     public void getClientCurrentLocation(GoogleMap map) {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if (requireActivity().getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+                    if (requireActivity().getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
 
-                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        Log.e("mad", "getClientCurrentLocation: " + location);
+                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                Log.e("mad", "getClientCurrentLocation: " + location);
 
-                        // map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
-                        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                       int[] grantResults)
+                                // map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
+                                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    ActivityCompat#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                       int[] grantResults)
 
-                            return;
-                        }
-                        map.setMyLocationEnabled(true);
-                        Log.e("location", "onSuccess: Here!");
+                                    return;
+                                }
+                                map.setMyLocationEnabled(true);
+                                Log.e("location", "onSuccess: Here!");
+
+                            }
+                        });
+
 
                     }
-                });
-
-
+                }
             }
-        }
-
-
-
+        });
 
     }
 
@@ -454,40 +482,46 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
     }
 
     public void spawnNearbyEventsOnMap(GoogleMap googleMap) {
-        //Load from firebase data
-        //once loaded, create if statements to check what the event is
-        //Spawn the event as markers with description (only near current location, not the whole world)
-        Query query = FirebaseDatabase.getInstance().getReference("Events");
-        query.addValueEventListener(new ValueEventListener() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void run() {
+                //Load from firebase data
+                //once loaded, create if statements to check what the event is
+                //Spawn the event as markers with description (only near current location, not the whole world)
+                Query query = FirebaseDatabase.getInstance().getReference("Events");
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot post : snapshot.getChildren()) {
+                        for (DataSnapshot post : snapshot.getChildren()) {
 
-                    double lats = Double.parseDouble(String.valueOf(post.child("latitude").getValue()));
-                    double lon = Double.parseDouble(String.valueOf(post.child("longitude").getValue()));
-                    String type = String.valueOf(post.child("eventType").getValue());
-                    System.out.println(lats + "     " + lon);
-                    int event = 0;
-                    if (type.equals("sport")) {
-                        event = R.drawable.sport;
-                    } else if (type.equals("party")) { // add more icons later
-                        event = R.drawable.party;
+                            double lats = Double.parseDouble(String.valueOf(post.child("latitude").getValue()));
+                            double lon = Double.parseDouble(String.valueOf(post.child("longitude").getValue()));
+                            String type = String.valueOf(post.child("eventType").getValue());
+                            System.out.println(lats + "     " + lon);
+                            int event = 0;
+                            if (type.equals("sport")) {
+                                event = R.drawable.sport;
+                            } else if (type.equals("party")) { // add more icons later
+                                event = R.drawable.party;
+                            }
+
+                            gMap = googleMap;
+                            LatLng latLng = new LatLng(lats, lon);
+                            gMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title(String.valueOf(post.child("eventName").getValue()))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(customizeImageToBitMap(event))));
+
+
+                        }
                     }
 
-                    gMap = googleMap;
-                    LatLng latLng = new LatLng(lats, lon);
-                    gMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(String.valueOf(post.child("eventName").getValue()))
-                            .icon(BitmapDescriptorFactory.fromBitmap(customizeImageToBitMap(event))));
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
 
             }
         });
@@ -532,88 +566,101 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
         return Bitmap.createScaledBitmap(b, width, height, false);
     }
 
-    public void createEvent() {
-        Boolean e = false;
-        ImageView createEvent = getActivity().findViewById(R.id.createEventButton);
-        createEvent.setOnClickListener(new View.OnClickListener() {
+    public void createEvent(GoogleMap googleMap) {
+        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
-                final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                final View dialogView = inflater.inflate(R.layout.newnewtest, null); //Inflate the actual newnewtest.xml file
-                final AlertDialog dialog;
-                eventPopup.setView(dialogView);
-                eventPopup.setTitle("Create Event");
-                dialog = eventPopup.create();
-                dialog.show();
-
-                create = dialogView.findViewById(R.id.createEventB);
-                create.setOnClickListener(new View.OnClickListener() {
+            public void onMapLoaded() {
+                Boolean e = false;
+                ImageView createEvent = getActivity().findViewById(R.id.createEventButton);
+                createEvent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
+                        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                        final View dialogView = inflater.inflate(R.layout.newnewtest, null); //Inflate the actual newnewtest.xml file
+                        final AlertDialog dialog;
+                        eventPopup.setView(dialogView);
+                        eventPopup.setTitle("Create Event");
+                        dialog = eventPopup.create();
+                        dialog.show();
 
-                        EditText tex = dialogView.findViewById(R.id.addressToLatLong);
-                        String t = tex.getText().toString();
-                        LatLng latLngg = null;
-                        latLngg = getLocationFromAddress(getActivity(), t);
-                        EditText editText = dialogView.findViewById(R.id.CreateDescription);
-                        editText.getText().toString();
+                        create = dialogView.findViewById(R.id.createEventB);
+                        create.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                        Spinner spinner = dialogView.findViewById(R.id.eventTypeSpinner);
-                        spinner.getSelectedItem().toString();
-                        EditText nameOfEvenet = dialogView.findViewById(R.id.nameOFEvent);
+                                EditText tex = dialogView.findViewById(R.id.addressToLatLong);
+                                String t = tex.getText().toString();
+                                LatLng latLngg = null;
+                                latLngg = getLocationFromAddress(getActivity(), t);
+                              /*  try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException interruptedException) {
+                                    interruptedException.printStackTrace();
+                                }
 
-                        Spinner spinnerCapacity = dialogView.findViewById(R.id.eventCapacitySpinner);
+                               */
+                                EditText editText = dialogView.findViewById(R.id.CreateDescription);
+                                editText.getText().toString();
 
-                        Log.e("Lkljadlkfj", latLngg + "");
-                        if (latLngg != null) {
+                                Spinner spinner = dialogView.findViewById(R.id.eventTypeSpinner);
+                                spinner.getSelectedItem().toString();
+                                EditText nameOfEvenet = dialogView.findViewById(R.id.nameOFEvent);
 
-                            DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
-                            LatLng finalLatLngg = latLngg;
+                                Spinner spinnerCapacity = dialogView.findViewById(R.id.eventCapacitySpinner);
 
-                            refere.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    boolean exists = false;
-                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                        Events e = snapshot1.getValue(Events.class);
-                                        if (e.getEventName().equals(nameOfEvenet.getText().toString())) {
-                                            exists = true;
+                                Log.e("Lkljadlkfj", latLngg + "");
+                                if (latLngg != null) {
+
+                                    DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
+                                    LatLng finalLatLngg = latLngg;
+
+                                    refere.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            boolean exists = false;
+                                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                Events e = snapshot1.getValue(Events.class);
+                                                if (e.getEventName().equals(nameOfEvenet.getText().toString())) {
+                                                    exists = true;
+                                                }
+                                            }
+                                            if (exists != true) {
+                                                DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
+                                                String keys = myref.push().getKey();
+                                                Events even = new Events(spinner.getSelectedItem().toString(), nameOfEvenet.getText().toString(), finalLatLngg.longitude, finalLatLngg.latitude, editText.getText().toString(), spinnerCapacity.getSelectedItem().toString(), getUserID(), keys);
+                                                myref.child(keys).setValue(even);
+                                                DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
+                                                myreference.child(keys).child("joined").setValue(0);
+
+
+                                                System.out.println(even);
+                                            } else {
+                                                Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_SHORT).show();
+                                            }
+
+
                                         }
-                                    }
-                                    if (exists != true) {
-                                        DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
-                                        String keys = myref.push().getKey();
-                                        Events even = new Events(spinner.getSelectedItem().toString(), nameOfEvenet.getText().toString(), finalLatLngg.longitude, finalLatLngg.latitude, editText.getText().toString(), spinnerCapacity.getSelectedItem().toString(), getUserID(), keys);
-                                        myref.child(keys).setValue(even);
-                                        DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
-                                        myreference.child(keys).child("joined").setValue(0);
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
 
 
-                                        System.out.println(even);
-                                    } else {
-                                        Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_SHORT).show();
-                                    }
-
-
+                                } else {
+                                    System.out.println("Did not work");
                                 }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-
-                        } else {
-                            System.out.println("Did not work");
-                        }
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 });
-
-
             }
         });
+
 
 
     }
@@ -640,6 +687,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
             System.out.printf("it worked but the address is wrong");
         }
 
+
         return p1;
     }
 
@@ -650,14 +698,27 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Adapte
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
-
+    private double distanceCalculator(double lat1, double lon1, double lat2, double lon2) { //Not yet implemented
+        //Used to measure distance between 2 different LatLng positions
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist); //returns in miles
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
     }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+
 }
