@@ -25,8 +25,7 @@ import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FindfriendActivity extends AppCompatActivity {
-    private androidx.appcompat.widget.Toolbar mToolBar;
-   private FindFriends model;
+
     private ImageButton searchBtn;
     private TextInputEditText searchText;
     private RecyclerView searchResultList;
@@ -50,14 +49,15 @@ public class FindfriendActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String searchTextInput= searchText.getText().toString();
 
-                SearchPeopleAndFriends(searchTextInput);
+                SearchPeopleAndFriends(searchTextInput.toLowerCase());
+
             }
         });
     }
 
     private void SearchPeopleAndFriends(String searchTextInput) {
         Toast.makeText(this,"Searching....",Toast.LENGTH_LONG).show();
-        Query searchPeopleAndFriendsQuery= allUsersDataBaseRef.orderByChild("username").startAt(searchTextInput).endAt(searchTextInput + "\uf8ff" );
+        Query searchPeopleAndFriendsQuery= allUsersDataBaseRef.orderByChild("searchname").startAt(searchTextInput.toLowerCase()).endAt(searchTextInput + "\uf8ff" );
         FirebaseRecyclerAdapter<FindFriends, FindFriendsViewHolder> firebaseRecyclerAdapter= new FirebaseRecyclerAdapter<FindFriends, FindFriendsViewHolder>(FindFriends.class,
                 R.layout.all_users_display_layout,FindFriendsViewHolder.class,
             searchPeopleAndFriendsQuery ) {

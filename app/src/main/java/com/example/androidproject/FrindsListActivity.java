@@ -65,7 +65,6 @@ private String onlineUserID;
                         final String profileImage = snapshot.child("imageURL").getValue().toString();
                         friendViewHolder.setUsername(userName);
                         friendViewHolder.setImageURL(profileImage);
-                        friendViewHolder.setDate();
                     }
                 }
 
