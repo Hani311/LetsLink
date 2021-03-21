@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:xlmns="http://schemas.android.com/apk/res/android"
+    xlmns:layout_height="match_parent"
+    xlmns:layout_width="match_parent">
+
+    <fragment
+        xlmns:id="@+id/maps"
+        xlmns:name="com.google.android.gms.maps.SupportMapFragment"
+        xlmns:layout_width="match_parent"
+        xlmns:layout_height="665dp"
+        xlmns:layout_alignParentStart="true"
+        xlmns:layout_alignParentTop="true"
+        xlmns:layout_marginTop="60dp"
+        tools:context=".Map.MapsFragment" />
+
+
+    <SearchView
+        xlmns:id="@+id/searchLocation"
+        xlmns:layout_width="match_parent"
+        xlmns:layout_height="74dp"
+        xlmns:layout_marginTop="45dp"
+        xlmns:queryHint=" search..."
+        xlmns:iconifiedByDefault="false"
+        xlmns:background="@color/white"
+        />
+
+    <ImageView
+        xlmns:id="@+id/createEventButton"
+        xlmns:layout_width="wrap_content"
+        xlmns:layout_height="wrap_content"
+        xlmns:layout_below="@+id/searchLocation"
+        xlmns:layout_alignParentRight="true"
+        xlmns:layout_marginStart="10dp"
+        xlmns:layout_marginTop="10dp"
+        xlmns:layout_marginEnd="10dp"
+        xlmns:layout_marginBottom="10dp"
+        xlmns:src="@drawable/ic_plus" />
+
+    <ImageView
+        xlmns:id="@+id/shareEvent"
+        xlmns:layout_width="wrap_content"
+        xlmns:layout_height="wrap_content"
+        xlmns:layout_below="@+id/searchLocation"
+        xlmns:layout_alignParentRight="true"
+        xlmns:layout_marginStart="10dp"
+        xlmns:layout_marginTop="78dp"
+        xlmns:layout_marginEnd="10dp"
+        xlmns:layout_marginRight="7dp"
+        xlmns:layout_marginBottom="10dp"
+        xlmns:src="@drawable/messenger_button_white_bg_round" />
+</RelativeLayout>

@@ -1,30 +1,51 @@
 package com.example.androidproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.util.Base64;
+import android.util.Log;
 import android.view.GestureDetector;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.example.androidproject.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Objects;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+
+import com.bumptech.glide.Glide;
+import com.example.androidproject.Notifications.NotifToken;
+import com.example.androidproject.Users.User;
+import com.example.androidproject.databinding.ActivityMainBinding;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 //import com.example.androidproject.databinding.ActivityMainBinding;
 
@@ -32,6 +53,8 @@ public class MainActivity extends AppCompatActivity  {
 
     OnSwipeTouchListener onSwipeTouchListener;
     static NavHostFragment navHostFragment;
+    DatabaseReference reference;
+    FirebaseUser fBU;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +65,74 @@ public class MainActivity extends AppCompatActivity  {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+
+
+
+        //generate key-hash for the developer facebook
+        //make sure to change the packageName
+        //key-hash will be in logcat
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.androidproject",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+
+
+        CircleImageView cIV = binding.profileImage;
+        TextView username=binding.usernameDisplay;
+        Toolbar toolbar=binding.toolBar;
+        AppBarLayout layout=binding.appBarLayout;
+
+        Fade fade = new Fade();
+        View decor=getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.nav_host_fragment), true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(enterTransition());
+            getWindow().setSharedElementExitTransition(returnTransition());
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
+        }
+
+        this.getSupportActionBar().hide();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setElevation(0);
+            layout.setElevation(0);
+        }
+
+        fBU=FirebaseAuth.getInstance().getCurrentUser();
+        reference= FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user = snapshot.getValue(User.class);
+                username.setText(user.getUsername());
+
+                if(user.getImageURL().equals("default")) {
+                    cIV.setImageResource(R.mipmap.ic_launcher_round);
+                }
+                else{
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(cIV);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         BottomNavigationView navView = binding.navView;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -121,9 +212,11 @@ public class MainActivity extends AppCompatActivity  {
                navController.navigate(R.id.action_titleFragment2_to_userProfile);
             }
         });
-
-
          */
+
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
         binding.getRoot();
         //setContentView(R.layout.activity_main);
     }
@@ -234,5 +327,52 @@ public class MainActivity extends AppCompatActivity  {
         onSwipeListener onSwipe;
         }
 
+        private void configStatus(String status){
 
+            reference=FirebaseDatabase.getInstance().getReference("Users").child(fBU.getUid());
+
+            SharedPreferences sp=getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor=sp.edit();
+            editor.putString("Current_USERID", fBU.getUid());
+            editor.apply();
+
+            HashMap<String, Object> hM=new HashMap<>();
+            hM.put("status", status);
+
+            reference.updateChildren(hM);
+
+        }
+
+     public void updateToken(String token){
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Tokens");
+        NotifToken mToken=new NotifToken(token);
+        ref.child(fBU.getUid()).setValue(mToken);
+     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        configStatus("online");
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        configStatus("offline");
+    }
+
+    private Transition enterTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setDuration(200);
+
+        return bounds;
+    }
+
+    private Transition returnTransition() {
+        ChangeBounds bounds = new ChangeBounds();
+        bounds.setInterpolator(new DecelerateInterpolator());
+        bounds.setDuration(200);
+
+        return bounds;
+    }
+}

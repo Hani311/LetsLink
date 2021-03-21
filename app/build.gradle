@@ -15,8 +15,10 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
+        multiDexEnabled true
+
         applicationId "com.example.androidproject"
-        minSdkVersion 26
+        minSdkVersion 20
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -51,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
+    implementation 'androidx.multidex:multidex:2.0.1'  //with androidx libraries
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-auth:16.1.0'
@@ -68,19 +72,29 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-firestore:22.0.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
     compileOnly 'com.google.android.wearable:wearable:2.6.0'
-
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation'com.google.firebase:firebase-storage:11.0.4'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     implementation 'com.firebaseui:firebase-ui-database:2.1.1'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    apply plugin: 'com.google.gms.google-services'
 }
 repositories {
     mavenCentral()

@@ -2,38 +2,124 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profileBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileNavigationFragment">
+    tools:context=".Users.ProfileNavigationFragment">
 
-    <Button
-        android:id="@+id/findBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="128dp"
-        android:text="FIND FRIEND"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_in_profile_navigation"
+        android:layout_width="133dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="124dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/profileBTN"
-        android:layout_width="99dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="120dp"
-        android:text="Profile"
-        app:layout_constraintTop_toBottomOf="@+id/findBtn"
-        tools:layout_editor_absoluteX="156dp" />
-
-    <Button
-        android:id="@+id/btnFriendsList"
+    <TextView
+        android:id="@+id/username_in_profile_navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="106dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
+
+    <Button
+        android:id="@+id/profileBtn"
+        android:layout_width="340dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:gravity="left|center_vertical"
+        android:text="Profile settings"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="340dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_baseline_dark_mode_24"
+        android:gravity="left|center_vertical"
+        android:text="Dark mode"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+    <Button
+        android:id="@+id/button"
+        android:drawableLeft="@drawable/ic_baseline_people_24"
+        android:background="@drawable/setting_btn_layout"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:gravity="left|center_vertical"
+        android:layout_width="340dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:text="Friends"
-        app:layout_constraintTop_toBottomOf="@+id/profileBTN"
-        tools:layout_editor_absoluteX="164dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="340dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_logout"
+        android:gravity="left|center_vertical"
+        android:text="Log out"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="340dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_baseline_language_24"
+        android:gravity="left|center_vertical"
+        android:text="Language settings"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
