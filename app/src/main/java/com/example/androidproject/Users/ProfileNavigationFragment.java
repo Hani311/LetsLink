@@ -76,6 +76,7 @@ public class ProfileNavigationFragment extends Fragment {
         Button  skip=view.findViewById(R.id.profileBtn);
          Button     btnFriendsList=view.findViewById(R.id.btnFriends);
          Button btnSearch= view.findViewById(R.id.searchFrinds);
+         Button btnthre= view.findViewById(R.id.button3);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +95,13 @@ public class ProfileNavigationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getActivity(), FindfriendActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnthre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), ResetPasswordActivity.class);
                 startActivity(intent);
             }
         });
