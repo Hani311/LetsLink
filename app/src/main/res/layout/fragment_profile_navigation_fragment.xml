@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnFriends"
         android:drawableLeft="@drawable/ic_baseline_people_24"
         android:background="@drawable/setting_btn_layout"
         android:textColor="@color/black"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFriends" />
 
     <Button
         android:id="@+id/button4"
@@ -121,5 +121,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
+
+    <Button
+        android:id="@+id/searchFrinds"
+        android:layout_width="340dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:gravity="left|center_vertical"
+        android:text="Search Friends"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

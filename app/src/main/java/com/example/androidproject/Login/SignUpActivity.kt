@@ -91,6 +91,7 @@ class SignUpActivity : AppCompatActivity() {
                 val hashMap = HashMap<String, String>()
                 hashMap.put("ID", userID)
                 hashMap.put("username", username)
+                hashMap.put("searchname", username.toLowerCase())
                 hashMap.put("imageURL", "default")
                 hashMap.put("status", "offline")
 

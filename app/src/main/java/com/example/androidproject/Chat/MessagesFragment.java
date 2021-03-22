@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MessagesFragment extends Fragment {
 
 
-    private ArrayList<String> titles=new ArrayList<>();
+    private final ArrayList<String> titles=new ArrayList<>();
 
 
     @Override
@@ -39,7 +39,7 @@ public class MessagesFragment extends Fragment {
 
         titles.add("Chats");
         titles.add("Friends");
-        ViewPager2 mViewPager = (ViewPager2) rootView.findViewById(R.id.messageViewPager);
+        ViewPager2 mViewPager = rootView.findViewById(R.id.messageViewPager);
         //mViewPager.setAdapter(new ChatAdapter(getChildFragmentManager()));
         mViewPager.setAdapter(new ChatAdapter(this));
         new TabLayoutMediator(rootView.findViewById(R.id.messagesTabLayout), mViewPager,
@@ -50,7 +50,7 @@ public class MessagesFragment extends Fragment {
 
     public class ChatAdapter extends FragmentStateAdapter {
 
-        private ArrayList<Fragment> messageFragments;
+        private final ArrayList<Fragment> messageFragments;
 
         ChatAdapter(MessagesFragment fragmentActivity) {
             super(fragmentActivity);

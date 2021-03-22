@@ -65,12 +65,12 @@ class LoginActivity : AppCompatActivity() {
         val loginButton=binding.logInButton
         loading=binding.loading
 
-        signUpButton.setOnClickListener(){
+        signUpButton.setOnClickListener {
             signUp()
 
         }
 
-        loginButton.setOnClickListener(){
+        loginButton.setOnClickListener {
 
             logIn(usernameText, userPassword)
             //logIn(usernameText, userPassword)
