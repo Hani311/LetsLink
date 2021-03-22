@@ -16,8 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.androidproject.Chat.Chat;
-import com.example.androidproject.Chat.MessageActivity;
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +32,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private Context context;
     private List<User> usersList;
     private boolean inChat;
-    String lastSentMesage;
     String receiverName;
     String senderName;
     String senderConfirm;
@@ -63,7 +60,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         if (inChat) {
 
-            getLastMessage(user.getID(), holder.lastMsg);
+            getLastMessage(user.getID(), holder.lastMsg, user.getUsername());
 
         } else {
             holder.lastMsg.setVisibility(View.GONE);
@@ -139,77 +136,35 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return super.getItemViewType(position);
     }
 
-    private void getLastMessage(String senderID, TextView lastMsg){
-        lastSentMesage="";
+    private void getLastMessage(String senderID, TextView lastMsg, String username){
 
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        DatabaseReference userReference= FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
-        userReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference lastMsgReference= FirebaseDatabase.getInstance().getReference("lastMessage")
+                .child(senderID).child(fUser.getUid());
+
+        lastMsgReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                User user = snapshot.getValue(User.class);
+                try{
+                LastSentMessage lastMessage = snapshot.getValue(LastSentMessage.class);
+                Log.e("lastMSG",lastMessage.getLastMsg());
+                seenMsg=lastMessage.getSeen();
 
-                receiverName=user.getUsername();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-        DatabaseReference senderReference= FirebaseDatabase.getInstance().getReference("Users").child(senderID);
-        senderReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                User user = snapshot.getValue(User.class);
-
-                senderName=user.getUsername();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
-
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-
-                for(DataSnapshot dS:snapshot.getChildren()) {
-                    Chat chat = dS.getValue(Chat.class);
-                    if (chat.getReceiver().equals(fUser.getUid()) && chat.getSender().equals(senderID) ||
-                            chat.getReceiver().equals(senderID) && chat.getSender().equals(fUser.getUid())) {
-                        lastSentMesage=chat.getMessage();
-                        seenMsg=chat.isSeen;
-                        senderConfirm=chat.sender;
-                        Log.e("senderID", chat.sender);
-                        Log.e("receiverID", fUser.getUid());
-                        if(chat.getSender().equals(senderID)){}
-
-                    }
-                }
-
-                switch (lastSentMesage) {
+                switch (lastMessage.getLastMsg()) {
                     case "":
+                        lastMsg.setVisibility(View.INVISIBLE);
                         lastMsg.setText("");
                         break;
 
                     default:
-                        if (senderConfirm.equals(fUser.getUid())) {
-                            lastMsg.setText("You : " + lastSentMesage);
+                        lastMsg.setVisibility(View.VISIBLE);
+                        if (lastMessage.getFrom().equals(fUser.getUid())) {
+                            lastMsg.setText("You : " + lastMessage.getLastMsg());
                         } else {
-                            lastMsg.setText(senderName + " : " + lastSentMesage);
+                            lastMsg.setText(username + " : " + lastMessage.getLastMsg());
                             if (!seenMsg) {
                                 lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
                             } else {
@@ -220,6 +175,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                         break;
 
                 }
+                }
+                catch (NullPointerException e){ }
             }
 
             @Override

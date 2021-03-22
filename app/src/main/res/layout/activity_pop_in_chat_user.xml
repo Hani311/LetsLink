@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".Chat.PopInChatUserActivity"
     android:background="@drawable/inchat_user_popup">
 
@@ -55,15 +60,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="99dp"
-        android:layout_height="64dp"
+        android:layout_width="117dp"
+        android:layout_height="87dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/remove_friend_background"
         android:backgroundTint="#FF0202"
         android:orientation="vertical"
+        android:padding="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.163"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/friends_username_popup"
         app:layout_constraintVertical_bias="0.0">
@@ -72,11 +79,13 @@
             android:id="@+id/remove_friend"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:src="@drawable/ic_baseline_person_remove_24" />
 
         <TextView
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -87,3 +96,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +50,12 @@ public class FriendsMessagesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        readAllFriends();
+        super.onCreate(savedInstanceState);
+    }
+
     private void readAllFriends() {
 
         FirebaseUser fBU = FirebaseAuth.getInstance().getCurrentUser();
@@ -80,7 +87,7 @@ public class FriendsMessagesFragment extends Fragment {
                 }
 
 
-                friendsAdapter = new FriendsAdapter(getContext(), friends, false);
+                friendsAdapter = new FriendsAdapter(getContext(), friends, true);
                 friendsView.setAdapter(friendsAdapter);
             }
 

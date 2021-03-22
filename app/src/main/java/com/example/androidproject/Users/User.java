@@ -15,9 +15,7 @@ public class User {
         this.status=status;
     }
 
-    public User(){
-
-    }
+    public User(){}
 
     public String getStatus() {
         return status;

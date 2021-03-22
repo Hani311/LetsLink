@@ -10,11 +10,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.example.androidproject.MainActivity;
 import com.example.androidproject.Notifications.OreoNotification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +28,6 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
 
         SharedPreferences sP=getSharedPreferences("SP_USER", MODE_PRIVATE);
         String saveUserID=sP.getString("Current_USERID", "None");
@@ -34,16 +36,22 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
         String user=remoteMessage.getData().get("user");
         FirebaseUser fBU = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
+
         if(fBU!=null && sent.equals(fBU.getUid())){
             if(!saveUserID.equals(user)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                     sendOreoNotification(remoteMessage);
                 } else {
+
                     sendNotifications(remoteMessage);
                 }
             }
         }
 
+        super.onMessageReceived(remoteMessage);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -112,5 +120,7 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
 
         manager.notify(a, builder.build());
     }
+
+
 
 }

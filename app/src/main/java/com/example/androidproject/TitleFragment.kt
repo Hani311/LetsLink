@@ -5,6 +5,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.androidproject.databinding.FragmentTitleBinding
 import java.lang.Exception
@@ -39,7 +41,9 @@ class TitleFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        super.onViewCreated(view, savedInstanceState)
 
-
+    }
 }

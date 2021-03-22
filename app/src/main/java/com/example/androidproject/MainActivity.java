@@ -1,18 +1,11 @@
 package com.example.androidproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -23,7 +16,6 @@ import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.Transition;
-import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -33,11 +25,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +44,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,17 +57,20 @@ public class MainActivity extends AppCompatActivity  {
     static NavHostFragment navHostFragment;
     DatabaseReference reference;
     FirebaseUser fBU;
+    ArrayList<Fragment> fragments;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fragments=new ArrayList<>();
 
         //navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
-
 
         CircleImageView cIV = binding.profileImage;
         TextView username=binding.usernameDisplay;
@@ -150,10 +141,14 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+
+
         BottomNavigationView navView = binding.navView;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
         if (navHostFragment != null) {
             NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
+
         }
 
         /*
