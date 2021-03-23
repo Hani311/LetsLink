@@ -77,20 +77,7 @@
         android:text=" email"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextTextPassword"
 
-        android:layout_width="267dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="140dp"
-        android:drawableStart="@drawable/ic_baseline_email_24"
-        android:ems="10"
-        android:inputType="textPersonName"
-
-        android:text=" password"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSave"
@@ -109,6 +96,15 @@
         android:layout_marginRight="70dp"
         android:layout_marginBottom="100dp"
         android:text="logout" />
+
+    <Button
+        android:id="@+id/btnResetActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="130dp"
+        android:layout_marginBottom="200dp"
+        android:text="Change Password" />
 
 
 </FrameLayout>

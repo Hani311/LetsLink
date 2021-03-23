@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +19,10 @@ import com.example.androidproject.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,7 +50,7 @@ public class UserProfile extends AppCompatActivity {
     private String myUri="";
     private StorageTask upLoadTask;
     private StorageReference storageProfilePicsRef;
-    private Button saveBtn, logoutBtn;
+    private Button saveBtn, logoutBtn, btnChangePasActivity;
 
 
 
@@ -60,6 +64,7 @@ public class UserProfile extends AppCompatActivity {
         civ= findViewById(R.id.profile_image);
         saveBtn=findViewById(R.id.btnSave);
         profileChangeBtn= findViewById(R.id.changePic);
+        btnChangePasActivity=findViewById(R.id.btnResetActivity);
 
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -74,6 +79,14 @@ public class UserProfile extends AppCompatActivity {
                 startActivityForResult(openGalleryIntent,1000);
             }
         });
+        btnChangePasActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent= new Intent(UserProfile.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         getUserinfo();
     }

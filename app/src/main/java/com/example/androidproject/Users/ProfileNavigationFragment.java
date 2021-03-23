@@ -76,6 +76,7 @@ public class ProfileNavigationFragment extends Fragment {
         Button  skip=view.findViewById(R.id.profileBtn);
          Button     btnFriendsList=view.findViewById(R.id.btnFriends);
          Button btnSearch= view.findViewById(R.id.searchFrinds);
+
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +98,7 @@ public class ProfileNavigationFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         // Inflate the layout for this fragment
         return view;
     }
