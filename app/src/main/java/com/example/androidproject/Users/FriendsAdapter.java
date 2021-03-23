@@ -16,6 +16,8 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.androidproject.Chat.LastSentMessage;
+import com.example.androidproject.Chat.MessageActivity;
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,9 +34,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private Context context;
     private List<User> usersList;
     private boolean inChat;
-    String receiverName;
-    String senderName;
-    String senderConfirm;
+
     boolean seenMsg;
 
 
@@ -88,7 +88,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                 Glide.with(context).load(user.getImageURL()).into(holder.friendsProfilePic);
             }
         } catch (NullPointerException e) {
-
+            e.printStackTrace();
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

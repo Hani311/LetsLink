@@ -61,12 +61,14 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
         String notifIcon = remoteMessage.getData().get("icon");
         String notifBody = remoteMessage.getData().get("body");
         String notifTitle = remoteMessage.getData().get("title");
+        String profileUri=remoteMessage.getData().get("profileUri");
 
         RemoteMessage.Notification notif = remoteMessage.getNotification();
         int hexed = Integer.parseInt(userID.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, MessageActivity.class);
         Bundle notifBUndle = new Bundle();
         notifBUndle.putString("userid", userID);
+        notifBUndle.putString("imageUri", profileUri);
         intent.putExtras(notifBUndle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent= PendingIntent.getActivity(this, hexed, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -88,7 +90,7 @@ public class NotifFirebasMessaging extends FirebaseMessagingService {
 
     private void sendNotifications(RemoteMessage remoteMessage) {
 
-        String userID = remoteMessage.getData().get("user");
+        String userID = remoteMessage.getData().get("sent");
         String notifIcon = remoteMessage.getData().get("icon");
         String notifBody = remoteMessage.getData().get("body");
         String notifTitle = remoteMessage.getData().get("title");

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:padding="8dp"
+    android:elevation="2dp"
+    android:background="@drawable/friends_layout_background">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/friends_profile_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="1dp"
+        android:src="@mipmap/ic_launcher"
+        android:transitionName="imageTransition" />
+
+    <TextView
+        android:id="@+id/group_title"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_toEndOf="@id/friends_profile_image"
+        android:layout_toRightOf="@id/friends_profile_image"
+        android:text="groupname"
+        android:textSize="23sp" />
+
+    <TextView
+        android:id="@+id/group_last_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/group_title"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="-110dp"
+        android:layout_toEndOf="@+id/friends_profile_image"
+        android:layout_toRightOf="@id/friends_profile_image"
+        android:maxLines="1"
+        android:paddingTop="3dp"
+        android:text="last message"
+        android:textSize="14sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:layout_below="@id/group_title"
+        android:visibility="gone"
+        android:id="@+id/onStatus"
+        app:civ_border_width="10dp"
+        app:civ_border_color="#05df29"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="-15dp"
+        android:layout_toRightOf="@id/friends_profile_image"
+        android:layout_toEndOf="@id/friends_profile_image"/>
+
+    <TextView
+        android:id="@+id/group_last_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="40dp"
+        android:layout_toEndOf="@+id/group_last_msg"
+        android:text="TextView"
+        android:textSize="17sp" />
+
+</RelativeLayout>

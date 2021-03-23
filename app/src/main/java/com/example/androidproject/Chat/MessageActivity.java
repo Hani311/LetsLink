@@ -341,9 +341,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private void sendNotification(String receiver, String username, String msg) {
 
-
-
-
         DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Tokens");
         Query query=tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
@@ -353,7 +350,7 @@ public class MessageActivity extends AppCompatActivity {
                 try {
                     for (DataSnapshot dS : snapshot.getChildren()) {
                         NotifToken token = dS.getValue(NotifToken.class);
-                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, userid,username + ": " + msg ,"New Message");
+                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, userid,username + ": " + msg ,"New Message", recepientUri);
                         NotifSender sender = new NotifSender(data, token.getToken());
                         apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
                                 @Override
@@ -436,6 +433,43 @@ public class MessageActivity extends AppCompatActivity {
 
                         hM.put("seen", true);
                         dS.getRef().updateChildren(hM);
+
+                        final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
+                                .child(userid).child(fUser.getUid());
+
+                        lastMsgFrontRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                HashMap<String, Object> hM=new HashMap<>();
+
+                                hM.put("seen", true);
+                                snapshot.getRef().updateChildren(hM);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        final DatabaseReference lastMsgBackRef = FirebaseDatabase.getInstance().getReference("lastMessage")
+                                .child(fUser.getUid()).child(userid);
+
+                        lastMsgBackRef.addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                HashMap<String, Object> hM=new HashMap<>();
+
+                                hM.put("seen", true);
+                                snapshot.getRef().updateChildren(hM);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
 
@@ -447,42 +481,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
-                .child(userid).child(fUser.getUid());
 
-        lastMsgFrontRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HashMap<String, Object> hM=new HashMap<>();
-
-                hM.put("seen", true);
-                snapshot.getRef().updateChildren(hM);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        final DatabaseReference lastMsgBackRef = FirebaseDatabase.getInstance().getReference("lastMessage")
-                .child(fUser.getUid()).child(userid);
-
-        lastMsgBackRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HashMap<String, Object> hM=new HashMap<>();
-
-                hM.put("seen", true);
-                snapshot.getRef().updateChildren(hM);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
 
     }

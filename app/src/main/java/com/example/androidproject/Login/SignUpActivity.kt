@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidproject.MainActivity
 import com.example.androidproject.R
+import com.example.androidproject.Users.User
 import com.example.androidproject.databinding.ActivitySignUpBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
@@ -98,21 +99,18 @@ class SignUpActivity : AppCompatActivity() {
 
                     if (it.isSuccessful) {
 
+                        Toast.makeText(this@SignUpActivity, "data inserted successfully", Toast.LENGTH_LONG).show()
+                        val currentUser = this.auth.currentUser!!
+
                         val i = Intent(this@SignUpActivity, MainActivity::class.java)
                         startActivity(i)
+
+                        finish()
                     }
                 }
 
-                /*
-                val user=User(username, email, pass)
-                val reff: DatabaseReference
-                reff = FirebaseDatabase.getInstance().reference.child("Users")
-                reff.push().setValue(user)
-                 */
 
 
-                Toast.makeText(this@SignUpActivity, "data inserted successfully", Toast.LENGTH_LONG).show()
-                val currentUser = this.auth.currentUser!!
 
             }
         })

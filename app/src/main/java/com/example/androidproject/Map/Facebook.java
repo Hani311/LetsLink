@@ -84,6 +84,9 @@ public class Facebook extends AppCompatActivity {
 
             }
         });
+
+
+
         LoginManager.getInstance().logOut();
     }
 
