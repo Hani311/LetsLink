@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity  {
                 GestureDetector.SimpleOnGestureListener {
 
 
-            private View view;
+            private final View view;
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 

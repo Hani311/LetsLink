@@ -57,6 +57,7 @@ public class MessagesFragment extends Fragment {
         titles.add("Groups");
         TabLayout tablLayout=rootView.findViewById(R.id.messagesTabLayout);
         ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.messageViewPager);
+
         //mViewPager.setAdapter(new ChatAdapter(getChildFragmentManager()));
         mViewPager.setAdapter(chatAdapter);
         tablLayout.setupWithViewPager(mViewPager);

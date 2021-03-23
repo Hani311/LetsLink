@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.androidproject.FindfriendActivity;
+import com.example.androidproject.FrindsListActivity;
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +32,6 @@ public class ProfileNavigationFragment extends Fragment {
     private CircleImageView civ;
     private FirebaseUser fUser;
     private TextView username;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,6 @@ public class ProfileNavigationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_navigation_fragment, container, false);
         civ=view.findViewById(R.id.civ_in_profile_navigation);
         username=view.findViewById(R.id.username_in_profile_navigation);
-
         fUser= FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
@@ -74,6 +74,8 @@ public class ProfileNavigationFragment extends Fragment {
 
 
         Button  skip=view.findViewById(R.id.profileBtn);
+         Button     btnFriendsList=view.findViewById(R.id.btnFriends);
+         Button btnSearch= view.findViewById(R.id.searchFrinds);
 
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +84,21 @@ public class ProfileNavigationFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        btnFriendsList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), FrindsListActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), FindfriendActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }

@@ -8,17 +8,37 @@ public class Events {
     private String description;
     private String capacity;
     private String eventName;
+    private String eventAdminID;
+    private String eventID;
 
     public Events() {
     }
 
-    public Events(String eventType, String eventName, double longitude, double latitude, String description, String capacity) {
+    public Events(String eventType, String eventName, double longitude, double latitude, String description, String capacity, String eventAdminID, String eventID) {
         this.eventType = eventType;
         this.longitude = longitude;
         this.latitude = latitude;
         this.eventName = eventName;
         this.description = description;
         this.capacity = capacity;
+        this.eventAdminID = eventAdminID;
+        this.eventID = eventID;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
+
+    public String getEventAdminID() {
+        return eventAdminID;
+    }
+
+    public void setEventAdminID(String eventAdminID) {
+        this.eventAdminID = eventAdminID;
     }
 
     public String getEventName() {
@@ -80,4 +100,3 @@ public class Events {
                 '}';
     }
 }
-
