@@ -7,7 +7,7 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login4"
+        android:background="@drawable/login46"
         tools:context=".Login.LoginActivity">
 
 
@@ -44,7 +44,6 @@
                 android:layout_width="326dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-
                 android:layout_marginTop="10dp"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
@@ -85,7 +84,7 @@
                 android:layout_marginTop="15dp"
                 android:fontFamily="serif"
                 android:text="No account?"
-                android:textColor="@color/black"
+                android:textColor="#FF0000"
                 android:textStyle="bold|italic" />
 
             <Button

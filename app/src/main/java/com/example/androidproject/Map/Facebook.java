@@ -1,5 +1,6 @@
 package com.example.androidproject.Map;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.androidproject.R;
 import com.facebook.AccessToken;
@@ -33,7 +36,12 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.example.androidproject.Users.PassNotif.CHANNEL_1_ID;
+
 public class Facebook extends AppCompatActivity {
+
+    private NotificationManagerCompat notificationManager;
+    private TextView editTextTitle;
 
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -42,10 +50,13 @@ public class Facebook extends AppCompatActivity {
     private ImageView imageView2;
     private ShareButton sbLink;
     private ShareButton sbPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook);
+        notificationManager = NotificationManagerCompat.from(this);
+        editTextTitle = findViewById(R.id.edit_text_title);
 
 
         loginButton = findViewById(R.id.login_button);
@@ -67,21 +78,48 @@ public class Facebook extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("Demo", "Login Successful");
-
+                String title = editTextTitle.getText().toString();
+                Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setContentTitle("Facebook Login")
+                        .setContentText("Login to facebook was Successful")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setAutoCancel(true)
+                        .build();
+                notificationManager.notify(1, notification);
+                Log.d("Demo", "Login Successful" + title);
             }
 
             @Override
             public void onCancel() {
-                Log.d("Demo", "Login cancel");
+                String title = editTextTitle.getText().toString();
+                Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setContentTitle("Facebook Login")
+                        .setContentText("Login to facebook was canceled")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setAutoCancel(true)
+                        .build();
+                notificationManager.notify(1, notification);
+                Log.d("Demo", "Login cancel" + title);
 
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("Demo", "Login Onerror");
-
-
+                String title = editTextTitle.getText().toString();
+                Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
+                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setContentTitle("Facebook Login")
+                        .setContentText("Login to facebook error")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setAutoCancel(true)
+                        .build();
+                notificationManager.notify(1, notification);
+                Log.d("Demo", "Login Onerror" + title);
             }
         });
         LoginManager.getInstance().logOut();
@@ -91,7 +129,6 @@ public class Facebook extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
 
 
         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
@@ -110,7 +147,6 @@ public class Facebook extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
 
                     }
                 });
