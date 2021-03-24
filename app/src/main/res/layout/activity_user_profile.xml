@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/profile1"
     tools:context=".Users.UserProfile">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="239dp"
-        android:background="@drawable/photo">
+        >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="114dp"
+            android:layout_height="105dp"
             android:layout_marginTop="36dp"
-            android:src="@drawable/profile"
+            android:src="@drawable/profile1"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +31,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-smallcaps"
             android:text="Change Picture"
-            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textColor="@color/mainHani"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.47"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +91,17 @@
         android:layout_gravity="bottom|center"
         android:layout_marginRight="70dp"
         android:layout_marginBottom="100dp"
-        android:text="save" />
+        android:text="save"
+        android:fontFamily="serif"
+        android:shadowColor="#F44336"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold|italic"
+        app:backgroundTint="#2B5B85"
+        app:cornerRadius="20dp"
+        app:iconTint="#AF2626"
+        app:rippleColor="#FF0606"/>
 
     <Button
         android:id="@+id/logout"
@@ -95,16 +110,34 @@
         android:layout_gravity="bottom|right"
         android:layout_marginRight="70dp"
         android:layout_marginBottom="100dp"
-        android:text="logout" />
+        android:text="logout"
+        android:fontFamily="serif"
+        android:shadowColor="#F44336"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold|italic"
+        app:backgroundTint="#2B5B85"
+        app:cornerRadius="20dp"
+        app:iconTint="#AF2626"
+        app:rippleColor="#FF0606"/>
 
     <Button
         android:id="@+id/btnResetActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="130dp"
+        android:layout_marginRight="100dp"
         android:layout_marginBottom="200dp"
-        android:text="Change Password" />
+        android:fontFamily="serif"
+        android:shadowColor="#F44336"
+        android:text="Change Password"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold|italic"
+        app:backgroundTint="#2B5B85"
+        app:cornerRadius="20dp"
+        app:iconTint="#AF2626"
+        app:rippleColor="#FF0606" />
 
 
 </FrameLayout>
