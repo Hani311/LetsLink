@@ -12,8 +12,9 @@
         android:id="@+id/civ_in_profile_navigation"
         android:layout_width="133dp"
         android:layout_height="120dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="136dp"
+        android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +22,10 @@
         android:id="@+id/username_in_profile_navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"
+        android:textColor="#FD0000"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,22 +115,22 @@
     <Button
         android:id="@+id/button4"
         android:layout_width="340dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="48dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/setting_btn_layout"
         android:drawableLeft="@drawable/ic_baseline_language_24"
         android:gravity="left|center_vertical"
         android:text="Language settings"
         android:textAllCaps="false"
-        app:backgroundTint="@color/mainHani"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/civ_in_profile_navigation" />
 
     <Button
         android:id="@+id/searchFrinds"

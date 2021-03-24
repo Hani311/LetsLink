@@ -34,7 +34,7 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="280dp"
-                app:hintTextColor="@color/mainHani"
+                app:hintTextColor="#FF0505"
 
                 app:startIconDrawable="@drawable/ic_baseline_person_24">
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                app:hintTextColor="@color/mainHani"
+                app:hintTextColor="#FF0404"
 
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_baseline_vpn_key_24">
