@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.androidproject.Map.Events;
 import com.example.androidproject.R;
 import com.example.androidproject.Users.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -61,13 +62,28 @@ public class CreateGroupActivity extends AppCompatActivity {
     private String[] camerapermissions;
     private String[] storagepermissions;
     private ProgressDialog progressDialog;
-
+    private String selectedItem;
+    private String eventName;
+    private double longitude;
+    private double latitude;
+    private String description;
+    private String capacity;
+    Intent intent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+
+        intent=getIntent();
+        selectedItem=intent.getStringExtra("eventType");
+        eventName=intent.getStringExtra("eventName");
+        longitude=intent.getDoubleExtra("longitude",  0);
+        latitude=intent.getDoubleExtra("latitude", 0);
+        description=intent.getStringExtra("longitude");
+        capacity=intent.getStringExtra("capacity");
+
 
         auth=FirebaseAuth.getInstance();
         actionBar=getSupportActionBar();
@@ -82,6 +98,8 @@ public class CreateGroupActivity extends AppCompatActivity {
         createBtn=findViewById(R.id.create_group_btn);
         groupNameInput=findViewById(R.id.group_name_input);
         groupDescrInput=findViewById(R.id.group_descr_input);
+
+        groupDescrInput.setText(description);
 
         groupIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +116,8 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        auth=FirebaseAuth.getInstance();
-        checkForUser();
+        //auth=FirebaseAuth.getInstance();
+        //checkForUser();
         //sendBtn=findViewById(R.id.);
 
     }
@@ -140,6 +158,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         hM.put("timeCreated", ""+ timestamp);
         hM.put("groupAdmin", ""+auth.getCurrentUser().getUid());
 
+
+
+        DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
+        String keys = myref.push().getKey();
+
+        Events even = new Events(selectedItem, eventName, longitude, latitude, description, capacity, auth.getCurrentUser().getUid(), keys, timestamp);
+
+        myref.child(keys).setValue(even);
+        DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
+        myreference.child(keys).child("joined").setValue(0);
 
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Groups");
         reference.child(timestamp).setValue(hM)

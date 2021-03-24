@@ -4,8 +4,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,8 @@ public class GroupChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_group_chat, container, false);
         groupsView=view.findViewById(R.id.groups_recycler_view);
+        groupsView.setHasFixedSize(true);
+        groupsView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         auth=FirebaseAuth.getInstance();
 
@@ -50,14 +54,28 @@ public class GroupChatFragment extends Fragment {
 
     private void loadGroups() {
 
+        groups=new ArrayList<>();
+        groups.clear();
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for(DataSnapshot dS:snapshot.getChildren()){
-                    if(!dS.child("Participants").child(auth.getCurrentUser().getUid()).exists()){
-                        Group group=dS.getValue(Group.class);
+                    if(dS.child("Participants").child(auth.getCurrentUser().getUid()).exists()){
+
+
+                        String description =dS.child("description").getValue(String.class);
+                        String groupAdmin =dS.child("groupAdmin").getValue(String.class);
+                        String groupID =dS.child("groupID").getValue(String.class);
+                        String groupIcon =dS.child("groupIcon").getValue(String.class);
+                        String timeCreated=dS.child("timeCreated").getValue(String.class);
+                        String title =dS.child("title").getValue(String.class);
+
+
+
+                        Group group=new Group(groupID, title, description, groupAdmin, groupIcon, timeCreated);
                         groups.add(group);
                     }
                 }

@@ -15,7 +15,6 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="1dp"
-        android:src="@mipmap/ic_launcher"
         android:transitionName="imageTransition" />
 
     <TextView

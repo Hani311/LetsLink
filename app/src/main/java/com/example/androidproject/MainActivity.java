@@ -30,6 +30,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.bumptech.glide.Glide;
 import com.example.androidproject.Notifications.NotifToken;
 import com.example.androidproject.Users.User;
+import com.example.androidproject.Users.UserSingleton;
 import com.example.androidproject.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity  {
     DatabaseReference reference;
     FirebaseUser fBU;
     ArrayList<Fragment> fragments;
-
+    UserSingleton singleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity  {
         Toolbar toolbar=binding.toolBar;
         AppBarLayout layout=binding.appBarLayout;
 
+        singleton=UserSingleton.getInstance();
         Fade fade = new Fade();
         View decor=getWindow().getDecorView();
         fade.excludeTarget(decor.findViewById(R.id.nav_host_fragment), true);
@@ -127,10 +129,14 @@ public class MainActivity extends AppCompatActivity  {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
 
+                singleton.setCurrentUserName(user.getUsername());
+
                 if(user.getImageURL().equals("default")) {
+                    singleton.setCurrenUserUri("default");
                     cIV.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
+                    singleton.setCurrenUserUri(user.getImageURL());
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(cIV);
                 }
             }
@@ -150,81 +156,6 @@ public class MainActivity extends AppCompatActivity  {
             NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
 
         }
-
-        /*
-        BottomNavigationView.OnNavigationItemSelectedListener navListener=
-                new BottomNavigationView.OnNavigationItemSelectedListener(){
-
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment selectedFragment=null;
-
-                        switch(item.getItemId()){
-
-                            case R.id.home:
-                                selectedFragment=new TitleFragment();
-                                break;
-
-                            case R.id.messages:
-                                selectedFragment=new MessagesFragment();
-                                break;
-
-                            case R.id.notifications:
-                                selectedFragment=new NotificationFragment();
-                                break;
-
-                            case R.id.maps:
-                                selectedFragment=new MessagesFragment();
-                                break;
-
-                            case R.id.userProfile:
-                                selectedFragment=new userProfileSettingsFragment();
-                                break;
-
-                        }
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_container, selectedFragment).commit();
-                        return true;
-                    }
-                };
-
-         */
-        //binding.navigationView.setOnNavigationItemSelectedListener(navListener);
-
-        /*
-        binding.messageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navHostFragment.getNavController().navigate(R.id.action_titleFragment2_to_messagesFragment);
-            }
-        });
-
-        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //navHostFragment.getNavController().navigate(R.id.);
-            }
-        });
-
-        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-
-              //navHostFragment.getNavController().navigate();
-          }
-
-      });
-
-
-
-        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               navController.navigate(R.id.action_titleFragment2_to_userProfile);
-            }
-        });
-         */
-
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
@@ -386,4 +317,6 @@ public class MainActivity extends AppCompatActivity  {
 
         return bounds;
     }
+
+
 }

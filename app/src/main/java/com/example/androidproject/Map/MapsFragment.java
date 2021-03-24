@@ -31,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.Chat.CreateGroupActivity;
+import com.example.androidproject.MainActivity;
 import com.example.androidproject.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -53,6 +55,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -271,6 +274,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                                         Snackbar.make(view, "You have joined the event", Snackbar.LENGTH_LONG)
                                                                                 .setAction("Action", null).show();
 
+                                                                        addParticipant(event.getGroupID(), event.getEventName());
                                                                     }
                                                                     Log.e("values", snapshot.toString());
                                                                 }
@@ -615,6 +619,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                     DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
                                     LatLng finalLatLngg = latLngg;
 
+
                                     refere.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -626,15 +631,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                 }
                                             }
                                             if (exists != true) {
-                                                DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
-                                                String keys = myref.push().getKey();
-                                                Events even = new Events(spinner.getSelectedItem().toString(), nameOfEvenet.getText().toString(), finalLatLngg.longitude, finalLatLngg.latitude, editText.getText().toString(), spinnerCapacity.getSelectedItem().toString(), getUserID(), keys);
-                                                myref.child(keys).setValue(even);
-                                                DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
-                                                myreference.child(keys).child("joined").setValue(0);
+                                                createGroupChat(spinner, nameOfEvenet, finalLatLngg, editText, spinnerCapacity);
 
-
-                                                System.out.println(even);
+                                                System.out.println("dunzo");
                                             } else {
                                                 Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_SHORT).show();
                                             }
@@ -718,6 +717,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    private void createGroupChat( Spinner spinner, TextView nameOfEvenet, LatLng finalLatLngg,EditText editText, Spinner spinnerCapacity){
+
+
+        Intent intent = new Intent(requireContext(), CreateGroupActivity.class);
+        intent.putExtra("eventType", spinner.getSelectedItem().toString());
+        intent.putExtra("eventName", nameOfEvenet.getText().toString());
+        intent.putExtra("longitude", finalLatLngg.longitude);
+        intent.putExtra("latitude", finalLatLngg.latitude);
+        intent.putExtra("description", editText.getText().toString());
+        intent.putExtra("capacity", spinnerCapacity.getSelectedItem().toString());
+
+        startActivity(intent);
+    }
+
+
+    public void addParticipant(String groupID, String eventName){
+        String timestamp=""+System.currentTimeMillis();
+        HashMap<String, String> hM=new HashMap<>();
+        hM.put("userID", getUserID());
+        hM.put("role", "participant");
+        hM.put("timestamp", ""+timestamp);
+
+        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Groups");
+        ref.child(groupID).child("Participants").child(getUserID()).setValue(hM)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Toast.makeText(getContext(), "Joined group chat for the event"+eventName+"successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
