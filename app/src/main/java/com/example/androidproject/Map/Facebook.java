@@ -56,7 +56,7 @@ public class Facebook extends AppCompatActivity {
         sbPhoto = findViewById(R.id.sb_photo);
 
 
-        imageView2.setImageResource(R.drawable.hkr);
+        imageView2.setImageResource(R.drawable.app_icon);
         callbackManager = CallbackManager.Factory.create();
 
         // make sure to update permissions with the developer facebook -

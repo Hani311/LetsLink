@@ -15,21 +15,19 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".Users.PassNotif"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
-        android:name=".Users.PassNotif"
         android:theme="@style/Theme.AndroidProject">
-
-        <activity android:name=".Users.ResetPasswordActivity"></activity>
+        <activity android:name=".policy"></activity>
+        <activity android:name=".Users.ResetPasswordActivity" />
         <activity android:name=".Map.Facebook" />
         <activity android:name=".FrindsListActivity" />
         <activity android:name=".FindfriendActivity" />
         <activity android:name=".PersonProfileActivity" />
-
-        
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
