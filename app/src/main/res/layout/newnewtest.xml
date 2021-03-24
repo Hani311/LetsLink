@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="407dp"
+        android:layout_height="371dp"
         android:orientation="vertical">
 
         <EditText
@@ -31,8 +31,8 @@
             android:layout_width="112dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:inputType="textPersonName"
-            android:hint="Event name" />
+            android:hint="Event name"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/addressToLatLong"
@@ -72,53 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:background="@drawable/style_spinner"
-                android:entries="@array/capacity"
-                />
+                android:entries="@array/capacity" />
 
 
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:weightSum="5">
-
-            <TextView
-                android:id="@+id/textView4s"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/starts"
-                android:textColor="#0B0000"
-                android:textSize="14sp" />
-
-
-            <Spinner
-                android:id="@+id/startDateSpinnerDD"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/style_spinner"
-                />
-            <Spinner
-                android:id="@+id/startDateSpinnerMM"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/style_spinner"
-                />
-            <Spinner
-                android:id="@+id/startDateSpinnerYY"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/style_spinner"
-                />
-
-
-        </TableRow>
-
 
         <EditText
             android:id="@+id/CreateDescription"
@@ -137,6 +94,30 @@
             android:textSize="18sp"
 
             />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="87dp">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/exclamationmarkinacircle" />
+
+            <TextView
+                android:layout_height="42dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="5dp"
+                android:text="Due to corona, events created will be automotaically deleted after 00:00 every day"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2">
+
+            </TextView>
+
+
+        </TableRow>
+
 
 
     </LinearLayout>
