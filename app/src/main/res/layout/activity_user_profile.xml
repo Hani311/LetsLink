@@ -1,110 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/profile1"
     tools:context=".Users.UserProfile">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+    <FrameLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="239dp"
-        android:background="@drawable/photo">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginTop="36dp"
-            android:src="@drawable/profile"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/changePic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Change Picture"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.47"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
-            android:text="TextView"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.47"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent">
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="399dp"
+            android:layout_height="716dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:elevation="60dp"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="271dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:drawableStart="@drawable/ic_baseline_account_circle_24"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=" Name" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="239dp">
 
-    <EditText
-        android:id="@+id/editTextTextEmail"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="114dp"
+                    android:layout_height="105dp"
+                    android:layout_marginTop="36dp"
+                    android:src="@drawable/profile1"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="70dp"
-        android:drawableStart="@drawable/ic_baseline_email_24"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=" email"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="100dp"
-        android:text="save" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="100dp"
-        android:text="logout" />
-
-    <Button
-        android:id="@+id/btnResetActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="130dp"
-        android:layout_marginBottom="200dp"
-        android:text="Change Password" />
+                <TextView
+                    android:id="@+id/changePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="Change Picture"
+                    android:textAlignment="center"
+                    android:textColor="@color/mainHani"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.47"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
 
-</FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="331dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundColor="#DEE8F4"
+                app:startIconDrawable="@drawable/ic_baseline_account_circle_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTextPersonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="Name"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="331dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                app:boxBackgroundColor="#DEE8F4"
+                app:startIconDrawable="@drawable/ic_baseline_email_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="100dp"
+                android:fontFamily="serif"
+                android:shadowColor="#F44336"
+                android:text="save"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="bold|italic"
+                app:backgroundTint="#2B5B85"
+                app:cornerRadius="20dp"
+                app:iconTint="#AF2626"
+                app:rippleColor="#FF0606" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginTop="-80dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="-20dp"
+                android:fontFamily="serif"
+                android:shadowColor="#F44336"
+                android:text="logout"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="bold|italic"
+                app:backgroundTint="#2B5B85"
+                app:cornerRadius="20dp"
+                app:iconTint="#AF2626"
+                app:rippleColor="#FF0606" />
+
+            <Button
+                android:id="@+id/btnResetActivity"
+                android:layout_width="214dp"
+                android:layout_height="46dp"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginRight="110dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="serif"
+                android:shadowColor="#F44336"
+                android:text="Change Password"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="bold|italic"
+                app:backgroundTint="#2B5B85"
+                app:cornerRadius="20dp"
+                app:iconTint="#AF2626"
+                app:rippleColor="#FF0606" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

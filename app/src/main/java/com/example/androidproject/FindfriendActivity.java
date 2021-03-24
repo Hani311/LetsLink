@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.textfield.TextInputEditText;
@@ -90,7 +87,7 @@ public class FindfriendActivity extends AppCompatActivity {
         }
         public void setImageURL( String imageURL){
             CircleImageView myImage= mView.findViewById(R.id.profile_image);
-            Picasso.get().load(imageURL).placeholder(R.drawable.profile).into(myImage);
+            Picasso.get().load(imageURL).placeholder(R.drawable.profile1).into(myImage);
 
         }
         public void setUsername(String username) {
