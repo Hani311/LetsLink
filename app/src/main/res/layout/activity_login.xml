@@ -7,8 +7,15 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login46"
+        android:background="@drawable/signup"
         tools:context=".Login.LoginActivity">
+
+        <ImageView
+            android:layout_width="154dp"
+            android:layout_height="133dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/app_icon_56" />
 
 
         <LinearLayout
@@ -26,16 +33,22 @@
                 android:layout_width="331dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="160dp"
-                app:boxBackgroundColor="@color/white"
+                android:layout_marginTop="280dp"
+                app:hintTextColor="@color/mainHani"
+
                 app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/username_input"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:background="#FFFFFF"
+                    android:fontFamily="monospace"
                     android:hint="Enter your email-address"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textStyle="bold" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -45,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                app:boxBackgroundColor="@color/white"
+                app:hintTextColor="@color/mainHani"
+
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_baseline_vpn_key_24">
 
@@ -53,8 +67,11 @@
                     android:id="@+id/password_input"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:background="@color/white"
+                    android:fontFamily="monospace"
                     android:hint="Enter your password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -62,10 +79,10 @@
                 android:layout_width="249dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="180dp"
-                android:text="Log in"
+                android:layout_marginTop="80dp"
                 android:fontFamily="serif"
                 android:shadowColor="#F44336"
+                android:text="Log in"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
@@ -82,10 +99,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
-                android:fontFamily="serif"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="No account?"
-                android:textColor="#FF0000"
-                android:textStyle="bold|italic" />
+                android:textColor="@color/black"
+                android:textStyle="italic" />
 
             <Button
                 android:id="@+id/signUp_button"

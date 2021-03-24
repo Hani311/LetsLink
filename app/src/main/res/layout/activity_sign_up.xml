@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:background="@drawable/signup"
+        android:background="@drawable/login4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Login.SignUpActivity">
@@ -19,14 +19,12 @@
             android:orientation="vertical">
 
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="152dp"
+                android:layout_height="145dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:src="@drawable/ic_baseline_account_circle_24"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/prooo1" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -117,6 +115,7 @@
                 app:backgroundTint="#2B5B85"
                 app:cornerRadius="20dp" />
 
+
             <TextView
                 android:id="@+id/policy"
                 android:layout_width="wrap_content"
@@ -126,7 +125,7 @@
                 android:background="#00FFFFFF"
                 android:text="Read our Policy privacy"
                 android:textAlignment="center"
-                android:textColor="#2E2A2A"
+                android:textColor="@color/mainHani"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />
