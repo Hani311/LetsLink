@@ -5,34 +5,27 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:background="@drawable/signup_background"
+        android:background="@drawable/login4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Login.SignUpActivity">
 
         <LinearLayout
-            android:layout_width="309dp"
-            android:layout_height="wrap_content"
+            android:layout_width="324dp"
+            android:layout_height="687dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:background="@color/white"
+
             android:orientation="vertical">
 
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                tools:srcCompat="@tools:sample/avatars" />
-
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="152dp"
+                android:layout_height="145dp"
                 android:layout_gravity="center_horizontal"
-                tools:srcCompat="@drawable/ic_baseline_edit_24" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/prooo1" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -42,6 +35,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="0dp"
                 android:padding="0dp"
+                app:boxBackgroundColor="@color/white"
                 app:startIconDrawable="@drawable/ic_baseline_email_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +52,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                app:boxBackgroundColor="@color/white"
                 app:startIconDrawable="@drawable/ic_baseline_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -74,6 +69,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_baseline_vpn_key_24">
 
@@ -91,6 +87,8 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="#9A1515"
                 app:startIconDrawable="@drawable/ic_baseline_vpn_key_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -104,16 +102,33 @@
 
             <Button
                 android:id="@+id/signUp_button"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="serif"
                 android:shadowColor="#F44336"
                 android:text="Sign up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:cornerRadius="4dp" />
+                android:textStyle="bold|italic"
+                app:backgroundTint="#2B5B85"
+                app:cornerRadius="20dp" />
+
+
+            <TextView
+                android:id="@+id/policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="10dp"
+                android:background="#00FFFFFF"
+                android:text="Read our Policy privacy"
+                android:textAlignment="center"
+                android:textColor="@color/mainHani"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                android:typeface="serif" />
 
             <CheckBox
                 android:id="@+id/agreement_checbox"

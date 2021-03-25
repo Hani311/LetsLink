@@ -65,7 +65,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         if (inChat) {
 
-            getLastMessage(user.getID(), holder.lastMsg, user.getUsername());
+            getLastMessage(user.getID(), holder.lastMsg);
 
         } else {
             holder.lastMsg.setVisibility(View.GONE);
@@ -141,7 +141,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return super.getItemViewType(position);
     }
 
-    private void getLastMessage(String senderID, TextView lastMsg, String username){
+    private void getLastMessage(String senderID, TextView lastMsg){
 
             FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 

@@ -52,7 +52,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="275dp"
         android:layout_height="92dp"
         android:layout_marginTop="28dp"
@@ -72,7 +71,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="313dp"
         android:layout_height="116dp"
         android:layout_marginTop="12dp"

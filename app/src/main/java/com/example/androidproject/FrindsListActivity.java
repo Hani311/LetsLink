@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -48,6 +47,7 @@ private String onlineUserID;
         displayAllFriends();
     }
 
+
     private void displayAllFriends() {
         FirebaseRecyclerAdapter<Friends,friendViewHolder> firebaseRecyclerAdapter=  new FirebaseRecyclerAdapter<Friends, friendViewHolder>(
                 Friends.class, R.layout.all_users_display_layout, friendViewHolder.class,friendsRef
@@ -86,7 +86,7 @@ private String onlineUserID;
         }
         public void setImageURL( String imageURL){
             CircleImageView myImage= mView.findViewById(R.id.profile_image);
-            Picasso.get().load(imageURL).placeholder(R.drawable.profile).into(myImage);
+            Picasso.get().load(imageURL).placeholder(R.drawable.profile1).into(myImage);
 
         }
         public void setUsername(String username) {

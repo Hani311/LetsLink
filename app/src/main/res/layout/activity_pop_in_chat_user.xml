@@ -12,6 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Chat.PopInChatUserActivity"
+    android:backgroundTint="#8FBFC8"
     android:background="@drawable/inchat_user_popup">
 
     <de.hdodenhof.circleimageview.CircleImageView
