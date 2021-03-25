@@ -782,8 +782,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }.start();
 
 
-    }
-
     public void runTask() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 23);
