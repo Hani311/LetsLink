@@ -174,7 +174,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            groupIcon=itemView.findViewById(R.id.groupchat_pic);
+            groupIcon=itemView.findViewById(R.id.group_icon);
             groupTitle=itemView.findViewById(R.id.group_title);
             lastMessage=itemView.findViewById(R.id.group_last_msg);
             lastTime=itemView.findViewById(R.id.group_last_time);

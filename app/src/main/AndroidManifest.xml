@@ -25,7 +25,8 @@
             android:name=".Chat.GroupChatActivity"
             android:label="@string/title_activity_group_chat"
             android:theme="@style/Theme.AndroidProject.NoActionBar" />
-        <activity android:name=".Chat.CreateGroupActivity" />
+        <activity android:name=".Chat.CreateGroupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Map.Facebook" />
         <activity android:name=".Users.ResetPasswordActivity"></activity>
         <activity android:name=".FrindsListActivity" />

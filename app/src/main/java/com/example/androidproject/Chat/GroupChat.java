@@ -8,6 +8,8 @@ public class GroupChat {
     public String timestamp;
     public String senderUri;
 
+    public GroupChat(){}
+
     public GroupChat(String sender, String senderName, String message, String timestamp, String senderUri) {
         this.sender = sender;
         this.senderName = senderName;

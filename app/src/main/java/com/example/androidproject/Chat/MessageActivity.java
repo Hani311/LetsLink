@@ -276,6 +276,7 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hM);
         final String msg=message;
 
+        /*
         final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
                 .child(userid);
 
@@ -316,6 +317,8 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
         });
+
+         */
 
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference1.addValueEventListener(new ValueEventListener() {
@@ -434,6 +437,7 @@ public class MessageActivity extends AppCompatActivity {
                         hM.put("seen", true);
                         dS.getRef().updateChildren(hM);
 
+                        /*
                         final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
                                 .child(userid).child(fUser.getUid());
 
@@ -451,6 +455,8 @@ public class MessageActivity extends AppCompatActivity {
 
                             }
                         });
+
+
 
                         final DatabaseReference lastMsgBackRef = FirebaseDatabase.getInstance().getReference("lastMessage")
                                 .child(fUser.getUid()).child(userid);
@@ -470,6 +476,8 @@ public class MessageActivity extends AppCompatActivity {
 
                             }
                         });
+
+                         */
                     }
                 }
 
@@ -486,6 +494,7 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
@@ -509,6 +518,7 @@ public class MessageActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+     */
 
     private void muteUserNotifs() {
     }

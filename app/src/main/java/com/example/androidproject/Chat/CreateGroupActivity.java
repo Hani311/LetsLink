@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.androidproject.MainActivity;
 import com.example.androidproject.Map.Events;
 import com.example.androidproject.R;
 import com.example.androidproject.Users.User;
@@ -90,6 +92,19 @@ public class CreateGroupActivity extends AppCompatActivity {
         actionBar.setTitle("Creating group");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+
+
+        Toolbar toolbar=findViewById(R.id.create_group_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         camerapermissions=new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagepermissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -188,6 +203,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 progressDialog.dismiss();
                                 Toast.makeText(CreateGroupActivity.this, "Group Created", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(CreateGroupActivity.this, MainActivity.class);
+                                startActivity(intent);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

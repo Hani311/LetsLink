@@ -35,6 +35,7 @@ public class GroupChatFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadGroups();
     }
 
     @Override
@@ -47,7 +48,6 @@ public class GroupChatFragment extends Fragment {
 
         auth=FirebaseAuth.getInstance();
 
-        loadGroups();
 
         return view;
     }
@@ -65,7 +65,7 @@ public class GroupChatFragment extends Fragment {
                 for(DataSnapshot dS:snapshot.getChildren()){
                     if(dS.child("Participants").child(auth.getCurrentUser().getUid()).exists()){
 
-
+/*
                         String description =dS.child("description").getValue(String.class);
                         String groupAdmin =dS.child("groupAdmin").getValue(String.class);
                         String groupID =dS.child("groupID").getValue(String.class);
@@ -73,13 +73,25 @@ public class GroupChatFragment extends Fragment {
                         String timeCreated=dS.child("timeCreated").getValue(String.class);
                         String title =dS.child("title").getValue(String.class);
 
-
-
                         Group group=new Group(groupID, title, description, groupAdmin, groupIcon, timeCreated);
-                        groups.add(group);
+ */
+
+                        String groupID =dS.child("groupID").getValue(String.class);
+
+                        Boolean add = true;
+                        Group group=dS.getValue(Group.class);
+
+                        for(Group group1:groups){
+                            if(group1.getGroupID().equals(groupID)){
+                                add=false;
+                            }
+                        }
+                        if(add) {
+                            groups.add(group);
+                        }
                     }
                 }
-                groupAdapter=new GroupAdapter(getActivity(), groups);
+                groupAdapter=new GroupAdapter(getContext(), groups);
                 groupsView.setAdapter(groupAdapter);
             }
 

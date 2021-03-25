@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.androidproject.Chat.Chat;
 import com.example.androidproject.Chat.LastSentMessage;
 import com.example.androidproject.Chat.MessageActivity;
 import com.example.androidproject.R;
@@ -36,6 +37,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private boolean inChat;
 
     boolean seenMsg;
+    private String receiverName;
+    private String senderName;
+    private String lastSentMesage;
+    private String senderConfirm;
 
 
     public FriendsAdapter(Context context, List<User> usersList, boolean inChat) {
@@ -138,52 +143,91 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     private void getLastMessage(String senderID, TextView lastMsg, String username){
 
-        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+            FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        DatabaseReference lastMsgReference= FirebaseDatabase.getInstance().getReference("lastMessage")
-                .child(senderID).child(fUser.getUid());
+            DatabaseReference userReference= FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
+            userReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        lastMsgReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
 
-                try{
-                LastSentMessage lastMessage = snapshot.getValue(LastSentMessage.class);
-                Log.e("lastMSG",lastMessage.getLastMsg());
-                seenMsg=lastMessage.getSeen();
+                    receiverName=user.getUsername();
+                }
 
-                switch (lastMessage.getLastMsg()) {
-                    case "":
-                        lastMsg.setVisibility(View.INVISIBLE);
-                        lastMsg.setText("");
-                        break;
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    default:
-                        lastMsg.setVisibility(View.VISIBLE);
-                        if (lastMessage.getFrom().equals(fUser.getUid())) {
-                            lastMsg.setText("You : " + lastMessage.getLastMsg());
-                        } else {
-                            lastMsg.setText(username + " : " + lastMessage.getLastMsg());
-                            if (!seenMsg) {
-                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
-                            } else {
-                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
-                            }
+                }
+            });
+
+
+            DatabaseReference senderReference= FirebaseDatabase.getInstance().getReference("Users").child(senderID);
+            senderReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    User user = snapshot.getValue(User.class);
+
+                    senderName=user.getUsername();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Chats");
+            reference.addValueEventListener(new ValueEventListener() {
+
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
+                    for(DataSnapshot dS:snapshot.getChildren()) {
+                        Chat chat = dS.getValue(Chat.class);
+                        if (chat.getReceiver().equals(fUser.getUid()) && chat.getSender().equals(senderID) ||
+                                chat.getReceiver().equals(senderID) && chat.getSender().equals(fUser.getUid())) {
+                            lastSentMesage=chat.getMessage();
+                            seenMsg=chat.isSeen();
+                            senderConfirm=chat.sender;
+                            Log.e("senderID", chat.sender);
+                            Log.e("receiverID", fUser.getUid());
+                            if(chat.getSender().equals(senderID)){}
+
                         }
+                    }
 
-                        break;
+                    switch (lastSentMesage) {
+                        case "":
+                            lastMsg.setText("");
+                            break;
+
+                        default:
+                            if (senderConfirm.equals(fUser.getUid())) {
+                                lastMsg.setText("You : " + lastSentMesage);
+                            } else {
+                                lastMsg.setText(senderName + " : " + lastSentMesage);
+                                if (!seenMsg) {
+                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
+                                } else {
+                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
+                                }
+                            }
+
+                            break;
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-                }
-                catch (NullPointerException e){ }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            });
     }
 
 }

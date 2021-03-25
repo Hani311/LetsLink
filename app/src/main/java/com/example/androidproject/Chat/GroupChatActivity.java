@@ -1,6 +1,7 @@
 package com.example.androidproject.Chat;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,8 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.androidproject.R;
@@ -52,6 +55,7 @@ public class GroupChatActivity extends AppCompatActivity {
     TextView sendText;
     TextView groupChatTitle;
     CircleImageView groupPic;
+    RelativeLayout groupLayout;
     private DatabaseReference databaseReference;
     private RecyclerView groupChatView;
     private ArrayList<GroupChat> chatList;
@@ -75,6 +79,18 @@ public class GroupChatActivity extends AppCompatActivity {
 
         groupChatView=findViewById(R.id.group_chat_view);
 
+        Toolbar toolbar=findViewById(R.id.groupChatToolBar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         groupChatView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
@@ -84,6 +100,8 @@ public class GroupChatActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtnGroup);
         groupPic=findViewById(R.id.groupchat_pic);
         groupChatTitle=findViewById(R.id.grouchat_name);
+        groupLayout=findViewById(R.id.group_chat_layout);
+
         databaseReference= FirebaseDatabase.getInstance().getReference().child("Users");
         fAuth=FirebaseAuth.getInstance();
 
@@ -113,9 +131,17 @@ public class GroupChatActivity extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         sendBtn.setBackground(getDrawable(R.drawable.ic_baseline_send_24));
                     }
+                    try {
+                        groupChatView.smoothScrollToPosition(groupChatView.getAdapter().getItemCount());
+                    }
+                    catch(NullPointerException e){ }
                 }
                 else{
                     sendMessage(new String(Character.toChars(0x1F44D)));
+                    try {
+                        groupChatView.smoothScrollToPosition(groupChatView.getAdapter().getItemCount());
+                    }
+                    catch(NullPointerException e){ }
                 }
                 sendText.setText("");
             }
@@ -143,6 +169,24 @@ public class GroupChatActivity extends AppCompatActivity {
             }
         });
 
+        groupLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        groupLayout.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = groupLayout.getRootView().getHeight();
+                        int keypadHeight = screenHeight - r.bottom;
+
+                        try {
+                            if (keypadHeight > screenHeight * 0.15) {
+                                groupChatView.smoothScrollToPosition(groupChatView.getAdapter().getItemCount());
+                            } else {
+                                groupChatView.smoothScrollToPosition(groupChatView.getAdapter().getItemCount());
+                            }
+                        }
+                        catch(NullPointerException e){}
+                    }});
     }
 
     private void readGroupMessages(){
@@ -163,6 +207,12 @@ public class GroupChatActivity extends AppCompatActivity {
 
                         adapter=new GroupChatAdapter(GroupChatActivity.this, chatList);
                         groupChatView.setAdapter(adapter);
+
+
+                        try {
+                            groupChatView.smoothScrollToPosition(groupChatView.getAdapter().getItemCount());
+                        }
+                        catch(NullPointerException e){ }
                     }
 
                     @Override

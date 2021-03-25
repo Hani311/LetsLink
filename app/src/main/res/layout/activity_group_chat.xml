@@ -1,5 +1,5 @@
 <RelativeLayout
-    android:id="@+id/rootView"
+    android:id="@+id/group_chat_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,9 +18,10 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:id="@+id/chatToolBar"
+            android:id="@+id/groupChatToolBar"
             android:layout_width="match_parent"
             app:theme="@style/ToolbarThemeBlack">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/groupchat_pic"
                 android:transitionName="imageTransition"
