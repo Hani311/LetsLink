@@ -33,18 +33,19 @@
             android:layout_below="@id/person_pic"
             android:textSize="20sp"
             android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/person_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/person_full_name"
             android:layout_marginTop="5dp"
             android:text=""
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@android:color/background_dark"
-            android:layout_below="@id/person_full_name"
             android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
         <Button
             android:id="@+id/person_send_friend_request_btn"
             android:layout_width="230dp"

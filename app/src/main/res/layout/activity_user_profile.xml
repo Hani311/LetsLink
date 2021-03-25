@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:hint="Status"
-                    android:inputType="textEmailAddress" />
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
