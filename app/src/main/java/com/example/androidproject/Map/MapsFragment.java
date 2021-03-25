@@ -732,8 +732,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void createGroupChat(Spinner spinner, TextView nameOfEvenet, LatLng finalLatLngg, EditText editText, Spinner spinnerCapacity) {
-    new Thread(){
-        public void run(){
+    //new Thread(){
+     //   public void run(){
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -748,8 +748,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     startActivity(intent);
                 }
             });
-        }
-    }.start();
+
+    //}.start();
     }
 
 
