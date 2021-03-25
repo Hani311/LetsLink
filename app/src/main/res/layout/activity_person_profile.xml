@@ -54,7 +54,21 @@
             android:text="Send Friend Request"
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/person_status"/>
+            android:layout_below="@+id/person_status"
+            android:fontFamily="serif"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic"
+            app:backgroundTint="#2B5B85"
+            app:cornerRadius="20dp"
+            app:iconTint="#AF2626"
+            android:shadowColor="#F44336"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputNewPassword"
+            app:rippleColor="#FF0606"/>
         <Button
             android:id="@+id/declinefriendreq"
             android:layout_width="230dp"
@@ -64,7 +78,21 @@
             android:text="Decline Friend Request"
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/person_send_friend_request_btn"/>
+            android:fontFamily="serif"
+            android:layout_below="@+id/person_send_friend_request_btn"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic"
+            app:backgroundTint="#2B5B85"
+            app:cornerRadius="20dp"
+            android:shadowColor="#F44336"
+            app:iconTint="#AF2626"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputNewPassword"
+            app:rippleColor="#FF0606"/>
 
 
 

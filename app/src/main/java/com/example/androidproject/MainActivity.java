@@ -1,5 +1,11 @@
 package com.example.androidproject;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -19,16 +25,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.example.androidproject.Notifications.NotifToken;
 import com.example.androidproject.Users.User;
+import com.example.androidproject.Users.UserSingleton;
 import com.example.androidproject.databinding.ActivityMainBinding;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,6 +45,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,16 +58,38 @@ public class MainActivity extends AppCompatActivity  {
     static NavHostFragment navHostFragment;
     DatabaseReference reference;
     FirebaseUser fBU;
+    ArrayList<Fragment> fragments;
+    UserSingleton singleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fragments=new ArrayList<>();
 
         //navHostFragment=(NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.myNavHostFragment);
         //DataBindingUtil binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflator, R.layout.fragment_title, container, false)
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         //NavController navController = Navigation.findNavController(this, R.id.myNavHostFragment);
         //onSwipeTouchListener = new OnSwipeTouchListener(this, findViewById(R.id.myNavHostFragment));
+
+        CircleImageView cIV = binding.profileImage;
+        TextView username=binding.usernameDisplay;
+        Toolbar toolbar=binding.toolBar;
+        AppBarLayout layout=binding.appBarLayout;
+
+        singleton=UserSingleton.getInstance();
+        Fade fade = new Fade();
+        View decor=getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.nav_host_fragment), true);
+        fade.excludeTarget(android.R.id.statusBarBackground, true);
+        fade.excludeTarget(android.R.id.navigationBarBackground, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(enterTransition());
+            getWindow().setSharedElementExitTransition(returnTransition());
+            getWindow().setEnterTransition(fade);
+            getWindow().setExitTransition(fade);
+        }
 
 
 
@@ -87,22 +112,6 @@ public class MainActivity extends AppCompatActivity  {
         }
 
 
-        CircleImageView cIV = binding.profileImage;
-        TextView username=binding.usernameDisplay;
-        Toolbar toolbar=binding.toolBar;
-        AppBarLayout layout=binding.appBarLayout;
-
-        Fade fade = new Fade();
-        View decor=getWindow().getDecorView();
-        fade.excludeTarget(decor.findViewById(R.id.nav_host_fragment), true);
-        fade.excludeTarget(android.R.id.statusBarBackground, true);
-        fade.excludeTarget(android.R.id.navigationBarBackground, true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setSharedElementEnterTransition(enterTransition());
-            getWindow().setSharedElementExitTransition(returnTransition());
-            getWindow().setEnterTransition(fade);
-            getWindow().setExitTransition(fade);
-        }
 
         this.getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -120,10 +129,14 @@ public class MainActivity extends AppCompatActivity  {
                 User user = snapshot.getValue(User.class);
                 username.setText(user.getUsername());
 
+                singleton.setCurrentUserName(user.getUsername());
+
                 if(user.getImageURL().equals("default")) {
+                    singleton.setCurrenUserUri("default");
                     cIV.setImageResource(R.mipmap.ic_launcher_round);
                 }
                 else{
+                    singleton.setCurrenUserUri(user.getImageURL());
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(cIV);
                 }
             }
@@ -134,86 +147,15 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+
+
         BottomNavigationView navView = binding.navView;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
         if (navHostFragment != null) {
             NavigationUI.setupWithNavController(navView, navHostFragment.getNavController());
+
         }
-
-        /*
-        BottomNavigationView.OnNavigationItemSelectedListener navListener=
-                new BottomNavigationView.OnNavigationItemSelectedListener(){
-
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment selectedFragment=null;
-
-                        switch(item.getItemId()){
-
-                            case R.id.home:
-                                selectedFragment=new TitleFragment();
-                                break;
-
-                            case R.id.messages:
-                                selectedFragment=new MessagesFragment();
-                                break;
-
-                            case R.id.notifications:
-                                selectedFragment=new NotificationFragment();
-                                break;
-
-                            case R.id.maps:
-                                selectedFragment=new MessagesFragment();
-                                break;
-
-                            case R.id.userProfile:
-                                selectedFragment=new userProfileSettingsFragment();
-                                break;
-
-                        }
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_container, selectedFragment).commit();
-                        return true;
-                    }
-                };
-
-         */
-        //binding.navigationView.setOnNavigationItemSelectedListener(navListener);
-
-        /*
-        binding.messageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navHostFragment.getNavController().navigate(R.id.action_titleFragment2_to_messagesFragment);
-            }
-        });
-
-        binding.mapBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //navHostFragment.getNavController().navigate(R.id.);
-            }
-        });
-
-        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-
-              //navHostFragment.getNavController().navigate();
-          }
-
-      });
-
-
-
-        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               navController.navigate(R.id.action_titleFragment2_to_userProfile);
-            }
-        });
-         */
-
 
         updateToken(FirebaseInstanceId.getInstance().getToken());
 
@@ -375,4 +317,6 @@ public class MainActivity extends AppCompatActivity  {
 
         return bounds;
     }
+
+
 }

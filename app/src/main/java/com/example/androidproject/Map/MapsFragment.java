@@ -1,11 +1,6 @@
 package com.example.androidproject.Map;
 
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,6 +26,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.Chat.CreateGroupActivity;
+import com.example.androidproject.MainActivity;
+import com.example.androidproject.Chat.ChatFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.example.androidproject.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -53,6 +56,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -61,6 +65,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static MapsFragment INSTANCE = null;
     private FusedLocationProviderClient fusedLocationProviderClient;
     String cityName;
+    private LatLng latLngForDiffCalc;
     ViewGroup view;
     GoogleMap gMap;
     SearchView search = null;
@@ -89,10 +94,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
 
-         //The plus button at the top-right corner of the map method
-        Log.e("mi", "onViewCreated: "+gMap );
+        //The plus button at the top-right corner of the map method
+        Log.e("mi", "onViewCreated: " + gMap);
         shareEvent();
-
 
 
     }
@@ -129,7 +133,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
 
 
     @Override
@@ -170,7 +173,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void markerClicked(){
+    public void markerClicked() {
 
         requireActivity().runOnUiThread(new Runnable() {
             @Override
@@ -181,12 +184,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         boolean m = true;
-
-
                         String title = marker.getTitle();
                         // Log.e("Title", "onMarkerClick: "+title);
-
-
                         query.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -205,7 +204,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         eventPopup.setTitle("Event");
                                         dialog = eventPopup.create();
                                         dialog.show();
-                                        deleteEventByOwner(dialog,dialogView, event);
+                                        deleteEventByOwner(dialog, dialogView, event);
 
 
                                         TextView capacity = dialogView.findViewById(R.id.capacity);
@@ -271,6 +270,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                                         Snackbar.make(view, "You have joined the event", Snackbar.LENGTH_LONG)
                                                                                 .setAction("Action", null).show();
 
+                                                                        addParticipant(event.getGroupID(), event.getEventName());
                                                                     }
                                                                     Log.e("values", snapshot.toString());
                                                                 }
@@ -372,7 +372,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void deleteEventByOwner(Dialog dialog, View dialogView, Events events){
+    public void deleteEventByOwner(Dialog dialog, View dialogView, Events events) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(events.getEventID());
         DatabaseReference MemberCountRef = FirebaseDatabase.getInstance().getReference("Joined Member").child(events.getEventID());
         DatabaseReference joinedMemberRef = FirebaseDatabase.getInstance().getReference("Joined Users").child(events.getEventID());
@@ -388,9 +388,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     joinedMemberRef.removeValue();
                     gMap.clear();
                     spawnNearbyEventsOnMap(gMap);
-
-
-                    Log.e("Tigris", "onClick: "+gMap );
+                    Log.e("Tigris", "onClick: " + gMap);
                     dialog.dismiss();
                 }
             });
@@ -436,7 +434,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
     }
-
 
 
     public void addNameToMarkerOnMap(double lati, double longi) throws IOException {
@@ -501,9 +498,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             System.out.println(lats + "     " + lon);
                             int event = 0;
                             if (type.equals("sport")) {
-                                event = R.drawable.sport;
+                                event = R.drawable.sports;
                             } else if (type.equals("party")) { // add more icons later
-                                event = R.drawable.party;
+                                event = R.drawable.partys;
                             }
 
                             gMap = googleMap;
@@ -527,7 +524,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-
     }
 
     public void shareEvent() {
@@ -537,7 +533,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), Facebook.class));
-
                /* final AlertDialog.Builder facebook = new AlertDialog.Builder(getActivity());
                 final LayoutInflater inflater = LayoutInflater.from(getActivity());
                 final View dialogView = inflater.inflate(R.layout.activity_facebook,null); //Inflate the actual newnewtest.xml file
@@ -552,12 +547,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-
-
-
-
-        public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"
+    public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"
         int height = 50; //Default
         int width = 50; //Default
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(resourcePath); //Change
@@ -567,106 +557,121 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void createEvent(GoogleMap googleMap) {
-        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            @Override
-            public void onMapLoaded() {
-                Boolean e = false;
-                ImageView createEvent = getActivity().findViewById(R.id.createEventButton);
-                createEvent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
-                        final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                        final View dialogView = inflater.inflate(R.layout.newnewtest, null); //Inflate the actual newnewtest.xml file
-                        final AlertDialog dialog;
-                        eventPopup.setView(dialogView);
-                        eventPopup.setTitle("Create Event");
-                        dialog = eventPopup.create();
-                        dialog.show();
-
-                        create = dialogView.findViewById(R.id.createEventB);
-                        create.setOnClickListener(new View.OnClickListener() {
+        new Thread() {
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
                             @Override
-                            public void onClick(View v) {
+                            public void run() {
+                                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                                    @Override
+                                    public void onMapLoaded() {
+                                        Boolean e = false;
+                                        ImageView createEvent = getActivity().findViewById(R.id.createEventButton);
+                                        createEvent.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
+                                                final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                                                final View dialogView = inflater.inflate(R.layout.newnewtest, null); //Inflate the actual newnewtest.xml file
+                                                final AlertDialog dialog;
+                                                eventPopup.setView(dialogView);
+                                                eventPopup.setTitle("Create Event");
+                                                dialog = eventPopup.create();
+                                                dialog.show();
 
-                                EditText tex = dialogView.findViewById(R.id.addressToLatLong);
-                                String t = tex.getText().toString();
-                                LatLng latLngg = null;
-                                latLngg = getLocationFromAddress(getActivity(), t);
-                              /*  try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException interruptedException) {
-                                    interruptedException.printStackTrace();
-                                }
+                                                create = dialogView.findViewById(R.id.createEventB);
+                                                create.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        EditText tex = dialogView.findViewById(R.id.addressToLatLong);
+                                                        String t = tex.getText().toString();
+                                                        LatLng latLngg = null;
+                                                            latLngg = getLocationFromAddress(getActivity(), t);
 
-                               */
-                                EditText editText = dialogView.findViewById(R.id.CreateDescription);
-                                editText.getText().toString();
 
-                                Spinner spinner = dialogView.findViewById(R.id.eventTypeSpinner);
-                                spinner.getSelectedItem().toString();
-                                EditText nameOfEvenet = dialogView.findViewById(R.id.nameOFEvent);
+                                                        EditText editText = dialogView.findViewById(R.id.CreateDescription);
+                                                        editText.getText().toString();
 
-                                Spinner spinnerCapacity = dialogView.findViewById(R.id.eventCapacitySpinner);
+                                                        Spinner spinner = dialogView.findViewById(R.id.eventTypeSpinner);
+                                                        spinner.getSelectedItem().toString();
+                                                        EditText nameOfEvenet = dialogView.findViewById(R.id.nameOFEvent);
 
-                                Log.e("Lkljadlkfj", latLngg + "");
-                                if (latLngg != null) {
+                                                        Spinner spinnerCapacity = dialogView.findViewById(R.id.eventCapacitySpinner);
 
-                                    DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
-                                    LatLng finalLatLngg = latLngg;
 
-                                    refere.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            boolean exists = false;
-                                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                                Events e = snapshot1.getValue(Events.class);
-                                                if (e.getEventName().equals(nameOfEvenet.getText().toString())) {
-                                                    exists = true;
-                                                }
+                                                        Log.e("Lkljadlkfj", latLngg + "");
+                                                        if (latLngg != null) {
+
+
+                                                            DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
+                                                            LatLng finalLatLngg = latLngg;
+
+                                                            refere.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                    boolean exists = false;
+                                                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                                        Events e = snapshot1.getValue(Events.class);
+                                                                        if (e.getEventName().equals(nameOfEvenet.getText().toString())) {
+                                                                            exists = true;
+                                                                            Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                        // Log.e("distance", "onDataChange: "+distanceCalculator(finalLatLngg.latitude, finalLatLngg.longitude, e.getLatitude(), e.getLongitude()));
+                                                                        if (distanceCalculator(finalLatLngg.latitude, finalLatLngg.longitude, e.getLatitude(), e.getLongitude()) < 1.86411358) { //1.86411358 in miles is the equivalent of 3km
+                                                                            exists = true;
+                                                                            Toast.makeText(getActivity(), "Sorry, due to the ongoing covid-19 pandemic, you can not create an event within a 3km (1.8 miles) distance for your and others safety. Thank you for understanding", Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    }
+                                                                    if (exists != true) {
+                                                                        if (!editText.equals(null)){
+                                                                            createGroupChat(spinner, nameOfEvenet, finalLatLngg, editText, spinnerCapacity);
+
+
+                                                                        }else {
+                                                                            Toast.makeText(getActivity(), "Please enter a description", Toast.LENGTH_SHORT).show();
+                                                                        }
+
+                                                        /*
+                                                        DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
+                                                        String keys = myref.push().getKey();
+                                                        Events even = new Events(spinner.getSelectedItem().toString(), nameOfEvenet.getText().toString(), finalLatLngg.longitude, finalLatLngg.latitude, editText.getText().toString(), spinnerCapacity.getSelectedItem().toString(), getUserID(), keys);
+                                                        myref.child(keys).setValue(even);
+                                                        DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
+                                                        myreference.child(keys).child("joined").setValue(0);
+                                                        System.out.println(even);
+                                                         */
+
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                }
+                                                            });
+
+
+                                                        } else {
+                                                            System.out.println("Did not work");
+                                                        }
+
+                                                        dialog.dismiss();
+                                                    }
+                                                });
                                             }
-                                            if (exists != true) {
-                                                DatabaseReference myref = FirebaseDatabase.getInstance().getReference("Events");
-                                                String keys = myref.push().getKey();
-                                                Events even = new Events(spinner.getSelectedItem().toString(), nameOfEvenet.getText().toString(), finalLatLngg.longitude, finalLatLngg.latitude, editText.getText().toString(), spinnerCapacity.getSelectedItem().toString(), getUserID(), keys);
-                                                myref.child(keys).setValue(even);
-                                                DatabaseReference myreference = FirebaseDatabase.getInstance().getReference("Joined Member");
-                                                myreference.child(keys).child("joined").setValue(0);
-
-
-                                                System.out.println(even);
-                                            } else {
-                                                Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_SHORT).show();
-                                            }
-
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-
-                                } else {
-                                    System.out.println("Did not work");
-                                }
-
-                                dialog.dismiss();
+                                        });
+                                    }
+                                });
                             }
                         });
-                    }
-                });
             }
-        });
+            }.start();
 
 
 
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) { //Based on the user's createvent address, this will produce latitude and longitude for the provided address.
-
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
@@ -680,6 +685,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
             Address location = address.get(0);
             p1 = new LatLng(location.getLatitude(), location.getLongitude());
+            latLngForDiffCalc = new LatLng(location.getLatitude(), location.getLongitude());
 
         } catch (IOException ex) {
 
@@ -691,14 +697,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return p1;
     }
 
-    public String getUserID(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        return  Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
+    public String getUserID() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        return Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     }
 
 
-    private double distanceCalculator(double lat1, double lon1, double lat2, double lon2) { //Not yet implemented
+    private double distanceCalculator(double lat1, double lon1, double lat2, double lon2) {
         //Used to measure distance between 2 different LatLng positions
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))
@@ -709,7 +715,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
-        return (dist); //returns in miles
+        return (dist); //returns in miles (3km = 1.86 miles)
     }
 
     private double deg2rad(double deg) {
@@ -720,5 +726,54 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return (rad * 180.0 / Math.PI);
     }
 
+    private void createGroupChat(Spinner spinner, TextView nameOfEvenet, LatLng finalLatLngg, EditText editText, Spinner spinnerCapacity) {
+    //new Thread(){
+     //   public void run(){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(requireContext(), CreateGroupActivity.class);
+                    intent.putExtra("eventType", spinner.getSelectedItem().toString());
+                    intent.putExtra("eventName", nameOfEvenet.getText().toString());
+                    intent.putExtra("longitude", finalLatLngg.longitude);
+                    intent.putExtra("latitude", finalLatLngg.latitude);
+                    intent.putExtra("description", editText.getText().toString());
+                    intent.putExtra("capacity", spinnerCapacity.getSelectedItem().toString());
 
+                    startActivity(intent);
+                }
+            });
+
+    //}.start();
+    }
+
+
+    public void addParticipant(String groupID, String eventName) {
+        new Thread(){
+            public void run(){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String timestamp = "" + System.currentTimeMillis();
+                        HashMap<String, String> hM = new HashMap<>();
+                        hM.put("userID", getUserID());
+                        hM.put("role", "participant");
+                        hM.put("timestamp", "" + timestamp);
+
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
+                        ref.child(groupID).child("Participants").child(getUserID()).setValue(hM)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        Toast.makeText(getContext(), "Joined group chat for the event" + eventName + "successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                });
+            }
+        }.start();
+
+
+    }
 }

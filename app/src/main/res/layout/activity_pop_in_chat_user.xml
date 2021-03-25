@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".Chat.PopInChatUserActivity"
+    android:backgroundTint="#8FBFC8"
     android:background="@drawable/inchat_user_popup">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -43,46 +50,5 @@
         app:layout_constraintEnd_toStartOf="@+id/friends_profile_image_popup"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/popup_options"
-        android:layout_width="64dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:src="@drawable/ic_baseline_more_vert_24"
-        app:layout_constraintStart_toEndOf="@+id/friends_profile_image_popup"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:layout_width="99dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/remove_friend_background"
-        android:backgroundTint="#FF0202"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friends_username_popup"
-        app:layout_constraintVertical_bias="0.0">
-
-        <ImageView
-            android:id="@+id/remove_friend"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_baseline_person_remove_24" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Unfriend"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

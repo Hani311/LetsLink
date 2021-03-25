@@ -15,6 +15,7 @@
     <TextView
         android:textColor="@color/black"
         android:id="@+id/chat_message"
+        android:maxWidth="250dp"
         android:textSize="20sp"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/civ_in_chat"
@@ -33,5 +34,14 @@
         android:visibility="gone"
         android:layout_below="@id/chat_message"
         />
+
+    <TextView
+        android:id="@+id/time_text"
+        android:layout_marginTop="14dp"
+        android:text="Time"
+        android:layout_toRightOf="@id/chat_message"
+        android:textAlignment="textEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

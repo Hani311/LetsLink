@@ -6,10 +6,13 @@
     android:padding="4dp"
     android:layout_height="wrap_content">
 
+
+
     <RelativeLayout
+        android:id="@+id/chat_layout"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -20,8 +23,17 @@
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
+            android:id="@+id/time_text"
+            android:layout_marginTop="15dp"
+            android:text="Time Sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/chat_message" />
+
+        <TextView
             android:layout_alignParentEnd="true"
             android:textColor="#fff"
+            android:maxWidth="250dp"
             android:id="@+id/chat_message"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/civ_in_chat"
@@ -29,6 +41,7 @@
             android:padding="8dp"
             android:text=""
             android:background="@drawable/chat_background_right"
+            android:backgroundTint="@color/mainHani"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

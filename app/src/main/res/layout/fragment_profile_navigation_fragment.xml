@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/backkkkkkk"
     tools:context=".Users.ProfileNavigationFragment">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_in_profile_navigation"
-        android:layout_width="133dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="124dp"
+        android:layout_width="157dp"
+        android:layout_height="126dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="136dp"
+        android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,10 +22,14 @@
         android:id="@+id/username_in_profile_navigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        android:layout_marginTop="24dp"
+        android:fontFamily="serif"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
 
@@ -41,6 +47,7 @@
         android:text="Profile settings"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +67,7 @@
         android:text="Dark mode"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,18 +75,19 @@
 
     <Button
         android:id="@+id/btnFriends"
-        android:drawableLeft="@drawable/ic_baseline_people_24"
-        android:background="@drawable/setting_btn_layout"
-        android:textColor="@color/black"
-        android:textAllCaps="false"
-        android:gravity="left|center_vertical"
         android:layout_width="340dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/setting_btn_layout"
+        android:drawableLeft="@drawable/ic_baseline_people_24"
+        android:gravity="left|center_vertical"
         android:text="Friends"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,6 +107,7 @@
         android:text="Log out"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,21 +116,22 @@
     <Button
         android:id="@+id/button4"
         android:layout_width="340dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="48dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/setting_btn_layout"
         android:drawableLeft="@drawable/ic_baseline_language_24"
         android:gravity="left|center_vertical"
         android:text="Language settings"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintTop_toBottomOf="@+id/civ_in_profile_navigation" />
+        app:layout_constraintTop_toTopOf="@+id/civ_in_profile_navigation" />
 
     <Button
         android:id="@+id/searchFrinds"
@@ -136,9 +147,12 @@
         android:text="Search Friends"
         android:textAllCaps="false"
         android:textColor="@color/black"
+        app:backgroundTint="@color/mainHani"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/profileBtn"
+        app:layout_constraintVertical_bias="0.022" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -262,29 +262,34 @@ public class MessageActivity extends AppCompatActivity {
         }
 
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference();
+
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+
         HashMap<String, Object> hM=new HashMap<>();
 
         hM.put("sender", sender);
         hM.put("receiver", receiver);
+        hM.put("timeSent", timeStamp);
         hM.put("message", message);
         hM.put("seen", false);
 
         reference.child("Chats").push().setValue(hM);
         final String msg=message;
 
-
-        final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist");
-
         /*
         final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
->>>>>>> Stashed changes
                 .child(userid);
 
-        chatRef.addValueEventListener(new ValueEventListener() {
+        lastMsgFrontRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chatRef.child("id").setValue(userid);
-                chatRef.child("from").setValue(fUser.getUid());
+
+                if(snapshot.exists()) {
+                    lastMsgFrontRef.child(fUser.getUid()).child("lastMsg").setValue(message);
+                    lastMsgFrontRef.child(fUser.getUid()).child("from").setValue(fUser.getUid());
+                    lastMsgFrontRef.child(fUser.getUid()).child("seen").setValue(false);
+                }
+
             }
 
             @Override
@@ -294,9 +299,27 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
+        final DatabaseReference lastMsgBackRef = FirebaseDatabase.getInstance().getReference("lastMessage")
+                .child(fUser.getUid());
 
+        lastMsgBackRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                lastMsgBackRef.child(userid).child("lastMsg").setValue(message);
+                lastMsgBackRef.child(userid).child("from").setValue(fUser.getUid());
+                lastMsgBackRef.child(userid).child("seen").setValue(false);
+            }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+        });
 
          */
+
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference1.addValueEventListener(new ValueEventListener() {
 
@@ -317,50 +340,9 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
-
-        /*
-        reference=FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dS:snapshot.getChildren()){
-                    try {
-                        {
-                            User user = dS.getValue(User.class);
-                            if (notify) {
-                            }
-                            notify = false;
-                        }
-                    }catch (DatabaseException e){}
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-         */
-
-
-        /*
-        DatabaseReference chatReference=FirebaseDatabase.getInstance().getReference("Chatlist").child(userid);
-        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    chatReference.child("id").setValue(userid);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-         */
     }
 
     private void sendNotification(String receiver, String username, String msg) {
-
-
-
 
         DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Tokens");
         Query query=tokens.orderByKey().equalTo(receiver);
@@ -371,11 +353,11 @@ public class MessageActivity extends AppCompatActivity {
                 try {
                     for (DataSnapshot dS : snapshot.getChildren()) {
                         NotifToken token = dS.getValue(NotifToken.class);
-                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, userid,username + ": " + msg ,"New Message");
+                        Data data = new Data(fUser.getUid(), R.mipmap.ic_launcher, userid,username + ": " + msg ,"New Message", recepientUri);
                         NotifSender sender = new NotifSender(data, token.getToken());
                         apiSpecifier.sendNotification(sender).enqueue(new Callback<Response>() {
-                            @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                @Override
+                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                 if (response.code() == 200) {
                                     if (response.body().succe == 1) {
                                         Toast.makeText(MessageActivity.this, "Sending notification failed", Toast.LENGTH_SHORT).show();
@@ -383,11 +365,11 @@ public class MessageActivity extends AppCompatActivity {
                                 }
                             }
 
-                            @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<Response> call, Throwable t) {
 
                             }
-                        });
+                            });
                     }
                 }catch (IllegalArgumentException e){}
             }
@@ -454,6 +436,48 @@ public class MessageActivity extends AppCompatActivity {
 
                         hM.put("seen", true);
                         dS.getRef().updateChildren(hM);
+
+                        /*
+                        final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
+                                .child(userid).child(fUser.getUid());
+
+                        lastMsgFrontRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                HashMap<String, Object> hM=new HashMap<>();
+
+                                hM.put("seen", true);
+                                snapshot.getRef().updateChildren(hM);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
+
+                        final DatabaseReference lastMsgBackRef = FirebaseDatabase.getInstance().getReference("lastMessage")
+                                .child(fUser.getUid()).child(userid);
+
+                        lastMsgBackRef.addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                HashMap<String, Object> hM=new HashMap<>();
+
+                                hM.put("seen", true);
+                                snapshot.getRef().updateChildren(hM);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                         */
                     }
                 }
 
@@ -465,8 +489,12 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+
+
+
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
@@ -490,6 +518,7 @@ public class MessageActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+     */
 
     private void muteUserNotifs() {
     }

@@ -8,13 +8,15 @@ public class Data {
     private String sent;
     private String body;
     private String title;
+    private String profileUri;
 
-    public Data(String user, int icon, String sent, String body, String title) {
+    public Data(String user, int icon, String sent, String body, String title, String profileUri) {
         this.user = user;
         this.icon = icon;
         this.sent = sent;
         this.body = body;
         this.title = title;
+        this.profileUri = profileUri;
     }
 
     public Data() {

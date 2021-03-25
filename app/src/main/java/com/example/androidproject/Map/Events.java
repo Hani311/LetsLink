@@ -10,19 +10,29 @@ public class Events {
     private String eventName;
     private String eventAdminID;
     private String eventID;
+    private String groupID;
 
     public Events() {
     }
 
-    public Events(String eventType, String eventName, double longitude, double latitude, String description, String capacity, String eventAdminID, String eventID) {
+    public Events(String eventType, String eventName, double longitude, double latitude, String description, String capacity, String eventAdminID, String eventID, String groupID) {
         this.eventType = eventType;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.eventName = eventName;
         this.description = description;
         this.capacity = capacity;
+        this.eventName = eventName;
         this.eventAdminID = eventAdminID;
         this.eventID = eventID;
+        this.groupID = groupID;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
+
+    public String getGroupID() {
+        return groupID;
     }
 
     public String getEventID() {

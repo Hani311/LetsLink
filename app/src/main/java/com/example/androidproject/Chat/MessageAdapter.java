@@ -1,6 +1,7 @@
 package com.example.androidproject.Chat;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,11 @@ import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
 
@@ -56,6 +61,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat =chatList.get(position);
         holder.message.setText(chat.getMessage());
+
+        Calendar calendar=Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(Long.parseLong(chat.getTimeSent()));
+        String timesent= DateFormat.format("hh:mm", calendar).toString();
+        holder.timeText.setText(timesent);
 
         if(imageurl.equals("default")){
             holder.chatProfilePic.setImageResource(R.mipmap.ic_launcher);
@@ -99,6 +109,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public TextView message;
         public ImageView chatProfilePic;
         public TextView seenText;
+        public TextView timeText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             message=itemView.findViewById(R.id.chat_message);
             chatProfilePic=itemView.findViewById(R.id.civ_in_chat);
             seenText=itemView.findViewById(R.id.seen);
+            timeText=itemView.findViewById(R.id.time_text);
         }
     }
 }

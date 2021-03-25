@@ -19,6 +19,8 @@ import com.example.androidproject.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,6 +56,7 @@ public class UserProfile extends AppCompatActivity {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +68,10 @@ public class UserProfile extends AppCompatActivity {
         saveBtn=findViewById(R.id.btnSave);
         profileChangeBtn= findViewById(R.id.changePic);
         btnChangePasActivity=findViewById(R.id.btnResetActivity);
+
         editTextChangeUserName= findViewById(R.id.editTextTextPersonName);
+
+
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +105,6 @@ public class UserProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
         getUserinfo();
