@@ -17,44 +17,43 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:visibility="gone"
-            android:id="@+id/civ_in_chat"
+            android:id="@+id/group_sender_pic"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@mipmap/ic_launcher"/>
 
         <TextView
-            android:id="@+id/time_text"
+            android:id="@+id/group_time_text"
             android:layout_marginTop="15dp"
             android:text="Time Sent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/chat_message" />
+            android:layout_toLeftOf="@id/group_chat_message" />
 
         <TextView
             android:layout_alignParentEnd="true"
             android:textColor="#fff"
             android:maxWidth="250dp"
-            android:id="@+id/chat_message"
+            android:id="@+id/group_chat_message"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/civ_in_chat"
+            android:layout_toRightOf="@id/group_sender_pic"
             android:textSize="20sp"
             android:padding="8dp"
             android:text=""
             android:background="@drawable/chat_background_right"
-            android:backgroundTint="@color/mainHani"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 
-
         <TextView
-            android:id="@+id/seen"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/chat_message"
-            />
+            android:layout_below="@id/group_chat_message"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

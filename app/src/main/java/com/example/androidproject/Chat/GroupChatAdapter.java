@@ -16,75 +16,61 @@ import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
+public class GroupChatAdapter extends RecyclerView.Adapter<GroupChatAdapter.ViewHolder> {
 
     private Context context;
-    private List<Chat> chatList;
-    private String imageurl;
+    private List<GroupChat> chatList;
 
     private static final int CHAT_TYPE__LEFT=0;
     private static final int CHAT_TYPE_RIGHT=1;
     FirebaseUser fUser;
 
 
-    public MessageAdapter(Context context, List<Chat> chatList, String imageurl) {
+    public GroupChatAdapter(Context context, List<GroupChat> chatList) {
         this.context = context;
         this.chatList = chatList;
-        this.imageurl= imageurl;
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @NonNull
     @Override
-    public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GroupChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if(viewType==CHAT_TYPE_RIGHT) {
 
-            View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            View view = LayoutInflater.from(context).inflate(R.layout.groupchat_item_right, parent, false);
+            return new GroupChatAdapter.ViewHolder(view);
         }
         else{
-
-
-            View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            View view = LayoutInflater.from(context).inflate(R.layout.groupchat_item_left, parent, false);
+            return new GroupChatAdapter.ViewHolder(view);
         }
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
 
-        Chat chat =chatList.get(position);
-        holder.message.setText(chat.getMessage());
+    @Override
+    public void onBindViewHolder(@NonNull GroupChatAdapter.ViewHolder holder, int position) {
+
+        GroupChat chat =chatList.get(position);
 
         Calendar calendar=Calendar.getInstance(Locale.ENGLISH);
-        calendar.setTimeInMillis(Long.parseLong(chat.getTimeSent()));
+        calendar.setTimeInMillis(Long.parseLong(chat.getTimestamp()));
         String timesent= DateFormat.format("hh:mm", calendar).toString();
-        holder.timeText.setText(timesent);
 
-        if(imageurl.equals("default")){
+
+        holder.timeText.setText(timesent);
+        holder.message.setText(chat.getMessage());
+        holder.fromUser.setText(chat.getSenderName());
+
+        if(chat.getSenderUri().equals("default")){
             holder.chatProfilePic.setImageResource(R.mipmap.ic_launcher);
         }else{
-
-            Glide.with(context).load(imageurl).into(holder.chatProfilePic);
+            Glide.with(context).load(chat.getSenderUri()).into(holder.chatProfilePic);
         }
-
-        try {
-            if (position == chatList.size() - 1) {
-                if (chat.isSeen()) {
-                    holder.seenText.setText("seen");
-                } else {
-                    holder.seenText.setText("sent");
-                }
-            } else {
-                holder.seenText.setVisibility(View.GONE);
-            }
-        }catch(NullPointerException e){}
     }
 
     @Override
@@ -108,16 +94,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public TextView message;
         public ImageView chatProfilePic;
-        public TextView seenText;
+        public TextView fromUser;
         public TextView timeText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            message=itemView.findViewById(R.id.chat_message);
-            chatProfilePic=itemView.findViewById(R.id.civ_in_chat);
-            seenText=itemView.findViewById(R.id.seen);
-            timeText=itemView.findViewById(R.id.time_text);
+            message=itemView.findViewById(R.id.group_chat_message);
+            chatProfilePic=itemView.findViewById(R.id.group_sender_pic);
+            fromUser=itemView.findViewById(R.id.from);
+            timeText=itemView.findViewById(R.id.group_time_text);
         }
     }
 }

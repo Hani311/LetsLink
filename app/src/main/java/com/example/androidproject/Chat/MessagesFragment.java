@@ -1,17 +1,26 @@
 package com.example.androidproject.Chat;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 
 import com.example.androidproject.R;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
@@ -20,8 +29,8 @@ import java.util.ArrayList;
 public class MessagesFragment extends Fragment {
 
 
-    private final ArrayList<String> titles=new ArrayList<>();
-
+    private ArrayList<String> titles=new ArrayList<>();
+    private ChatAdapter chatAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,108 +41,67 @@ public class MessagesFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        chatAdapter= new ChatAdapter(getChildFragmentManager());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_messages, container, false);
 
-        titles.add("Chats");
         titles.add("Friends");
-        ViewPager2 mViewPager = rootView.findViewById(R.id.messageViewPager);
+        titles.add("Groups");
+        TabLayout tablLayout=rootView.findViewById(R.id.messagesTabLayout);
+        ViewPager mViewPager = (ViewPager) rootView.findViewById(R.id.messageViewPager);
+
         //mViewPager.setAdapter(new ChatAdapter(getChildFragmentManager()));
-        mViewPager.setAdapter(new ChatAdapter(this));
-        new TabLayoutMediator(rootView.findViewById(R.id.messagesTabLayout), mViewPager,
-                (tab, position) -> tab.setText(titles.get(position))).attach();
+        mViewPager.setAdapter(chatAdapter);
+        tablLayout.setupWithViewPager(mViewPager);
 
         return rootView;
     }
 
-    public class ChatAdapter extends FragmentStateAdapter {
+    public class ChatAdapter extends FragmentPagerAdapter {
 
-        private final ArrayList<Fragment> messageFragments;
+        private ArrayList<Fragment> fragments= new ArrayList<>();
 
-        ChatAdapter(MessagesFragment fragmentActivity) {
-            super(fragmentActivity);
-            this.messageFragments=new ArrayList<>();
+        public ChatAdapter(@NonNull FragmentManager fm) {
+            super(fm);
+
+            fragments.add(new FriendsMessagesFragment());
+            fragments.add(new GroupChatFragment());
+
         }
 
-        /*
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            return messageFragments.get(position);
-        }
 
-
-        @Override
-        public int getItemPosition(@NonNull Object object) {
-            return super.getItemPosition(object);
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return messageFragments.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return false;
+            return 2;
         }
 
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return titles.get(position);
-        }
-         */
 
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
-                case 0:
-                    return new ChatFragment();
-                case 1:
-                    return new FriendsMessagesFragment();
+            if(position==0){
+                return "Chats";
             }
-            return new ChatFragment();
+            else if (position==1){
+                return "Groups";
+            }
+            else{
+                return null;
+            }
         }
-
-        @Override
-        public int getItemCount() {
-
-            return titles.size();
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return super.getItemViewType(position);
-        }
-
-        public void addFragment(Fragment fragment, String title){
-            messageFragments.add(fragment);
-            titles.add(title);
-        }
-
-        /*
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
-        }
-
-
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
-
-         */
     }
 }

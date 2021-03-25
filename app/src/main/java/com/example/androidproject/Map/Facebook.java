@@ -122,6 +122,9 @@ public class Facebook extends AppCompatActivity {
                 Log.d("Demo", "Login Onerror" + title);
             }
         });
+
+
+
         LoginManager.getInstance().logOut();
     }
 
