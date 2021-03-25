@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/chat_bubble"
+    android:background="@drawable/eveee25"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Chat.CreateGroupActivity">
@@ -65,6 +65,11 @@
             android:id="@+id/group_name_input"
             android:layout_width="260dp"
             android:layout_height="80dp"
+            android:scrollbars="vertical"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            app:boxBackgroundColor="#DEE8F4"
             android:hint="Enter group name" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -86,6 +91,11 @@
             android:layout_height="100dp"
             android:gravity="top"
             android:hint="Enter group description"
+            android:scrollbars="vertical"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            app:boxBackgroundColor="#DEE8F4"
             android:inputType="textMultiLine|textCapSentences"
             android:padding="10dp" />
 
@@ -93,25 +103,35 @@
 
     <Button
         android:id="@+id/create_group_btn"
-        android:layout_width="155dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="48dp"
-        android:background="@drawable/rounded_btn"
-        android:drawableRight="@drawable/ic_baseline_create_24"
-        android:shadowColor="@color/white"
-        android:text="Create"
-        android:textAllCaps="false"
+        android:layout_width="105dp"
+        android:layout_height="51dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="269dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="155dp"
+        android:backgroundTint="#2B5B85"
+        android:fontFamily="serif"
+        android:shadowColor="#F44336"
+        android:text="@string/createButton"
+        android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        app:cornerRadius="20dp"
+        app:iconTint="#AF2626"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="#FF0606" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="104dp"
+        android:fontFamily="serif"
         android:text="Click to choose gorup image"
+        android:textAlignment="center"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/civ_group_create" />
 
