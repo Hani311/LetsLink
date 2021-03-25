@@ -786,13 +786,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     public void runTask() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 48);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Timer time = new Timer(); // Instantiate Timer Object
         // Start running the task on Monday at 15:40:00, period is set to 8 hours
         // if you want to run the task immediately, set the 2nd parameter to 0
-        time.schedule(new EventScheduler(), calendar.getTime(), TimeUnit.HOURS.toMillis(8));
+        Log.e("ThreadSchedule", "runTask: "+gMap);
+        time.schedule(new EventScheduler(gMap), calendar.getTime(), TimeUnit.HOURS.toMillis(8));
     }
 }

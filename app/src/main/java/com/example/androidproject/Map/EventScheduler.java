@@ -16,8 +16,11 @@ import static com.facebook.appevents.AppEventsLogger.getUserID;
 
 public class EventScheduler extends TimerTask {
 
-    //private GoogleMap gMap;
+    private final GoogleMap gMap;
 
+    public EventScheduler(GoogleMap gMap) {
+        this.gMap = gMap;
+    }
 
     @Override
     public void run() {
@@ -29,7 +32,7 @@ public class EventScheduler extends TimerTask {
                     MemberCountRef.removeValue();
                     joinedMemberRef.removeValue();
                     groupChatRef.removeValue();
-                 //   gMap.clear();
+                     gMap.clear();
                   // MapsFragment m = new MapsFragment();
                  //  m.spawnNearbyEventsOnMap(gMap);
 
