@@ -32,7 +32,8 @@
         <activity android:name=".policy"></activity>
         <activity android:name=".Users.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Map.Facebook" />
+        <activity android:name=".Map.Facebook"
+            android:theme="@style/Theme.AndroidProject.NoActionBar"/>
         <activity android:name=".FrindsListActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".FindfriendActivity"

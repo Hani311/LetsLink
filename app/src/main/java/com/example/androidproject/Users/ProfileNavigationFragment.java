@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.androidproject.FindfriendActivity;
 import com.example.androidproject.FrindsListActivity;
+import com.example.androidproject.Login.LoginActivity;
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +33,7 @@ public class ProfileNavigationFragment extends Fragment {
     private CircleImageView civ;
     private FirebaseUser fUser;
     private TextView username;
+    private Button logOut;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class ProfileNavigationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_navigation_fragment, container, false);
         civ=view.findViewById(R.id.civ_in_profile_navigation);
         username=view.findViewById(R.id.username_in_profile_navigation);
+        logOut = view.findViewById(R.id.button3);
         fUser= FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
@@ -91,6 +94,17 @@ public class ProfileNavigationFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+            }
+        });
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

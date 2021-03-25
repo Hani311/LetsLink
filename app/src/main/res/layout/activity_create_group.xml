@@ -1,105 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/eveee25"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".Chat.CreateGroupActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/create_group_bar"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/create_group_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:theme="@style/ToolbarThemeBlack">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginLeft="25dp"
-                android:text="Creating Group"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="match_parent"
+        android:background="@drawable/eveee25"
+        android:baselineAligned="false"
+        android:clickable="false"
+        android:filterTouchesWhenObscured="false"
+        android:hapticFeedbackEnabled="false"
+        android:orientation="vertical"
+        android:splitMotionEvents="true">
 
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_group_create"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="156dp"
-        android:src="@drawable/ic_baseline_group_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_layout"
-        android:layout_width="275dp"
-        android:layout_height="92dp"
-        android:layout_marginTop="28dp"
-        android:padding="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.622"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/civ_group_create">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/group_name_input"
-            android:layout_width="260dp"
-            android:layout_height="80dp"
-            android:scrollbars="vertical"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            app:boxBackgroundColor="#DEE8F4"
-            android:hint="Enter group name" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="313dp"
-        android:layout_height="116dp"
-        android:layout_marginTop="12dp"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.622"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/group_descr_input"
-            android:layout_width="300dp"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_group_create"
+            android:layout_width="100dp"
             android:layout_height="100dp"
-            android:gravity="top"
-            android:hint="Enter group description"
-            android:scrollbars="vertical"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            app:boxBackgroundColor="#DEE8F4"
-            android:inputType="textMultiLine|textCapSentences"
-            android:padding="10dp" />
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="156dp"
+            android:src="@drawable/ic_baseline_group_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="176dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="150dp"
+            android:fontFamily="serif"
+            android:text="Click to choose gorup image"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout"
+            android:layout_width="275dp"
+            android:layout_height="92dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:padding="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.622"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_name_input"
+                android:layout_width="260dp"
+                android:layout_height="80dp"
+                android:hint="Enter group name"
+                android:scrollbars="vertical"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                app:boxBackgroundColor="#DEE8F4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="313dp"
+            android:layout_height="116dp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.622">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_descr_input"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:hint="Enter group description"
+                android:inputType="textMultiLine|textCapSentences"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                app:boxBackgroundColor="#DEE8F4" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/create_group_btn"
@@ -124,15 +116,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#FF0606" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
-        android:fontFamily="serif"
-        android:text="Click to choose gorup image"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/civ_group_create" />
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
