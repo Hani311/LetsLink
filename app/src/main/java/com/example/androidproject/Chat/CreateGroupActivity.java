@@ -230,7 +230,6 @@ public class CreateGroupActivity extends AppCompatActivity {
     }
 
     private void selectGroupIcon() {
-
         String [] options={"Camera", "Gallery"};
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle("Choose the group icon")

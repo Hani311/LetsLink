@@ -56,10 +56,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static MapsFragment INSTANCE = null;
@@ -79,7 +82,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = (ViewGroup) inflater.inflate(R.layout.fragment_maps, null);
         search = view.findViewById(R.id.searchLocation);
-
+        runTask();
         return view;
     }
 
@@ -254,7 +257,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                                                                     boolean newUser = true;
-
                                                                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
 
                                                                         if (snapshot1.getValue().equals(getUserID())) {
@@ -306,6 +308,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         final int[] number = {snapshot.getValue(Integer.class)};
                                                         DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                        DatabaseReference joinedMemberGroupRef = FirebaseDatabase.getInstance().getReference("Groups").child(event.getGroupID()).child("Participants");
                                                         userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -317,9 +320,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                                             number[0]--;
                                                                             ref.setValue(number[0]);
                                                                             userJoind.child(getUserID()).removeValue();
+                                                                            joinedMemberGroupRef.child(getUserID()).removeValue();
                                                                             Snackbar.make(view, "You have left the event", Snackbar.LENGTH_LONG)
                                                                                     .setAction("Action", null).show();
                                                                         }
+
+
                                                                     }
 
                                                                 }
@@ -376,6 +382,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(events.getEventID());
         DatabaseReference MemberCountRef = FirebaseDatabase.getInstance().getReference("Joined Member").child(events.getEventID());
         DatabaseReference joinedMemberRef = FirebaseDatabase.getInstance().getReference("Joined Users").child(events.getEventID());
+        DatabaseReference groupChatRef = FirebaseDatabase.getInstance().getReference("Groups").child(events.getGroupID());
         Button button = dialogView.findViewById(R.id.deleteEvent);
 
         if (getUserID().equals(events.getEventAdminID())) {
@@ -386,6 +393,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     reference.removeValue();
                     MemberCountRef.removeValue();
                     joinedMemberRef.removeValue();
+                    groupChatRef.removeValue();
                     gMap.clear();
                     spawnNearbyEventsOnMap(gMap);
                     Log.e("Tigris", "onClick: " + gMap);
@@ -552,7 +560,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         int width = 50; //Default
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(resourcePath); //Change
         Bitmap b = bitmapdraw.getBitmap();
-
         return Bitmap.createScaledBitmap(b, width, height, false);
     }
 
@@ -775,5 +782,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }.start();
 
 
+    public void runTask() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Timer time = new Timer(); // Instantiate Timer Object
+        // Start running the task on Monday at 15:40:00, period is set to 8 hours
+        // if you want to run the task immediately, set the 2nd parameter to 0
+        Log.e("ThreadSchedule", "runTask: "+gMap);
+        time.schedule(new EventScheduler(gMap), calendar.getTime(), TimeUnit.HOURS.toMillis(8));
     }
 }
