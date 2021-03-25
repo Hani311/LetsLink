@@ -9,15 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-
-
 import com.example.androidproject.R;
-app/src/main/java/com/example/androidproject/Users/FrindsListActivity.java
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -82,15 +74,6 @@ private String onlineUserID;
 
                 }
             });
-             friendViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     String visit_user_id= getRef(i).getKey();
-                     Intent profileIntent= new Intent(FrindsListActivity.this, PersonProfileActivity.class);
-                     profileIntent.putExtra("visit_user_id", visit_user_id);
-                     startActivity(profileIntent);
-                 }
-             });
             }
         };
         myFriendList.setAdapter(firebaseRecyclerAdapter);

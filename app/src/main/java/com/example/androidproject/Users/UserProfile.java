@@ -76,21 +76,13 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = editTextChangeUserName.getText().toString();
-                String status = editTextStatus.getText().toString();
                 if( name.equals("")) {
 
                 } else{
 
-                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("Users").setValue(name);
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("username").setValue(name);
                     databaseReference.child(mAuth.getCurrentUser().getUid()).child("searchname").setValue(name);
                     Toast.makeText(UserProfile.this, "UserName have been changed", Toast.LENGTH_SHORT).show();
-                }
-                if( status.equals("")) {
-
-                } else{
-
-                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("bio").setValue(status);
-                    Toast.makeText(UserProfile.this, "Status have been changed", Toast.LENGTH_SHORT).show();
                 }
 
                 uploadProfileImage();
