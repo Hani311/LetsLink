@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="74dp"
-        android:layout_marginLeft="10dp"
-        android:layout_height="53dp"
-        android:src="@drawable/even" />
+
 
     <Button
         android:id="@+id/deleteEvent"
@@ -21,80 +17,112 @@
         android:visibility="gone"
         android:layout_alignParentRight="true"
         android:textSize="22dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold|italic"
+        android:backgroundTint="#870C0C"
+        app:cornerRadius="20dp"
+        app:iconTint="@color/mainHani"
+        app:rippleColor="@color/mainHani"
         />
-
-    <TextView
-        android:id="@+id/capacity"
-        android:layout_width="wrap_content"
-        android:hint="capacity"
-        android:layout_below="@+id/deleteEvent"
-        android:layout_margin="10dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textSize="22dp" />
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="371dp"
+        android:background="@drawable/eveee"
+        android:baselineAligned="false"
+        android:clickable="false"
+        android:filterTouchesWhenObscured="false"
+        android:hapticFeedbackEnabled="false"
         android:orientation="vertical"
-        android:layout_below="@+id/img"
-        >
+        android:splitMotionEvents="true">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/meet" />
+
+        <TextView
+            android:id="@+id/capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deleteEvent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/alfa_slab_one"
+            android:hint="capacity"
+            android:textAlignment="center"
+            android:textSize="22dp"
+            android:textStyle="italic" />
+
         <TextView
             android:id="@+id/description"
-            android:layout_width="338dp"
-            android:layout_height="102dp"
+            android:layout_width="337dp"
+            android:layout_height="161dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="3dp"
-
             android:editable="false"
+            android:fontFamily="serif"
             android:hint="@string/description_box"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="1500"
             android:minLines="4"
             android:padding="10dp"
             android:scrollbars="vertical"
+            android:textAlignment="textStart"
+            android:textColor="#050505"
             android:textSize="18sp"
-
-            />
-
-        <ImageView
-            android:id="@+id/joinEventRelatedChat"
-            android:layout_width="57dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/chat" />
+            android:textStyle="bold|italic" />
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2"
-
             android:layout_margin="10dp"
-            >
+            android:layout_gravity="bottom"
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/join"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:backgroundTint="#2B5B85"
+                android:fontFamily="serif"
+                android:shadowColor="#F44336"
                 android:text="Join"
-                />
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="bold|italic"
+                app:cornerRadius="20dp"
+                app:iconTint="#AF2626"
+                app:rippleColor="#FF0606" />
 
             <Button
                 android:id="@+id/leave"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:backgroundTint="#2B5B85"
+                android:fontFamily="serif"
+                android:shadowColor="#F44336"
                 android:text="Leave"
-                />
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="bold|italic"
+                app:cornerRadius="20dp"
+                app:iconTint="#AF2626"
+                app:rippleColor="#FF0606" />
         </TableRow>
-
-
-
 
 
     </LinearLayout>

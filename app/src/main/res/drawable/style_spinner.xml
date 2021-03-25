@@ -13,7 +13,8 @@
 
             <item>
                 <bitmap
-                    android:gravity="center|end" android:src="@drawable/ic_down"/>
+
+                    android:gravity="center|end" android:src="@drawable/arr3"/>
             </item>
         </layer-list>
     </item>

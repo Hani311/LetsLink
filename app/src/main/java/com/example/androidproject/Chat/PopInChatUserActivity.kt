@@ -18,32 +18,27 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class PopInChatUserActivity : AppCompatActivity() {
 
-    lateinit var dM : DisplayMetrics
-    lateinit var popUpUser:String
-    lateinit var reference:DatabaseReference
-    lateinit var popUpCiv:CircleImageView
-    lateinit var popUpUsername:TextView
-    lateinit var backImage:ImageView
+    lateinit var dM: DisplayMetrics
+    lateinit var popUpUser: String
+    lateinit var reference: DatabaseReference
+    lateinit var popUpCiv: CircleImageView
+    lateinit var popUpUsername: TextView
+    lateinit var backImage: ImageView
     lateinit var optionsImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pop_in_chat_user)
 
-        popUpCiv=findViewById(R.id.friends_profile_image_popup)
-        popUpUsername=findViewById(R.id.friends_username_popup)
-        backImage=findViewById(R.id.popup_back)
-        optionsImage=findViewById(R.id.popup_options)
-
-
-
-
+        popUpCiv = findViewById(R.id.friends_profile_image_popup)
+        popUpUsername = findViewById(R.id.friends_username_popup)
+        backImage = findViewById(R.id.popup_back)
         optionsImage.setOnClickListener {
             showPopup(it)
         }
 
-        val intent=intent
-        popUpUser= intent.getStringExtra("userid")!!
+        val intent = intent
+        popUpUser = intent.getStringExtra("userid")!!
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(popUpUser)
         reference.addValueEventListener(object : ValueEventListener {
@@ -60,20 +55,20 @@ class PopInChatUserActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        dM= DisplayMetrics()
+        dM = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(dM)
 
-        val width=dM.widthPixels
-        val height=dM.heightPixels
+        val width = dM.widthPixels
+        val height = dM.heightPixels
 
-        window.setLayout((width).toInt(), (height*.5).toInt())
+        window.setLayout((width).toInt(), (height * .5).toInt())
 
-        var params:WindowManager.LayoutParams =window.attributes
-        params.gravity=Gravity.TOP
-        params.x=0
-        params.y=+20
+        var params: WindowManager.LayoutParams = window.attributes
+        params.gravity = Gravity.TOP
+        params.x = 0
+        params.y = +20
 
-        window.attributes=params
+        window.attributes = params
 
 
         backImage.setOnClickListener {
@@ -82,12 +77,12 @@ class PopInChatUserActivity : AppCompatActivity() {
     }
 
 
-    fun showPopup(v : View){
+    fun showPopup(v: View) {
         val popup = PopupMenu(this, v)
         val inflater: MenuInflater = popup.menuInflater
         inflater.inflate(R.menu.inchat_options_menu, popup.menu)
         popup.setOnMenuItemClickListener { menuItem ->
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.block_options -> {
 
                 }

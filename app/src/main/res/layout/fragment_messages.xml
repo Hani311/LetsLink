@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Chat.MessagesFragment">
 
+
         <com.google.android.material.tabs.TabLayout
-            android:layout_marginTop="55dp"
             android:id="@+id/messagesTabLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/design_default_color_primary_dark"
-            app:tabSelectedTextColor="#ffffff"
+            android:layout_marginTop="55dp"
+            android:background="#8FBFC8"
             app:tabIndicatorColor="#ffffff"
-            app:tabTextColor="#ffffff"/>
+            app:tabSelectedTextColor="#ffffff"
+            app:tabTextColor="#ffffff" />
 
-
-        <androidx.viewpager2.widget.ViewPager2
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/messageViewPager"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="647dp"
+            android:layout_height="537dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
             android:orientation="vertical" />
 
     </LinearLayout>
