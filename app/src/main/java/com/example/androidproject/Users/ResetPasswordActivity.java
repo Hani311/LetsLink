@@ -64,7 +64,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                         Log.d("Hani22", "sendOnChannel1: "+ title);
 
                                         Notification notification = new NotificationCompat.Builder(ResetPasswordActivity.this, CHANNEL_1_ID)
-                                                .setSmallIcon(R.drawable.thumbs_up)
+                                                .setSmallIcon(R.mipmap.app_icon_round)
                                                 .setContentText("The password was not updated something wrong")
                                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -80,7 +80,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                         Log.d("Hani22", "sendOnChannel1: "+ title);
 
                                         Notification notification = new NotificationCompat.Builder(ResetPasswordActivity.this, CHANNEL_1_ID)
-                                                .setSmallIcon(R.drawable.thumbs_up)
+                                                .setSmallIcon(R.mipmap.app_icon_round)
                                                 .setContentTitle("Updated")
                                                 .setContentText("The password has been updated successfully")
                                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -100,7 +100,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             Log.d("Hani22", "sendOnChannel1: "+ title);
 
                             Notification notification = new NotificationCompat.Builder(ResetPasswordActivity.this, CHANNEL_1_ID)
-                                    .setSmallIcon(R.drawable.thumbs_up)
+                                    .setSmallIcon(R.mipmap.app_icon_round)
                                     .setContentTitle("Authentication Failed")
                                     .setContentText("Please make sure you have entered the right password")
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)

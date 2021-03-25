@@ -16,7 +16,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="#CDC7C7"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:id="@+id/groupChatToolBar"
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_chat_view"
-        android:background="@color/white"
+        android:background="@drawable/chat69"
         android:layout_below="@id/bar_layout"
         android:layout_above="@id/bottom_layout"
         android:layout_width="match_parent"
@@ -58,13 +58,13 @@
         android:layout_height="62dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="#8FBFC8"
         android:padding="4dp">
 
         <EditText
             android:id="@+id/send_text_group"
-            android:layout_width="260dp"
-            android:layout_height="39dp"
+            android:layout_width="317dp"
+            android:layout_height="41dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="15dp"

@@ -51,27 +51,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/searchFrinds" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="340dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/setting_btn_layout"
-        android:drawableLeft="@drawable/ic_baseline_dark_mode_24"
-        android:gravity="left|center_vertical"
-        android:text="Dark mode"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/mainHani"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <Button
         android:id="@+id/btnFriends"
@@ -79,7 +60,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="296dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/setting_btn_layout"
         android:drawableLeft="@drawable/ic_baseline_people_24"
@@ -89,12 +70,13 @@
         android:textColor="@color/black"
         app:backgroundTint="@color/mainHani"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toTopOf="@+id/civ_in_profile_navigation" />
 
     <Button
-        android:id="@+id/button3"
+
+        android:id="@+id/searchFrinds"
         android:layout_width="340dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
@@ -104,7 +86,7 @@
         android:background="@drawable/setting_btn_layout"
         android:drawableLeft="@drawable/ic_logout"
         android:gravity="left|center_vertical"
-        android:text="Log out"
+        android:text="Search Friends"
         android:textAllCaps="false"
         android:textColor="@color/black"
         app:backgroundTint="@color/mainHani"
@@ -113,28 +95,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnFriends" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="340dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="244dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/setting_btn_layout"
-        android:drawableLeft="@drawable/ic_baseline_language_24"
-        android:gravity="left|center_vertical"
-        android:text="Language settings"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:backgroundTint="@color/mainHani"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/civ_in_profile_navigation" />
 
     <Button
-        android:id="@+id/searchFrinds"
+        android:id="@+id/button3"
         android:layout_width="340dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
@@ -144,7 +107,7 @@
         android:background="@drawable/setting_btn_layout"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:gravity="left|center_vertical"
-        android:text="Search Friends"
+        android:text="Log out"
         android:textAllCaps="false"
         android:textColor="@color/black"
         app:backgroundTint="@color/mainHani"
