@@ -83,7 +83,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         eventName=intent.getStringExtra("eventName");
         longitude=intent.getDoubleExtra("longitude",  0);
         latitude=intent.getDoubleExtra("latitude", 0);
-        description=intent.getStringExtra("longitude");
+        description=intent.getStringExtra("description");
         capacity=intent.getStringExtra("capacity");
 
 
