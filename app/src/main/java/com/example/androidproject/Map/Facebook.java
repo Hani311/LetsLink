@@ -80,7 +80,7 @@ public class Facebook extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 String title = editTextTitle.getText().toString();
                 Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
-                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setSmallIcon(R.mipmap.app_icon_round)
                         .setContentTitle("Facebook Login")
                         .setContentText("Login to facebook was Successful")
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -95,7 +95,7 @@ public class Facebook extends AppCompatActivity {
             public void onCancel() {
                 String title = editTextTitle.getText().toString();
                 Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
-                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setSmallIcon(R.mipmap.app_icon_round)
                         .setContentTitle("Facebook Login")
                         .setContentText("Login to facebook was canceled")
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -111,7 +111,7 @@ public class Facebook extends AppCompatActivity {
             public void onError(FacebookException error) {
                 String title = editTextTitle.getText().toString();
                 Notification notification = new NotificationCompat.Builder(Facebook.this, CHANNEL_1_ID)
-                        .setSmallIcon(R.drawable.thumbs_up)
+                        .setSmallIcon(R.mipmap.app_icon_round)
                         .setContentTitle("Facebook Login")
                         .setContentText("Login to facebook error")
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
