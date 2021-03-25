@@ -94,10 +94,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
 
-         //The plus button at the top-right corner of the map method
-        Log.e("mi", "onViewCreated: "+gMap );
+        //The plus button at the top-right corner of the map method
+        Log.e("mi", "onViewCreated: " + gMap);
         shareEvent();
-
 
 
     }
@@ -134,7 +133,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
-
 
 
     @Override
@@ -175,7 +173,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void markerClicked(){
+    public void markerClicked() {
 
         requireActivity().runOnUiThread(new Runnable() {
             @Override
@@ -210,7 +208,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         eventPopup.setTitle("Event");
                                         dialog = eventPopup.create();
                                         dialog.show();
-                                        deleteEventByOwner(dialog,dialogView, event);
+                                        deleteEventByOwner(dialog, dialogView, event);
 
 
                                         TextView capacity = dialogView.findViewById(R.id.capacity);
@@ -378,7 +376,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void deleteEventByOwner(Dialog dialog, View dialogView, Events events){
+    public void deleteEventByOwner(Dialog dialog, View dialogView, Events events) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Events").child(events.getEventID());
         DatabaseReference MemberCountRef = FirebaseDatabase.getInstance().getReference("Joined Member").child(events.getEventID());
         DatabaseReference joinedMemberRef = FirebaseDatabase.getInstance().getReference("Joined Users").child(events.getEventID());
@@ -396,7 +394,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     spawnNearbyEventsOnMap(gMap);
 
 
-                    Log.e("Tigris", "onClick: "+gMap );
+                    Log.e("Tigris", "onClick: " + gMap);
                     dialog.dismiss();
                 }
             });
@@ -442,7 +440,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
     }
-
 
 
     public void addNameToMarkerOnMap(double lati, double longi) throws IOException {
@@ -533,7 +530,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-
     }
 
     public void shareEvent() {
@@ -558,12 +554,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-
-
-
-
-        public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"
+    public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"
         int height = 50; //Default
         int width = 50; //Default
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(resourcePath); //Change
@@ -601,12 +592,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         EditText tex = dialogView.findViewById(R.id.addressToLatLong);
                                         String t = tex.getText().toString();
                                         LatLng latLngg = null;
-                               try {
-                                    Thread.sleep(1000);
-                                   latLngg = getLocationFromAddress(getActivity(), t);
-                                } catch (InterruptedException interruptedException) {
-                                    interruptedException.printStackTrace();
-                                }
+                                        try {
+                                            Thread.sleep(1000);
+                                            latLngg = getLocationFromAddress(getActivity(), t);
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        }
 
                                         EditText editText = dialogView.findViewById(R.id.CreateDescription);
                                         editText.getText().toString();
@@ -619,7 +610,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
                                         Log.e("Lkljadlkfj", latLngg + "");
                                         if (latLngg != null) {
-
 
 
                                             DatabaseReference refere = FirebaseDatabase.getInstance().getReference("Events");
@@ -635,7 +625,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                             exists = true;
                                                             Toast.makeText(getActivity(), "Already exists", Toast.LENGTH_LONG).show();
                                                         }
-                                                       // Log.e("distance", "onDataChange: "+distanceCalculator(finalLatLngg.latitude, finalLatLngg.longitude, e.getLatitude(), e.getLongitude()));
+                                                        // Log.e("distance", "onDataChange: "+distanceCalculator(finalLatLngg.latitude, finalLatLngg.longitude, e.getLatitude(), e.getLongitude()));
                                                         if (distanceCalculator(finalLatLngg.latitude, finalLatLngg.longitude, e.getLatitude(), e.getLongitude()) < 1.86411358) { //1.86411358 in miles is the equivalent of 3km
                                                             exists = true;
                                                             Toast.makeText(getActivity(), "Sorry, due to the ongoing covid-19 pandemic, you can not create an event within a 3km (1.8 miles) distance for your and others safety. Thank you for understanding", Toast.LENGTH_LONG).show();
@@ -678,8 +668,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
 
-
-
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) { //Based on the user's createvent address, this will produce latitude and longitude for the provided address.
@@ -710,9 +698,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public String getUserID(){
+    public String getUserID() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        return  Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        return Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
     }
 
 
@@ -738,7 +726,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return (rad * 180.0 / Math.PI);
     }
 
-    private void createGroupChat( Spinner spinner, TextView nameOfEvenet, LatLng finalLatLngg,EditText editText, Spinner spinnerCapacity){
+    private void createGroupChat(Spinner spinner, TextView nameOfEvenet, LatLng finalLatLngg, EditText editText, Spinner spinnerCapacity) {
 
 
         Intent intent = new Intent(requireContext(), CreateGroupActivity.class);
@@ -753,21 +741,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void addParticipant(String groupID, String eventName){
-        String timestamp=""+System.currentTimeMillis();
-        HashMap<String, String> hM=new HashMap<>();
+    public void addParticipant(String groupID, String eventName) {
+        String timestamp = "" + System.currentTimeMillis();
+        HashMap<String, String> hM = new HashMap<>();
         hM.put("userID", getUserID());
         hM.put("role", "participant");
-        hM.put("timestamp", ""+timestamp);
+        hM.put("timestamp", "" + timestamp);
 
-        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Groups");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
         ref.child(groupID).child("Participants").child(getUserID()).setValue(hM)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
-                Toast.makeText(getContext(), "Joined group chat for the event"+eventName+"successfully", Toast.LENGTH_SHORT).show();
-            }
-        });
+                        Toast.makeText(getContext(), "Joined group chat for the event" + eventName + "successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
+}

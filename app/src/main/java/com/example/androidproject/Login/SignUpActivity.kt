@@ -106,6 +106,7 @@ class SignUpActivity : AppCompatActivity() {
                 hashMap.put("ID", userID)
                 hashMap.put("username", username)
                 hashMap.put("imageURL", "default")
+                hashMap.put("searchname",username.toLowerCase())
                 hashMap.put("status", "offline")
 
                 reference.setValue(hashMap).addOnCompleteListener {
