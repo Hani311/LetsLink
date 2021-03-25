@@ -29,7 +29,8 @@
             android:theme="@style/Theme.AndroidProject.NoActionBar" />
         <activity android:name=".Chat.CreateGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login.policy"></activity>
+        <activity android:name=".Login.policy"
+            android:theme="@style/Theme.AndroidProject.NoActionBar"></activity>
         <activity android:name=".Users.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Map.Facebook"

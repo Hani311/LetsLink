@@ -26,14 +26,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.androidproject.Chat.CreateGroupActivity;
-import com.example.androidproject.MainActivity;
-import com.example.androidproject.Chat.ChatFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.androidproject.Chat.CreateGroupActivity;
 import com.example.androidproject.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -756,8 +754,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
     public void addParticipant(String groupID, String eventName) {
-        new Thread(){
-            public void run(){
+        new Thread() {
+            public void run() {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -781,7 +779,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         }.start();
 
-
+    }
     public void runTask() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 23);
