@@ -19,11 +19,12 @@
             app:tabSelectedTextColor="#ffffff"
             app:tabTextColor="#ffffff" />
 
-        <androidx.viewpager2.widget.ViewPager2
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/messageViewPager"
             android:layout_width="match_parent"
-            android:layout_height="647dp"
+            android:layout_height="537dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0dp"
             android:orientation="vertical" />
 
     </LinearLayout>

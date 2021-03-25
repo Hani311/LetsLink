@@ -47,6 +47,7 @@ private String onlineUserID;
         displayAllFriends();
     }
 
+
     private void displayAllFriends() {
         FirebaseRecyclerAdapter<Friends,friendViewHolder> firebaseRecyclerAdapter=  new FirebaseRecyclerAdapter<Friends, friendViewHolder>(
                 Friends.class, R.layout.all_users_display_layout, friendViewHolder.class,friendsRef
