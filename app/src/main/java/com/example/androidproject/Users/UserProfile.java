@@ -15,13 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.androidproject.FriendRequestActivity;
 import com.example.androidproject.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,7 +48,7 @@ public class UserProfile extends AppCompatActivity {
     private String myUri="";
     private StorageTask upLoadTask;
     private StorageReference storageProfilePicsRef;
-    private Button saveBtn, logoutBtn, btnChangePasActivity,btnRecevied;
+    private Button saveBtn, logoutBtn, btnChangePasActivity;
     private FirebaseUser User;
     private EditText editTextChangeUserName;
 
@@ -69,7 +66,6 @@ public class UserProfile extends AppCompatActivity {
         profileChangeBtn= findViewById(R.id.changePic);
         btnChangePasActivity=findViewById(R.id.btnResetActivity);
         editTextChangeUserName= findViewById(R.id.editTextTextPersonName);
-        btnRecevied=findViewById(R.id.btnRecevied);
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,13 +99,7 @@ public class UserProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnRecevied.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(UserProfile.this, FriendRequestActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
         getUserinfo();
