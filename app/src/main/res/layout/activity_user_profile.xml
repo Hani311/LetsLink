@@ -52,6 +52,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="271dp"
@@ -60,24 +61,8 @@
         android:layout_marginLeft="16dp"
         android:drawableStart="@drawable/ic_baseline_account_circle_24"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text=" Name" />
-
-    <EditText
-        android:id="@+id/editTextTextEmail"
-
-        android:layout_width="273dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="70dp"
-        android:drawableStart="@drawable/ic_baseline_email_24"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=" email"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
+        android:hint="New Name "
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnSave"
@@ -105,6 +90,15 @@
         android:layout_marginRight="130dp"
         android:layout_marginBottom="200dp"
         android:text="Change Password" />
+
+    <Button
+        android:id="@+id/btnRecevied"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="220dp"
+        android:layout_marginBottom="270dp"
+        android:text="Recive" />
 
 
 </FrameLayout>

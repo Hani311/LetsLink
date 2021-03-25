@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.FriendRequestActivity;
 import com.example.androidproject.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,7 +51,9 @@ public class UserProfile extends AppCompatActivity {
     private String myUri="";
     private StorageTask upLoadTask;
     private StorageReference storageProfilePicsRef;
-    private Button saveBtn, logoutBtn, btnChangePasActivity;
+    private Button saveBtn, logoutBtn, btnChangePasActivity,btnRecevied;
+    private FirebaseUser User;
+    private EditText editTextChangeUserName;
 
 
 
@@ -65,10 +68,24 @@ public class UserProfile extends AppCompatActivity {
         saveBtn=findViewById(R.id.btnSave);
         profileChangeBtn= findViewById(R.id.changePic);
         btnChangePasActivity=findViewById(R.id.btnResetActivity);
-
+        editTextChangeUserName= findViewById(R.id.editTextTextPersonName);
+        btnRecevied=findViewById(R.id.btnRecevied);
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) { uploadProfileImage();
+            public void onClick(View v) {
+                String name = editTextChangeUserName.getText().toString();
+                if( name.equals("")) {
+
+                } else{
+
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("Users").setValue(name);
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("searchname").setValue(name);
+                    Toast.makeText(UserProfile.this, "UserName have been changed", Toast.LENGTH_SHORT).show();
+                }
+
+                uploadProfileImage();
+
+
             }
         });
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +100,13 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Intent intent= new Intent(UserProfile.this, ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnRecevied.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(UserProfile.this, FriendRequestActivity.class);
                 startActivity(intent);
             }
         });

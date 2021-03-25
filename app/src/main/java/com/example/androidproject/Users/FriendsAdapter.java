@@ -63,7 +63,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         if (inChat) {
 
+
             getLastMessage(user.getID(), holder.lastMsg);
+
 
         } else {
             holder.lastMsg.setVisibility(View.GONE);

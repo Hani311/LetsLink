@@ -272,7 +272,12 @@ public class MessageActivity extends AppCompatActivity {
         reference.child("Chats").push().setValue(hM);
         final String msg=message;
 
-        final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist")
+
+        final DatabaseReference chatRef=FirebaseDatabase.getInstance().getReference("Chatlist");
+
+        /*
+        final DatabaseReference lastMsgFrontRef =FirebaseDatabase.getInstance().getReference("lastMessage")
+>>>>>>> Stashed changes
                 .child(userid);
 
         chatRef.addValueEventListener(new ValueEventListener() {
@@ -290,6 +295,8 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
+
+         */
         DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(fUser.getUid());
         reference1.addValueEventListener(new ValueEventListener() {
 

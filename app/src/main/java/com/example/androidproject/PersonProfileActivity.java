@@ -257,7 +257,6 @@ private FirebaseAuth mAuth;
                    btnSendFriendReq.setEnabled(true);
                    currentState ="request_sent";
                    btnSendFriendReq.setText("Cancel friend request");
-
                    btnDeclineFriendReq.setVisibility(View.INVISIBLE);
                    btnDeclineFriendReq.setEnabled(false);
                    }
