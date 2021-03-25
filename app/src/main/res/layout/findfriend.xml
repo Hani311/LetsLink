@@ -38,9 +38,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FriendView"
         android:layout_width="match_parent"
-        android:layout_height="378dp"
-        android:layout_marginTop="6dp"
+        android:layout_height="653dp"
         android:layout_below="@id/textInputLayout"
+        android:layout_marginTop="6dp"
 
         />
 

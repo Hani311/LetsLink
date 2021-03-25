@@ -3,30 +3,39 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_calendar" />
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
     <Button
         android:id="@+id/createEventB"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_below="@id/imageView4"
-        android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
-        android:text="@string/createButton" />
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="#2B5B85"
+        android:fontFamily="serif"
+        android:shadowColor="#F44336"
+        android:text="@string/createButton"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold|italic"
+        app:cornerRadius="20dp"
+        app:iconTint="#AF2626"
+        app:rippleColor="#FF0606" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="371dp"
+        android:background="@drawable/profile1"
         android:orientation="vertical">
 
         <EditText
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/nameOFEvent"
             android:layout_width="112dp"
             android:layout_height="wrap_content"
@@ -35,6 +44,8 @@
             android:inputType="textPersonName" />
 
         <EditText
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/addressToLatLong"
             android:layout_width="109dp"
             android:layout_height="wrap_content"
@@ -73,18 +84,17 @@
                 android:layout_marginStart="12dp"
                 android:background="@drawable/style_spinner"
                 android:entries="@array/capacity" />
-
-
         </TableRow>
 
         <EditText
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/CreateDescription"
             android:layout_width="190dp"
             android:layout_height="102dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="3dp"
-
             android:hint="@string/description_box"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="1500"
@@ -110,6 +120,7 @@
                 android:layout_height="42dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
                 android:text="Due to corona, events created will be automotaically deleted after 00:00 every day"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2">
 
@@ -121,5 +132,12 @@
 
 
     </LinearLayout>
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_calendar" />
 
 </RelativeLayout>

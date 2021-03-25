@@ -4,26 +4,30 @@
     xlmns:layout_height="match_parent"
     xlmns:layout_width="match_parent">
 
+
     <fragment
         xlmns:id="@+id/maps"
         xlmns:name="com.google.android.gms.maps.SupportMapFragment"
         xlmns:layout_width="match_parent"
-        xlmns:layout_height="665dp"
+        xlmns:layout_height="match_parent"
         xlmns:layout_alignParentStart="true"
         xlmns:layout_alignParentTop="true"
-        xlmns:layout_marginTop="60dp"
+        xlmns:layout_marginStart="0dp"
+        xlmns:layout_marginTop="0dp"
         tools:context=".Map.MapsFragment" />
-
 
     <SearchView
         xlmns:id="@+id/searchLocation"
-        xlmns:layout_width="match_parent"
-        xlmns:layout_height="74dp"
-        xlmns:layout_marginTop="45dp"
-        xlmns:queryHint=" search..."
+        xlmns:layout_width="355dp"
+        xlmns:layout_height="wrap_content"
+        xlmns:layout_marginStart="5dp"
+        xlmns:layout_marginTop="5dp"
+        xlmns:layout_marginEnd="10dp"
+        xlmns:layout_marginBottom="10dp"
+        xlmns:elevation="5dp"
         xlmns:iconifiedByDefault="false"
-        xlmns:background="@color/white"
-        />
+        xlmns:queryBackground="@drawable/common_google_signin_btn_text_dark_normal_background"
+        xlmns:queryHint="Search..." />
 
     <ImageView
         xlmns:id="@+id/createEventButton"
@@ -44,9 +48,9 @@
         xlmns:layout_below="@+id/searchLocation"
         xlmns:layout_alignParentRight="true"
         xlmns:layout_marginStart="10dp"
-        xlmns:layout_marginTop="78dp"
-        xlmns:layout_marginEnd="10dp"
-        xlmns:layout_marginRight="7dp"
+        xlmns:layout_marginTop="70dp"
+        xlmns:layout_marginEnd="12dp"
+        xlmns:layout_marginRight="11dp"
         xlmns:layout_marginBottom="10dp"
-        xlmns:src="@drawable/messenger_button_white_bg_round" />
+        xlmns:src="@drawable/share" />
 </RelativeLayout>
