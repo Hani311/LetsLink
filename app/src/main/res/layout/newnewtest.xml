@@ -30,32 +30,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="371dp"
-        android:background="@drawable/profile1"
+        android:background="@drawable/eveee"
         android:orientation="vertical">
 
         <EditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/nameOFEvent"
-            android:layout_width="112dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:hint="Event name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            app:boxBackgroundColor="#DEE8F4" />
 
         <EditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/addressToLatLong"
-            android:layout_width="109dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="155dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:hint="Address"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            app:boxBackgroundColor="#DEE8F4" />
 
         <Spinner
             android:id="@+id/eventTypeSpinner"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:background="@drawable/style_spinner"
@@ -72,9 +72,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:fontFamily="serif"
                 android:text="@string/capacity"
                 android:textColor="#0B0000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold|italic" />
 
 
             <Spinner
@@ -87,23 +89,25 @@
         </TableRow>
 
         <EditText
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxBackgroundColor="#DEE8F4"
             android:id="@+id/CreateDescription"
-            android:layout_width="190dp"
-            android:layout_height="102dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="230dp"
+            android:layout_height="96dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="3dp"
+            android:fontFamily="serif"
             android:hint="@string/description_box"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="1500"
             android:minLines="4"
             android:padding="10dp"
             android:scrollbars="vertical"
-            android:textSize="18sp"
+            android:textColor="#000000"
 
-            />
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            app:boxBackgroundColor="#DEE8F4" />
 
         <TableRow
             android:layout_width="match_parent"

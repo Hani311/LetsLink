@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         tools:context=".Login.SignUpActivity">
 
+
         <LinearLayout
             android:layout_width="324dp"
             android:layout_height="687dp"
@@ -114,21 +115,39 @@
                 android:textStyle="bold|italic"
                 app:backgroundTint="#2B5B85"
                 app:cornerRadius="20dp" />
+            <TableRow
 
-
-            <TextView
-                android:id="@+id/policy"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:layout_marginTop="10dp"
-                android:background="#00FFFFFF"
-                android:text="Read our Policy privacy"
-                android:textAlignment="center"
-                android:textColor="@color/mainHani"
-                android:textSize="14sp"
-                android:textStyle="bold|italic"
-                android:typeface="serif" />
+                android:layout_margin="10dp"
+                android:layout_gravity="bottom"
+                android:weightSum="2">
+
+
+                <TextView
+                    android:id="@+id/policy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#00FFFFFF"
+                    android:text="Read our Policy privacy"
+                    android:textAlignment="center"
+                    android:textColor="@color/mainHani"
+                    android:textSize="14sp"
+                    android:textStyle="bold|italic"
+                    android:typeface="serif" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/link" />
+
+            </TableRow>
+
+
 
             <CheckBox
                 android:id="@+id/agreement_checbox"
