@@ -88,16 +88,18 @@ public class CreateGroupActivity extends AppCompatActivity {
 
 
         auth=FirebaseAuth.getInstance();
-        actionBar=getSupportActionBar();
-        actionBar.setTitle("Creating group");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        //actionBar=getSupportActionBar();
+       // actionBar.setTitle("Creating group");
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+       // actionBar.setDisplayShowHomeEnabled(true);
 
 
         Toolbar toolbar=findViewById(R.id.create_group_toolbar);
-        setSupportActionBar(toolbar);
+      /*  setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+       */
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

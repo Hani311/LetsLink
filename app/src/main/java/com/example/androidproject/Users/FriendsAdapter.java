@@ -200,27 +200,30 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
                         }
                     }
+            try {
+                switch (lastSentMesage) {
+                    case "":
+                        lastMsg.setText("");
+                        break;
 
-                    switch (lastSentMesage) {
-                        case "":
-                            lastMsg.setText("");
-                            break;
-
-                        default:
-                            if (senderConfirm.equals(fUser.getUid())) {
-                                lastMsg.setText("You : " + lastSentMesage);
+                    default:
+                        if (senderConfirm.equals(fUser.getUid())) {
+                            lastMsg.setText("You : " + lastSentMesage);
+                        } else {
+                            lastMsg.setText(senderName + " : " + lastSentMesage);
+                            if (!seenMsg) {
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
                             } else {
-                                lastMsg.setText(senderName + " : " + lastSentMesage);
-                                if (!seenMsg) {
-                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.BOLD);
-                                } else {
-                                    lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
-                                }
+                                lastMsg.setTypeface(lastMsg.getTypeface(), Typeface.NORMAL);
                             }
+                        }
 
-                            break;
+                        break;
 
-                    }
+                }
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
                 }
 
                 @Override

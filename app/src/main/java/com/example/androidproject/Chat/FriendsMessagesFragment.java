@@ -73,7 +73,11 @@ public class FriendsMessagesFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    friendIDs.add(ds.getKey());
+                    if (friendIDs.contains(ds.getKey())){
+
+                    }else {
+                        friendIDs.add(ds.getKey());
+                    }
                 }
                 displayAllFriends(friendIDs);
             }
@@ -142,8 +146,18 @@ public class FriendsMessagesFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
+                        Boolean add = true;
                         User user = snapshot.getValue(User.class);
-                        friends.add(user);
+                        for(User users:friends){
+                            if(users.getID().equals(user.getID())){
+                                add=false;
+                            }
+                        }
+                        if(add) {
+                            friends.add(user);
+                        }
+
+
                     }
                 }
 
