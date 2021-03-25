@@ -89,10 +89,10 @@
                 app:startIconDrawable="@drawable/ic_baseline_email_24">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTextEmail"
+                    android:id="@+id/editTextStatus"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:hint="Email"
+                    android:hint="Status"
                     android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
