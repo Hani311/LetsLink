@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.Users;
 
 public class Friends {
     public String date;

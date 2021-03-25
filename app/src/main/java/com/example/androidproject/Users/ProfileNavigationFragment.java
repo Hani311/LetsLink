@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.androidproject.FindfriendActivity;
-import com.example.androidproject.FrindsListActivity;
 import com.example.androidproject.Login.LoginActivity;
 import com.example.androidproject.R;
 import com.google.firebase.auth.FirebaseAuth;
