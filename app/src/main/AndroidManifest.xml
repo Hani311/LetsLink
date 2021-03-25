@@ -29,13 +29,14 @@
             android:theme="@style/Theme.AndroidProject.NoActionBar" />
         <activity android:name=".Chat.CreateGroupActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".policy"></activity>
+        <activity android:name=".Login.policy"></activity>
         <activity android:name=".Users.ResetPasswordActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Map.Facebook" />
-        <activity android:name=".FrindsListActivity"
+        <activity android:name=".Map.Facebook"
+            android:theme="@style/Theme.AndroidProject.NoActionBar"/>
+        <activity android:name=".Users.FrindsListActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".FindfriendActivity"
+        <activity android:name=".Users.FindfriendActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PersonProfileActivity" />
         <!--

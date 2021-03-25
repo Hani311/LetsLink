@@ -12,20 +12,9 @@
         android:title="Maps" />
 
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_home_black_"
-        android:title="Home" />
-
-    <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/ic_notifications_blck"
-        android:title="Notifications"/>
-
-    <item
         android:id="@+id/userProfile"
         android:icon="@drawable/ic_person_outline_"
         android:title="User Profile"/>
-
 
 
 </menu>
