@@ -162,9 +162,9 @@ public class Facebook extends AppCompatActivity {
 
         //for share
         ShareLinkContent shareLinkContent = new ShareLinkContent.Builder().
-                setContentUrl(Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ"))
+                setContentUrl(Uri.parse("https://github.com/Hani311/Android_project"))
                 .setShareHashtag(new ShareHashtag.Builder()
-                        .setHashtag("#test").build())
+                        .setHashtag("#Lets_link").build())
                 .build();
         sbLink.setShareContent(shareLinkContent);
 
