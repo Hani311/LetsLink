@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.Users;
 
 public class FindFriends {
     //strings for what we want to show about the profiles in the findfriend activity, can easly add more stuff ;
