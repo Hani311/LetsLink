@@ -23,10 +23,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
         <activity android:name=".policy"></activity>
-        <activity android:name=".Users.ResetPasswordActivity" />
+        <activity android:name=".Users.ResetPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Map.Facebook" />
-        <activity android:name=".FrindsListActivity" />
-        <activity android:name=".FindfriendActivity" />
+        <activity android:name=".FrindsListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".FindfriendActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PersonProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -40,7 +43,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Users.UserProfile" />
+        <activity android:name=".Users.UserProfile"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Login.LoginActivity"
             android:theme="@style/Theme.AndroidProject.NoActionBar">
