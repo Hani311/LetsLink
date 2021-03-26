@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.androidproject.MainActivity
 import com.example.androidproject.R
-import com.example.androidproject.Users.User
 import com.example.androidproject.databinding.ActivitySignUpBinding
-import com.example.androidproject.policy
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -108,6 +106,7 @@ class SignUpActivity : AppCompatActivity() {
                 hashMap.put("imageURL", "default")
                 hashMap.put("searchname",username.toLowerCase())
                 hashMap.put("status", "offline")
+                hashMap.put("bio" , "")
 
                 reference.setValue(hashMap).addOnCompleteListener {
 

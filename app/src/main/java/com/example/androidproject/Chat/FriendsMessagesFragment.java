@@ -12,12 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.androidproject.Friends;
-import com.example.androidproject.FrindsListActivity;
 import com.example.androidproject.R;
 import com.example.androidproject.Users.FriendsAdapter;
 import com.example.androidproject.Users.User;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

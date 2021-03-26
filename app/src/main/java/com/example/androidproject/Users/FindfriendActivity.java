@@ -1,4 +1,4 @@
-package com.example.androidproject;
+package com.example.androidproject.Users;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.androidproject.PersonProfileActivity;
+import com.example.androidproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +65,8 @@ public class FindfriendActivity extends AppCompatActivity {
             protected void populateViewHolder(FindFriendsViewHolder viewHolder, FindFriends findFriends, int i) {
                 viewHolder.setUsername(findFriends.getUsername());
                 viewHolder.setImageURL(findFriends.getImageURL());
+              //  Log.e("hour", "populateViewHolder: "+ findFriends.getBio() );
+              //  viewHolder.setBio(findFriends.getBio());
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -95,5 +100,12 @@ public class FindfriendActivity extends AppCompatActivity {
             myName.setText(username);
         }
 
+      /*  public void setBio(String bio) {
+            TextView myBio= mView.findViewById(R.id.person_status);
+            myBio.setText(bio);
+        }
+
+
+       */
     }
 }

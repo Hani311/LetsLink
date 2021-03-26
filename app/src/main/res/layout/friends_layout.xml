@@ -7,7 +7,7 @@
     android:layout_height="80dp"
     android:padding="8dp"
     android:elevation="2dp"
-    android:background="@drawable/friends_layout_background">
+    android:background="#DAE6E8">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/friends_profile_image"

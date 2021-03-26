@@ -51,6 +51,9 @@ public class UserProfile extends AppCompatActivity {
     private StorageTask upLoadTask;
     private StorageReference storageProfilePicsRef;
     private Button saveBtn, logoutBtn, btnChangePasActivity;
+    private FirebaseUser User;
+    private EditText editTextChangeUserName, editTextStatus;
+
 
 
 
@@ -65,10 +68,34 @@ public class UserProfile extends AppCompatActivity {
         saveBtn=findViewById(R.id.btnSave);
         profileChangeBtn= findViewById(R.id.changePic);
         btnChangePasActivity=findViewById(R.id.btnResetActivity);
+        editTextStatus=findViewById(R.id.editTextStatus);
+        editTextChangeUserName= findViewById(R.id.editTextTextPersonName);
+
 
         saveBtn.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) { uploadProfileImage();
+            public void onClick(View v) {
+                String name = editTextChangeUserName.getText().toString();
+                String status = editTextStatus.getText().toString();
+                if( name.equals("")) {
+
+                } else{
+
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("Users").setValue(name);
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("searchname").setValue(name);
+                    Toast.makeText(UserProfile.this, "UserName have been changed", Toast.LENGTH_SHORT).show();
+                }
+                if( status.equals("")) {
+
+                } else{
+
+                    databaseReference.child(mAuth.getCurrentUser().getUid()).child("bio").setValue(status);
+                    Toast.makeText(UserProfile.this, "Status have been changed", Toast.LENGTH_SHORT).show();
+                }
+
+                uploadProfileImage();
+
+
             }
         });
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
