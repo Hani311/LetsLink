@@ -175,7 +175,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void markerClicked() {
-
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -186,6 +185,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     public boolean onMarkerClick(Marker marker) {
                         boolean m = true;
                         String title = marker.getTitle();
+                        Log.e("Marker ID", "onMarkerClick: "+marker.getId());
                         // Log.e("Title", "onMarkerClick: "+title);
                         query.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -194,85 +194,147 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                                     Events event = dataSnapshot.getValue(Events.class);
+                                    if (getActivity() != null) {
+                                    if (event.getEventID().equals(title)) {
 
-                                    if (event.getEventName().toLowerCase().equals(title.toLowerCase())) {
-                                        final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
-                                        final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                                        final View dialogView = inflater.inflate(R.layout.view_eventmarker, null);
-                                        final AlertDialog dialog;
-                                        // eventPopup.setNegativeButton("Cancel", null);
-                                        eventPopup.setView(dialogView);
-                                        eventPopup.setTitle("Event");
-                                        dialog = eventPopup.create();
-                                        dialog.show();
-                                        deleteEventByOwner(dialog, dialogView, event);
+                                            final AlertDialog.Builder eventPopup = new AlertDialog.Builder(getActivity()); //Creates dialog
+                                            final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                                            final View dialogView = inflater.inflate(R.layout.view_eventmarker, null);
+                                            final AlertDialog dialog;
+                                            // eventPopup.setNegativeButton("Cancel", null);
+                                            eventPopup.setView(dialogView);
+                                            eventPopup.setTitle("Event");
+                                            dialog = eventPopup.create();
+                                            dialog.show();
+
+                                            deleteEventByOwner(dialog, dialogView, event);
 
 
-                                        TextView capacity = dialogView.findViewById(R.id.capacity);
-                                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
+                                            TextView capacity = dialogView.findViewById(R.id.capacity);
+                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
 
-                                        ref.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                try {
-                                                    int number = snapshot.getValue(Integer.class);
-                                                    capacity.setText(number + "/" + event.getCapacity());
-                                                } catch (NullPointerException e) {
-                                                    spawnNearbyEventsOnMap(gMap);
+                                            ref.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    try {
+                                                        int number = snapshot.getValue(Integer.class);
+                                                        capacity.setText(number + "/" + event.getCapacity());
+                                                    } catch (NullPointerException e) {
+                                                        //spawnNearbyEventsOnMap(gMap);
+                                                        e.getMessage();
+                                                        e.printStackTrace();
+                                                    }
+
+
                                                 }
 
 
-                                            }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
+                                            TextView desc = dialogView.findViewById(R.id.description);
+                                            desc.setText(event.getDescription());
+                                            Button btnJoin = dialogView.findViewById(R.id.join);
 
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                            btnJoin.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    boolean value = false;
 
-                                            }
-                                        });
+                                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
+                                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            final int[] number = {snapshot.getValue(Integer.class)};
+                                                            if (number[0] < Integer.parseInt(event.getCapacity())) {
+                                                                // number++;
+                                                                // ref.setValue(number);
+                                                                DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                                userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                        TextView desc = dialogView.findViewById(R.id.description);
-                                        desc.setText(event.getDescription());
-                                        Button btnJoin = dialogView.findViewById(R.id.join);
+                                                                        boolean newUser = true;
+                                                                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+
+                                                                            if (snapshot1.getValue().equals(getUserID())) {
+                                                                                newUser = false;
+                                                                            }
+
+                                                                        }
+
+                                                                        if (newUser) {
+                                                                            number[0]++;
+                                                                            ref.setValue(number[0]);
+                                                                            userJoind.child(getUserID()).setValue(getUserID());
+                                                                            Snackbar.make(view, "You have joined the event", Snackbar.LENGTH_LONG)
+                                                                                    .setAction("Action", null).show();
+
+                                                                            addParticipant(event.getGroupID(), event.getEventName());
+                                                                        }
+                                                                        Log.e("values", snapshot.toString());
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                });
+
+                                                                Log.e("TAGGGGG", number[0] + "");
+                                                            }
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
 
 
-                                        btnJoin.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                boolean value = false;
+                                                }
+                                            });
 
-                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
-                                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        final int[] number = {snapshot.getValue(Integer.class)};
-                                                        if (number[0] < Integer.parseInt(event.getCapacity())) {
-                                                            // number++;
-                                                            // ref.setValue(number);
+                                            Button btnLeave = dialogView.findViewById(R.id.leave);
+                                            btnLeave.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
+                                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            final int[] number = {snapshot.getValue(Integer.class)};
                                                             DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
+                                                            DatabaseReference joinedMemberGroupRef = FirebaseDatabase.getInstance().getReference("Groups").child(event.getGroupID()).child("Participants");
                                                             userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                                                     boolean newUser = true;
-                                                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
 
+                                                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                                                         if (snapshot1.getValue().equals(getUserID())) {
-                                                                            newUser = false;
+                                                                            if (number[0] > 0) {
+                                                                                number[0]--;
+                                                                                ref.setValue(number[0]);
+                                                                                userJoind.child(getUserID()).removeValue();
+                                                                                joinedMemberGroupRef.child(getUserID()).removeValue();
+                                                                                Snackbar.make(view, "You have left the event", Snackbar.LENGTH_LONG)
+                                                                                        .setAction("Action", null).show();
+                                                                            }
+
+
                                                                         }
 
                                                                     }
 
-                                                                    if (newUser) {
-                                                                        number[0]++;
-                                                                        ref.setValue(number[0]);
-                                                                        userJoind.child(getUserID()).setValue(getUserID());
-                                                                        Snackbar.make(view, "You have joined the event", Snackbar.LENGTH_LONG)
-                                                                                .setAction("Action", null).show();
 
-                                                                        addParticipant(event.getGroupID(), event.getEventName());
-                                                                    }
                                                                     Log.e("values", snapshot.toString());
+
                                                                 }
 
                                                                 @Override
@@ -281,80 +343,23 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                                 }
                                                             });
 
+
                                                             Log.e("TAGGGGG", number[0] + "");
+
                                                         }
 
-                                                    }
 
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                                                    }
-                                                });
-
-
-                                            }
-                                        });
-
-                                        Button btnLeave = dialogView.findViewById(R.id.leave);
-                                        btnLeave.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Joined Member").child(dataSnapshot.getKey()).child("joined");
-                                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                        final int[] number = {snapshot.getValue(Integer.class)};
-                                                        DatabaseReference userJoind = FirebaseDatabase.getInstance().getReference("Joined Users").child(dataSnapshot.getKey());
-                                                        DatabaseReference joinedMemberGroupRef = FirebaseDatabase.getInstance().getReference("Groups").child(event.getGroupID()).child("Participants");
-                                                        userJoind.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                boolean newUser = true;
-
-                                                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                                                    if (snapshot1.getValue().equals(getUserID())) {
-                                                                        if (number[0] > 0) {
-                                                                            number[0]--;
-                                                                            ref.setValue(number[0]);
-                                                                            userJoind.child(getUserID()).removeValue();
-                                                                            joinedMemberGroupRef.child(getUserID()).removeValue();
-                                                                            Snackbar.make(view, "You have left the event", Snackbar.LENGTH_LONG)
-                                                                                    .setAction("Action", null).show();
-                                                                        }
+                                                        }
+                                                    });
 
 
-                                                                    }
+                                                }
+                                            });
 
-                                                                }
-
-
-                                                                Log.e("values", snapshot.toString());
-
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                                            }
-                                                        });
-
-
-                                                        Log.e("TAGGGGG", number[0] + "");
-
-                                                    }
-
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-
-
-                                            }
-                                        });
-
+                                        }
                                     }
                                 }
                             }
@@ -392,13 +397,23 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     MemberCountRef.removeValue();
                     joinedMemberRef.removeValue();
                     groupChatRef.removeValue();
-                    gMap.clear();
-                    spawnNearbyEventsOnMap(gMap);
-                    Log.e("Tigris", "onClick: " + gMap);
                     dialog.dismiss();
+                    gMap.clear();
+                    try {
+                        Thread.sleep(500);
+                        spawnNearbyEventsOnMap(gMap);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.e("Tigris", "onClick: " + gMap);
+
                 }
+
             });
+
         }
+
     }
 
 
@@ -513,7 +528,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                             LatLng latLng = new LatLng(lats, lon);
                             gMap.addMarker(new MarkerOptions()
                                     .position(latLng)
-                                    .title(String.valueOf(post.child("eventName").getValue()))
+                                    .title(String.valueOf(post.child("eventID").getValue()))
                                     .icon(BitmapDescriptorFactory.fromBitmap(customizeImageToBitMap(event))));
 
 
@@ -533,7 +548,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void shareEvent() {
-
         sharee = getActivity().findViewById(R.id.shareEvent);
         sharee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -556,9 +570,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public Bitmap customizeImageToBitMap(int resourcePath) { //Example input: "R.id.sport"
         int height = 50; //Default
         int width = 50; //Default
-        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(resourcePath); //Change
-        Bitmap b = bitmapdraw.getBitmap();
-        return Bitmap.createScaledBitmap(b, width, height, false);
+        if (getActivity() != null) {
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(resourcePath); //Change
+            Bitmap b = bitmapdraw.getBitmap();
+            return Bitmap.createScaledBitmap(b, width, height, false);
+        }else {
+            return null;
+        }
     }
 
     public void createEvent(GoogleMap googleMap) {
