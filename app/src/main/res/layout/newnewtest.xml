@@ -121,17 +121,16 @@
 
             <TextView
                 android:layout_height="42dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="5dp"
-                android:textColor="@color/white"
+                android:layout_marginTop="15dp"
                 android:text="Due to corona, events created will be automotaically deleted after 00:00 every day"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2">
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/white">
 
             </TextView>
 
 
         </TableRow>
-
 
 
     </LinearLayout>
