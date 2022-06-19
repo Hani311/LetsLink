@@ -1,4 +1,4 @@
-#This app was built as a project for our first android course we had in HKR
+# This app was built as a project for our first android course we had in HKR
 
 * The app idea is to let people post and join events.
 * Create group chats related to the events.
